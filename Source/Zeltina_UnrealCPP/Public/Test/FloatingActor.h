@@ -10,8 +10,8 @@ UCLASS()
 class ZELTINA_UNREALCPP_API AFloatingActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFloatingActor();
 
@@ -19,8 +19,31 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	// 스태틱 매시 움직임 업데이트하는 함수
+	virtual void OnFloatingMeshUpdate(float DeltaTime);
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	// 위아래 이동 속도
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float Speed = 100.0f;
+
+	// 최대로 올라갈 높이
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float MoveHeight = 300.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float SpinSpeed = 200.0f;
+
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> BodyMesh = nullptr;
+	//UStaticMeshComponent* BodyMesh = nullptr;
+
+	// 누적 시간
+	float ElapsedTime = 0.0f;
 
 };
