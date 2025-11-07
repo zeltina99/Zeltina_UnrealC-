@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "TestActor.generated.h"
+#include "FloatingActor.generated.h"
 
 UCLASS()
-class ZELTINA_UNREALCPP_API ATestActor : public AActor
+class ZELTINA_UNREALCPP_API AFloatingActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATestActor();
+	AFloatingActor();
 
 protected:
 	// Called when the game starts or when spawned
