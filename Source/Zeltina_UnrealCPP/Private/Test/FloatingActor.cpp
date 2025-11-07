@@ -54,6 +54,6 @@ void AFloatingActor::OnFloatingMeshUpdate(float DeltaTime)
 void AFloatingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//OnFloatingMeshUpdate(DeltaTime);
+	OnFloatingMeshUpdate(DeltaTime);
 
 }
