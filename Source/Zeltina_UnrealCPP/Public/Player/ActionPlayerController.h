@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ActionPlayerController.generated.h"
 
+
 /**
  * 
  */
@@ -14,4 +15,8 @@ class ZELTINA_UNREALCPP_API AActionPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<
+
 };

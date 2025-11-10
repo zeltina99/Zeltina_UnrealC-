@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ActionCharacter.generated.h"
 
+class UInputAction;
+
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter
 {
@@ -25,5 +27,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Move;
 
 };

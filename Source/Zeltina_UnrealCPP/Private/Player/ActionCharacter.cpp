@@ -2,6 +2,7 @@
 
 
 #include "Player/ActionCharacter.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -29,6 +30,8 @@ void AActionCharacter::Tick(float DeltaTime)
 void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	UEnhancedInputComponent* enhanced = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 }
 
