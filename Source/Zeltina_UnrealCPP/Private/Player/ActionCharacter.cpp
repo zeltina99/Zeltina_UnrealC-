@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -74,6 +75,7 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		enhanced->BindAction(IA_Run, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
 		enhanced->BindAction(IA_Run, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
 		enhanced->BindAction(IA_Run, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);
+		enhanced->BindAction(IA_Attack, ETriggerEvent::Started, this, &AActionCharacter::OnAttackStarted);
 	}
 }
 
@@ -105,6 +107,20 @@ void AActionCharacter::OnSprintStarted(const FInputActionValue& InValue)
 void AActionCharacter::OnSprintEnded(const FInputActionValue& InValue)
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
+{
+	if (USkeletalMeshComponent* SkelMesh = GetMesh())
+	{
+		if (UAnimInstance* Anim = SkelMesh->GetAnimInstance())
+		{
+			if (!Anim->Montage_IsPlaying(AttackMontage))
+			{
+				Anim->Montage_Play(AttackMontage, 1.0f);
+			}
+		}
+	}
 }
 
 

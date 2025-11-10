@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Animation/AnimMontage.h"
 #include "ActionCharacter.generated.h"
 
 class UInputAction;
 //class USpringArmComponent;
 class UCameraComponent;
+class UAnimMontage;
 
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter
@@ -35,6 +37,7 @@ protected:
 	void OnMoveInput(const FInputActionValue& InValue);
 	void OnSprintStarted(const FInputActionValue& InValue);
 	void OnSprintEnded(const FInputActionValue& InValue);
+	void OnAttackStarted(const FInputActionValue& InValue);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -49,8 +52,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Run;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> IA_Attack;*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Attack;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Anim")
+	TObjectPtr<UAnimMontage> AttackMontage = nullptr;
 	
 protected:
 	float WalkSpeed = 400.f;
