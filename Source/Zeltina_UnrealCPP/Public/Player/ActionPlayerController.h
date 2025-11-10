@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ActionPlayerController.generated.h"
 
+class UInputMappingContext;
 
 /**
  * 
@@ -19,6 +20,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<
+	TObjectPtr<UInputMappingContext> DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	int32 GameInputPriority = 0;
 
 };
