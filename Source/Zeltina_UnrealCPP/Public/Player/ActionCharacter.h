@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "ActionCharacter.generated.h"
 
 class UInputAction;
@@ -29,7 +30,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
+	void OnMoveInput(const FInputActionValue& InValue);
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Move;
+
+
 
 };

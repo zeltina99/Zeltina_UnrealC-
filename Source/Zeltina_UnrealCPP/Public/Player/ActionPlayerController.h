@@ -16,6 +16,8 @@ class ZELTINA_UNREALCPP_API AActionPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<
 

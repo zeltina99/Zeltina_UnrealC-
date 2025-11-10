@@ -32,6 +32,17 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	UEnhancedInputComponent* enhanced = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (enhanced)	//	입력 컴포넌트가 향상된 입력 컴포넌트일 때
+	{
+		enhanced->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AActionCharacter::OnMoveInput);
+	}
+}
+
+void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
+{
+	FVector2D inputDirection = InValue.Get<FVector2D>();
+	UE_LOG(LogTemp, Log, TEXT("Dir : (%.1f, %.1f)"), inputDirection.X, inputDirection.Y);
+	UE_LOG(LogTemp, Log, TEXT("Dir : (%s)"), *inputDirection.ToString());
 
 }
 
