@@ -31,6 +31,15 @@ AActionCharacter::AActionCharacter()
 	////GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 
 	//GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->TargetArmLength = 350.0f;
+	SpringArm->SocketOffset = FVector(0, 0, 250);
+
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	PlayerCamera->SetupAttachment(SpringArm);
+	PlayerCamera->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
 }
 
 // Called when the game starts or when spawned
