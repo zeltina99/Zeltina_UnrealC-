@@ -52,7 +52,7 @@ AActionCharacter::AActionCharacter()
 void AActionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 // Called every frame
@@ -71,6 +71,9 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (enhanced)	//	입력 컴포넌트가 향상된 입력 컴포넌트일 때
 	{
 		enhanced->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AActionCharacter::OnMoveInput);
+		enhanced->BindAction(IA_Run, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
+		enhanced->BindAction(IA_Run, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
+		enhanced->BindAction(IA_Run, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);
 	}
 }
 
@@ -93,4 +96,15 @@ void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
 	AddMovementInput(moveDirection);*/
 
 }
+
+void AActionCharacter::OnSprintStarted(const FInputActionValue& InValue)
+{
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
+
+void AActionCharacter::OnSprintEnded(const FInputActionValue& InValue)
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
 

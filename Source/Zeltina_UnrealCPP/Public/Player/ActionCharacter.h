@@ -33,7 +33,8 @@ public:
 
 protected:
 	void OnMoveInput(const FInputActionValue& InValue);
-
+	void OnSprintStarted(const FInputActionValue& InValue);
+	void OnSprintEnded(const FInputActionValue& InValue);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -44,8 +45,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Move;
-	
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Run;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Attack;*/
 	
+protected:
+	float WalkSpeed = 400.f;
+	float RunSpeed = 800.f;
 
 };
