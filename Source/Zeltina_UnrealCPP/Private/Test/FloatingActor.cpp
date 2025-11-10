@@ -14,7 +14,7 @@ AFloatingActor::AFloatingActor()
 
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));	// 스태틱 메시 컴포넌트 하나 만들기
 	BodyMesh->SetupAttachment(root);	// root 아래에 붙이기
-
+	
 }
 
 // Called when the game starts or when spawned
