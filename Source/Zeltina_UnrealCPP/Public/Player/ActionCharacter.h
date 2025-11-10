@@ -8,6 +8,8 @@
 #include "ActionCharacter.generated.h"
 
 class UInputAction;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter

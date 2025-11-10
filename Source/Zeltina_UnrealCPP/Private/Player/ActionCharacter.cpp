@@ -4,12 +4,27 @@
 #include "Player/ActionCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	USpringArmComponent* spring = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring"));
+	spring->SetupAttachment(RootComponent);
+
+	spring->TargetArmLength = 450.0f;
+	spring->bUsePawnControlRotation = true;
+
+	FRotator NewRotation(0, -30, 0);
+	spring->SetRelativeRotation(NewRotation);
+
+	UCameraComponent* CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(spring);
+	CameraComp->bUsePawnControlRotation = false;
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
