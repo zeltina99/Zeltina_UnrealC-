@@ -13,7 +13,7 @@ AActionCharacter::AActionCharacter()
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+	//GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 }
