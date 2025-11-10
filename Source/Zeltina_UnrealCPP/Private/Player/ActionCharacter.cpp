@@ -80,17 +80,17 @@ void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
 	//UE_LOG(LogTemp, Log, TEXT("Dir : (%.1f, %.1f)"), inputDirection.X, inputDirection.Y);
 	//UE_LOG(LogTemp, Log, TEXT("Dir : (%s)"), *inputDirection.ToString());
 
-	/*FRotator ControlRot = Controller->GetControlRotation();
+	FRotator ControlRot = Controller->GetControlRotation();
 	FRotator YawRot(0.f, ControlRot.Yaw, 0.f);
 
 	FVector ForwardDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::X);
 	FVector RightDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::Y);
 
 	AddMovementInput(ForwardDir, inputDirection.Y);
-	AddMovementInput(RightDir, inputDirection.X);*/
+	AddMovementInput(RightDir, inputDirection.X);
 
-	FVector moveDirection(inputDirection.Y, inputDirection.X, 0.0f);
-	AddMovementInput(moveDirection);
+	/*FVector moveDirection(inputDirection.Y, inputDirection.X, 0.0f);
+	AddMovementInput(moveDirection);*/
 
 }
 
