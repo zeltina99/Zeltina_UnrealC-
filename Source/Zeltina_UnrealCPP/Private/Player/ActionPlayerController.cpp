@@ -4,3 +4,21 @@
 #include "Player/ActionPlayerController.h"
 #include "EnhancedInputSubSystems.h"
 #include "InputMappingContext.h"
+
+
+
+
+
+
+
+
+/*
+	Super::BeginPlay()
+;
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());	// Subsystem 가져오기 시도
+	if (Subsystem)	// Subsystem이 null이 아니면
+	{
+		Subsystem->AddMappingContext(DefaultMappingContext, GameInputPriority);
+	}
+
+	*/
