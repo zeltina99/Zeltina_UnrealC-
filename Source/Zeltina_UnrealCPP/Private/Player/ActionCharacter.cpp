@@ -3,6 +3,7 @@
 
 #include "Player/ActionCharacter.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -10,6 +11,11 @@ AActionCharacter::AActionCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+
+	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 }
 
 // Called when the game starts or when spawned
@@ -41,8 +47,17 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
 {
 	FVector2D inputDirection = InValue.Get<FVector2D>();
-	UE_LOG(LogTemp, Log, TEXT("Dir : (%.1f, %.1f)"), inputDirection.X, inputDirection.Y);
-	UE_LOG(LogTemp, Log, TEXT("Dir : (%s)"), *inputDirection.ToString());
+	//UE_LOG(LogTemp, Log, TEXT("Dir : (%.1f, %.1f)"), inputDirection.X, inputDirection.Y);
+	//UE_LOG(LogTemp, Log, TEXT("Dir : (%s)"), *inputDirection.ToString());
+
+	FRotator ControlRot = Controller->GetControlRotation();
+	FRotator YawRot(0.f, ControlRot.Yaw, 0.f);
+
+	FVector ForwardDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::X);
+	FVector RightDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::Y);
+
+	AddMovementInput(ForwardDir, inputDirection.Y);
+	AddMovementInput(RightDir, inputDirection.X);
 
 }
 
