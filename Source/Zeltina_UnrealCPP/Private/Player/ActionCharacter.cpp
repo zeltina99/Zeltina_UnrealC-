@@ -13,24 +13,24 @@ AActionCharacter::AActionCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	USpringArmComponent* spring = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring"));
-	spring->SetupAttachment(RootComponent);
+	//USpringArmComponent* spring = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring"));
+	//spring->SetupAttachment(RootComponent);
 
-	spring->TargetArmLength = 450.0f;
-	spring->bUsePawnControlRotation = true;
+	//spring->TargetArmLength = 450.0f;
+	//spring->bUsePawnControlRotation = true;
 
-	FRotator NewRotation(0, -30, 0);
-	spring->SetRelativeRotation(NewRotation);
+	//FRotator NewRotation(0, -30, 0);
+	//spring->SetRelativeRotation(NewRotation);
 
-	UCameraComponent* CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-	CameraComp->SetupAttachment(spring);
-	CameraComp->bUsePawnControlRotation = false;
+	//UCameraComponent* CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	//CameraComp->SetupAttachment(spring);
+	//CameraComp->bUsePawnControlRotation = false;
 
-	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	//GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+	//bUseControllerRotationYaw = false;
+	//GetCharacterMovement()->bOrientRotationToMovement = true;
+	////GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 
-	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+	//GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 }
 
 // Called when the game starts or when spawned
@@ -65,14 +65,17 @@ void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
 	//UE_LOG(LogTemp, Log, TEXT("Dir : (%.1f, %.1f)"), inputDirection.X, inputDirection.Y);
 	//UE_LOG(LogTemp, Log, TEXT("Dir : (%s)"), *inputDirection.ToString());
 
-	FRotator ControlRot = Controller->GetControlRotation();
+	/*FRotator ControlRot = Controller->GetControlRotation();
 	FRotator YawRot(0.f, ControlRot.Yaw, 0.f);
 
 	FVector ForwardDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::X);
 	FVector RightDir = FRotationMatrix(YawRot).GetUnitAxis(EAxis::Y);
 
 	AddMovementInput(ForwardDir, inputDirection.Y);
-	AddMovementInput(RightDir, inputDirection.X);
+	AddMovementInput(RightDir, inputDirection.X);*/
+
+	FVector moveDirection(inputDirection.Y, inputDirection.X, 0.0f);
+	AddMovementInput(moveDirection);
 
 }
 
