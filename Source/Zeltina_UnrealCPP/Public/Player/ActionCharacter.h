@@ -10,7 +10,6 @@
 class UInputAction;
 //class USpringArmComponent;
 class UCameraComponent;
-class UActionAnimInstance;
 
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter
@@ -46,7 +45,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Move;
 	
-	TObjectPtr<UActionAnimInstance> ABP_ActionPlayer;
 
 	
 

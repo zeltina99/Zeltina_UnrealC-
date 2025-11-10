@@ -13,5 +13,16 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UActionAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
+public:
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anim")
+	float Speed = 0.0f;
 	
+private:
+	UPROPERTY(Transient)
+	TObjectPtr<class AActionCharacter> OwnerCharacter = nullptr;
+
 };
