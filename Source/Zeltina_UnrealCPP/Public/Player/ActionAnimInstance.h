@@ -18,7 +18,8 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anim")
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Movement")
 	float Speed = 0.0f;
 	
 private:
