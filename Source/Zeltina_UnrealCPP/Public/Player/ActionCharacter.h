@@ -35,9 +35,12 @@ public:
 
 protected:
 	void OnMoveInput(const FInputActionValue& InValue);
-	void OnSprintStarted(const FInputActionValue& InValue);
-	void OnSprintEnded(const FInputActionValue& InValue);
+	/*void OnSprintStarted(const FInputActionValue& InValue);
+	void OnSprintEnded(const FInputActionValue& InValue);*/
 	void OnAttackStarted(const FInputActionValue& InValue);
+
+	void SetSprintMode();
+	void SetWalkMode();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -59,7 +62,10 @@ protected:
 	TObjectPtr<UAnimMontage> AttackMontage = nullptr;
 	
 protected:
-	float WalkSpeed = 400.f;
-	float RunSpeed = 800.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
+	float WalkSpeed = 600.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
+	float SprintSpeed = 1200.f;
 
 };

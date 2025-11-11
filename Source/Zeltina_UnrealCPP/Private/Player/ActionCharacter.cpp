@@ -72,9 +72,17 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (enhanced)	//	입력 컴포넌트가 향상된 입력 컴포넌트일 때
 	{
 		enhanced->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AActionCharacter::OnMoveInput);
-		enhanced->BindAction(IA_Sprint, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
+		enhanced->BindActionValueLambda(IA_Sprint, ETriggerEvent::Started,
+			[this](const FInputActionValue& _) {
+				SetSprintMode();
+			});
+		enhanced->BindActionValueLambda(IA_Sprint, ETriggerEvent::Completed,
+			[this](const FInputActionValue& _) {
+				SetWalkMode();
+			});
+		/*enhanced->BindAction(IA_Sprint, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
 		enhanced->BindAction(IA_Sprint, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
-		enhanced->BindAction(IA_Sprint, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);
+		enhanced->BindAction(IA_Sprint, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);*/
 		enhanced->BindAction(IA_Attack, ETriggerEvent::Started, this, &AActionCharacter::OnAttackStarted);
 	}
 }
@@ -103,15 +111,15 @@ void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
 
 }
 
-void AActionCharacter::OnSprintStarted(const FInputActionValue& InValue)
-{
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-}
-
-void AActionCharacter::OnSprintEnded(const FInputActionValue& InValue)
-{
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-}
+//void AActionCharacter::OnSprintStarted(const FInputActionValue& InValue)
+//{
+//	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+//}
+//
+//void AActionCharacter::OnSprintEnded(const FInputActionValue& InValue)
+//{
+//	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+//}
 
 void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
 {
@@ -125,6 +133,18 @@ void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
 			}
 		}
 	}
+}
+
+void AActionCharacter::SetSprintMode()
+{
+	//UE_LOG(LogTemp, Warning, TEXT("달리기 모드"));
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void AActionCharacter::SetWalkMode()
+{
+	//UE_LOG(LogTemp, Warning, TEXT("걷기 모드"));
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 
