@@ -25,7 +25,7 @@ void UActionAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	//TryGetPawnOwner()->GetVelocity().Size();
+	//TryGetPawnOwner()->GetVelocity().Size();	//	Tick이나 Update같이 빠르게 반복되는 곳에서는 불필요한 중복 실행은 방지해야한다.
 
 	//if (OwnerMovementComponent.IsValid())
 	//{

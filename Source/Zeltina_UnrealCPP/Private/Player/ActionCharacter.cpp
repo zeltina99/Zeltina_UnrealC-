@@ -43,9 +43,9 @@ AActionCharacter::AActionCharacter()
 	PlayerCamera->SetupAttachment(SpringArm);
 	PlayerCamera->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
 
-	bUseControllerRotationYaw = true;	// 컨트롤러의 Yaw회전을 사용함 -> 컨트롤러의 Yaw회전을 캐릭터에 적용
+	bUseControllerRotationYaw = false;	// 컨트롤러의 Yaw회전을 사용 안함
 
-	//GetCharacterMovement()->bOrientRotationToMovement = true;	// 이동 방향을 바라보게 회전
+	GetCharacterMovement()->bOrientRotationToMovement = true;	// 이동 방향을 바라보게 회전
 	GetCharacterMovement()->RotationRate = FRotator(0, 360, 0);
 }
 
@@ -72,9 +72,9 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (enhanced)	//	입력 컴포넌트가 향상된 입력 컴포넌트일 때
 	{
 		enhanced->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AActionCharacter::OnMoveInput);
-		enhanced->BindAction(IA_Run, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
-		enhanced->BindAction(IA_Run, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
-		enhanced->BindAction(IA_Run, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);
+		enhanced->BindAction(IA_Sprint, ETriggerEvent::Started, this, &AActionCharacter::OnSprintStarted);
+		enhanced->BindAction(IA_Sprint, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
+		enhanced->BindAction(IA_Sprint, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);
 		enhanced->BindAction(IA_Attack, ETriggerEvent::Started, this, &AActionCharacter::OnAttackStarted);
 	}
 }

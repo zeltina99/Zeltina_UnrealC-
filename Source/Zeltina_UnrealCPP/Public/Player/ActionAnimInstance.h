@@ -26,4 +26,5 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<class AActionCharacter> OwnerCharacter = nullptr;
 
+	// TWeakObjectPtr<const UPawnMovementComponent> OwnerMovementComponent;
 };
