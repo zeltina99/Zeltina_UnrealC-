@@ -42,6 +42,7 @@ protected:
 
 	void SetSprintMode();
 	void SetWalkMode();
+	void SetStamina(float DeltaTime);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -73,6 +74,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
 	float SprintSpeed = 1200.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
+	float Stamina = 10.0f;
+	float Delay = 0.0f;
+	bool OnStamina = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Montage")
 	TObjectPtr<UAnimMontage> RollMontage = nullptr;

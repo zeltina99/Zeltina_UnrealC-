@@ -62,6 +62,7 @@ void AActionCharacter::BeginPlay()
 void AActionCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	SetStamina(DeltaTime);
 
 }
 
@@ -140,26 +141,64 @@ void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
 
 void AActionCharacter::OnRollInput(const FInputActionValue& InValue)
 {
-	if (AnimInstance.IsValid())
+	if(Stamina > 5.0f)
 	{
-		if (!AnimInstance->IsAnyMontagePlaying())
+		if (AnimInstance.IsValid())
 		{
-			SetActorRotation(GetLastMovementInputVector().Rotation());
-			PlayAnimMontage(RollMontage);
+			if (!AnimInstance->IsAnyMontagePlaying())
+			{
+				//if (!GetLastMovementInputVector().IsNearlyZero())	//	입력을 하는 중에만 즉시 회전
+				//{
+				//	SetActorRotation(GetLastMovementInputVector().Rotation());	//	마지막 입력 방향으로 즉시 회전 시키기
+				//}
+				PlayAnimMontage(RollMontage);
+				Stamina -= 5.0f;
+				UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+			}
 		}
 	}
 }
 
 void AActionCharacter::SetSprintMode()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("달리기 모드"));
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	OnStamina = true;
+	if(Stamina > 0)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+	
 }
 
 void AActionCharacter::SetWalkMode()
 {
+	OnStamina = false;
 	//UE_LOG(LogTemp, Warning, TEXT("걷기 모드"));
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AActionCharacter::SetStamina(float DeltaTime)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+	if (OnStamina == true)
+	{
+		if(Stamina > 0)
+		{
+			Stamina -= DeltaTime;
+		}
+		else
+		{
+			SetWalkMode();
+		}
+		Delay = 0.0f;
+	}
+	else
+	{
+		Delay += DeltaTime;
+		if(Delay >= 3.0f && Stamina < 10.0f)
+		{
+			Stamina += DeltaTime;
+		}
+	}
 }
 
 
