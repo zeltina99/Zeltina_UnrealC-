@@ -54,6 +54,8 @@ void AActionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	AnimInstance = GetMesh()->GetAnimInstance();	// ABP 객체 가져오기
 }
 
 // Called every frame
@@ -84,6 +86,7 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		enhanced->BindAction(IA_Sprint, ETriggerEvent::Completed, this, &AActionCharacter::OnSprintEnded);
 		enhanced->BindAction(IA_Sprint, ETriggerEvent::Canceled, this, &AActionCharacter::OnSprintEnded);*/
 		enhanced->BindAction(IA_Attack, ETriggerEvent::Started, this, &AActionCharacter::OnAttackStarted);
+		enhanced->BindAction(IA_Roll, ETriggerEvent::Triggered, this, &AActionCharacter::OnRollInput);
 	}
 }
 
@@ -131,6 +134,18 @@ void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
 			{
 				Anim->Montage_Play(AttackMontage, 1.0f);
 			}
+		}
+	}
+}
+
+void AActionCharacter::OnRollInput(const FInputActionValue& InValue)
+{
+	if (AnimInstance.IsValid())
+	{
+		if (!AnimInstance->IsAnyMontagePlaying())
+		{
+			SetActorRotation(GetLastMovementInputVector().Rotation());
+			PlayAnimMontage(RollMontage);
 		}
 	}
 }

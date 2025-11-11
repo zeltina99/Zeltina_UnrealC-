@@ -38,6 +38,7 @@ protected:
 	/*void OnSprintStarted(const FInputActionValue& InValue);
 	void OnSprintEnded(const FInputActionValue& InValue);*/
 	void OnAttackStarted(const FInputActionValue& InValue);
+	void OnRollInput(const FInputActionValue& InValue);
 
 	void SetSprintMode();
 	void SetWalkMode();
@@ -50,15 +51,20 @@ protected:
 	TObjectPtr<class UCameraComponent> PlayerCamera = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> IA_Move;
+	TObjectPtr<UInputAction> IA_Move = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> IA_Sprint;
+	TObjectPtr<UInputAction> IA_Sprint = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> IA_Attack;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Anim")
+	TObjectPtr<UInputAction> IA_Attack = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+
+	TObjectPtr<UInputAction> IA_Roll = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation|Montage")
 	TObjectPtr<UAnimMontage> AttackMontage = nullptr;
 	
 protected:
@@ -68,4 +74,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
 	float SprintSpeed = 1200.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Montage")
+	TObjectPtr<UAnimMontage> RollMontage = nullptr;
+
+private:
+	UPROPERTY()
+	TWeakObjectPtr<UAnimInstance> AnimInstance = nullptr;
 };
