@@ -153,7 +153,7 @@ void AActionCharacter::OnRollInput(const FInputActionValue& InValue)
 				//}
 				PlayAnimMontage(RollMontage);
 				Stamina -= 5.0f;
-				UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+				//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
 			}
 		}
 	}
@@ -178,7 +178,7 @@ void AActionCharacter::SetWalkMode()
 
 void AActionCharacter::SetStamina(float DeltaTime)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+	//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
 	if (OnStamina == true)
 	{
 		if(Stamina > 0)
