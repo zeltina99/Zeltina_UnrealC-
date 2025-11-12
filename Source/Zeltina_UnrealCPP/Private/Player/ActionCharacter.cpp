@@ -8,6 +8,8 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 
+DEFINE_LOG_CATEGORY(LogGreen);
+
 // Sets default values
 AActionCharacter::AActionCharacter()
 {
@@ -178,7 +180,7 @@ void AActionCharacter::SetWalkMode()
 
 void AActionCharacter::SetStamina(float DeltaTime)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+	UE_LOG(LogGreen, Display, TEXT("Stamina : %.1f"), Stamina);
 	if (OnStamina == true)
 	{
 		if(Stamina > 0)

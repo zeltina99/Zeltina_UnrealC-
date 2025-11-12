@@ -13,6 +13,8 @@ class UInputAction;
 class UCameraComponent;
 class UAnimMontage;
 
+DECLARE_LOG_CATEGORY_EXTERN(LogGreen, Log, All);
+
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter
 {
