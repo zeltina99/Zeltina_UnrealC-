@@ -111,4 +111,6 @@ private:
 	TWeakObjectPtr<UAnimInstance> AnimInstance = nullptr;
 
 	float LastStaminaUseTime = 0.0f;
+	FTimerHandle StaminaCoolTimer;
+	bool bRegenStamina = false;
 };

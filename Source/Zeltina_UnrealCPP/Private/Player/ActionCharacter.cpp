@@ -78,6 +78,18 @@ void AActionCharacter::Tick(float DeltaTime)
 	{
 		CurrentStamina -= SprintStaminaCost * DeltaTime;
 		LastStaminaUseTime = 0;
+
+		//UWorld* world = GetWorld();
+		//FTimerManager& timerManager = world->GetTimerManager();
+		GetWorldTimerManager().SetTimer(
+			StaminaCoolTimer,
+			[this]() {
+				bRegenStamina = true;
+			},
+			StaminaRegenCoolTime,
+			false);
+
+
 		if (CurrentStamina <= 0)
 		{
 			CurrentStamina = 0.0f;
