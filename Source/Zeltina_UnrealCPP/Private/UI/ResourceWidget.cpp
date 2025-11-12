@@ -9,5 +9,5 @@ void UResourceWidget::RefreshWidget(float InCurrent, float InMax)
 {
 	Bar->SetPercent(InCurrent / InMax);
 	Current->SetText(FText::AsNumber(FMath::FloorToInt(InCurrent)));
-	Max->SetText(FText::AsNumber(FMath::FloorToInt(InCurrent)));
+	Max->SetText(FText::AsNumber(FMath::FloorToInt(InMax)));
 }

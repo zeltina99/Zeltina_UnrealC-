@@ -15,6 +15,7 @@ class ZELTINA_UNREALCPP_API UResourceWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	void RefreshWidget(float InCurrent, float InMax);
 
 protected:

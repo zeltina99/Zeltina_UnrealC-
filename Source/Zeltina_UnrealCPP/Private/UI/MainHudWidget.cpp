@@ -14,6 +14,9 @@ void UMainHudWidget::NativeConstruct()
 		UResourceComponent* resource = player->GetResourceComponent();
 		resource->OnHealthChanged.AddUObject(HealthBar.Get(), &UResourceWidget::RefreshWidget);
 		resource->OnStaminaChanged.AddDynamic(StaminaBar.Get(), &UResourceWidget::RefreshWidget);
+
+		HealthBar->RefreshWidget(resource->GetCurrentHealth(), resource->GetMaxHealth());
+		StaminaBar->RefreshWidget(resource->GetCurrentStamina(), resource->GetMaxStamina());
 	}
 
 }
