@@ -8,7 +8,7 @@ void AMainHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*if (MainWidgetClass)
+	if (MainWidgetClass)
 	{
 
 		UUserWidget* widget = CreateWidget<UUserWidget>(GetWorld(), MainWidgetClass);
@@ -17,6 +17,6 @@ void AMainHUD::BeginPlay()
 			widget->AddToViewport();
 		}
 
-	}*/
+	}
 
 }

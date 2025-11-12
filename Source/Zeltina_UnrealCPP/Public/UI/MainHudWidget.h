@@ -15,10 +15,13 @@ class ZELTINA_UNREALCPP_API UMainHudWidget : public UUserWidget
 	GENERATED_BODY()
 
 protected:
+	virtual void NativeConstruct() override;
+
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TObjectPtr<class UResourceWidget> HealthBar;
+	TWeakObjectPtr<class UResourceWidget> HealthBar;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TObjectPtr<class UResourceWidget> StaminaBar;
+	TWeakObjectPtr<class UResourceWidget> StaminaBar;
 
 };

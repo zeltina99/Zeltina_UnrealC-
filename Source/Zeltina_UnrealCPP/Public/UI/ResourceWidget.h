@@ -19,12 +19,12 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TObjectPtr<class UProgressBar> Bar;
+	TWeakObjectPtr<class UProgressBar> Bar;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TObjectPtr<class UTextBlock> Current;
+	TWeakObjectPtr<class UTextBlock> Current;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TObjectPtr<class UTextBlock> Max;
+	TWeakObjectPtr<class UTextBlock> Max;
 
 };
