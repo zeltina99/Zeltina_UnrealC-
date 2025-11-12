@@ -29,6 +29,7 @@
 
 // FOnStaminaEmpty이름의 델리게이트가 있다라고 타입을 선언한 것
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStaminaEmpty);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthEmpty);
 
 UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ZELTINA_UNREALCPP_API UResourceComponent : public UActorComponent
@@ -47,6 +48,14 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	// 체력 추가/감소용 함수
+	UFUNCTION(BlueprintCallable)
+	void AddHealth(float InValue);
+
+	// 체력이 충분한지 확인하는 함수
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	inline bool HasEnoughHealth(float InValue) { return CurrentHealth >= InValue; }
+
 	// 스태미너 추가/감소용 함수
 	UFUNCTION(BlueprintCallable)
 	void AddStamina(float InValue);
@@ -59,11 +68,23 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Event")
 	FOnStaminaEmpty OnStaminaEmpty;
 
+	// 체력이 다 떨어졌음을 알리는 델리게이트
+	UPROPERTY(BlueprintAssignable, Category = "Event")
+	FOnHealthEmpty OnHealthEmpty;
+
 private:
 	void StaminaAutoRegenCoolTimerSet();
 	void StaminaRegenPerTick();
 
 protected:
+	// 현재 체력
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Health")
+	float CurrentHealth = 100.0f;
+
+	// 최대 체력
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Health")
+	float MaxHealth = 100.0f;
+
 	// 현재 스태미너
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Stamina")
 	float CurrentStamina = 100.0f;
