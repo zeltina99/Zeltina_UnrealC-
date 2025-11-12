@@ -29,6 +29,7 @@
 
 // FOnStaminaEmpty이름의 델리게이트가 있다라고 타입을 선언한 것
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStaminaEmpty);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSetStamina);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthEmpty);
 
 UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -67,6 +68,10 @@ public:
 	// 스태미너가 다 떨어졌음을 알리는 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Event")
 	FOnStaminaEmpty OnStaminaEmpty;
+
+	// 스태미너가 떨어지거나 회복하고 있는 걸 알리는 델리게이트
+	UPROPERTY(BlueprintAssignable, Category = "Event")
+	FOnSetStamina OnSetStamina;
 
 	// 체력이 다 떨어졌음을 알리는 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Event")

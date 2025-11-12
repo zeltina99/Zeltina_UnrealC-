@@ -70,7 +70,7 @@ void UResourceComponent::AddStamina(float InValue)
 {
 	// 스태미너 변경 처리
 	CurrentStamina += InValue;
-
+	OnSetStamina.Broadcast();
 	//TimeSinceLastStaminaUse = 0;	// 시간을 직접 제어할 때 쓰던 코드(예시 확인용)
 
 	// 스태미너를 소비하고 일정 시간 뒤에 자동재생되게 타이머 세팅
