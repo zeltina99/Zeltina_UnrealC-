@@ -55,6 +55,18 @@ void UResourceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 }
 
+void UResourceComponent::AddHealth(float InValue)
+{
+	float health = CurrentHealth + InValue;
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
+	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+	
+	if (!IsAlive())
+	{
+		OnDie.Broadcast();
+	}
+}
+
 void UResourceComponent::AddStamina(float InValue)
 {
 	// 스태미너 변경 처리
@@ -64,15 +76,17 @@ void UResourceComponent::AddStamina(float InValue)
 
 	// 스태미너를 소비하고 일정 시간 뒤에 자동재생되게 타이머 세팅
 	StaminaAutoRegenCoolTimerSet();
-
+	
+	CurrentStamina = FMath::Clamp(CurrentStamina, 0, MaxStamina);
+	OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
 	if (CurrentStamina <= 0)
 	{
-		CurrentStamina = 0.0f;
 		// 델리게이트로 스태미너가 떨어졌음을 알림
 		OnStaminaEmpty.Broadcast();
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), CurrentStamina);
+
+	//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), CurrentStamina);
 }
 
 void UResourceComponent::StaminaAutoRegenCoolTimerSet()
@@ -115,5 +129,5 @@ void UResourceComponent::StaminaRegenPerTick()
 
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Stamina Regen : %.1f"), CurrentStamina);
+	//UE_LOG(LogTemp, Warning, TEXT("Stamina Regen : %.1f"), CurrentStamina);
 }
