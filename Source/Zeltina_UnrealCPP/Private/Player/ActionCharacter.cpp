@@ -180,7 +180,7 @@ void AActionCharacter::SetWalkMode()
 
 void AActionCharacter::SetStamina(float DeltaTime)
 {
-	UE_LOG(LogGreen, Display, TEXT("Stamina : %.1f"), Stamina);
+	//UE_LOG(LogGreen, Display, TEXT("Stamina : %.1f"), Stamina);
 	if (OnStamina == true)
 	{
 		if(Stamina > 0)
