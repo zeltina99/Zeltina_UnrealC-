@@ -58,7 +58,7 @@ void UResourceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 void UResourceComponent::AddHealth(float InValue)
 {
 	float health = CurrentHealth + InValue;
-	SetCurrentHealth(FMath::Clamp(CurrentHealth, 0, MaxHealth));
+	SetCurrentHealth(FMath::Clamp(health, 0, MaxHealth));
 	
 	if (!IsAlive())
 	{
