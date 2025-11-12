@@ -42,7 +42,7 @@ protected:
 
 	void SetSprintMode();
 	void SetWalkMode();
-	void SetStamina(float DeltaTime);
+	/*void SetStamina(float DeltaTime);*/
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -75,10 +75,33 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
 	float SprintSpeed = 1200.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
 	float Stamina = 10.0f;
 	float Delay = 0.0f;
-	bool OnStamina = false;
+	bool OnStamina = false;*/
+	
+	// 현재 스태미너
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Resource")
+	float CurrentStamina = 100.0f;
+	
+	
+	// 최대 스태미너
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Resource")
+	float MaxStamina = 100.0f;
+	
+	// 달리기 상태일 때 초당 스태미너 비용
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Resource")
+	float SprintStaminaCost = 20.0f;
+
+	// 구르기를 하기 위해 필요한 스태미너 비용
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Resource")
+	float RollStaminaCost = 50.0f;
+
+
+	// 플레이어가 뛰고 있는 중인지 표시 해놓은 변수
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|State")
+	bool bIsSprint = false;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Montage")
 	TObjectPtr<UAnimMontage> RollMontage = nullptr;
@@ -86,4 +109,6 @@ protected:
 private:
 	UPROPERTY()
 	TWeakObjectPtr<UAnimInstance> AnimInstance = nullptr;
+
+	float LastStaminaUseTime = 0.0f;
 };

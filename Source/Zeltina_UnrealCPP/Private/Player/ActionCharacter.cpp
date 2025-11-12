@@ -56,13 +56,34 @@ void AActionCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	AnimInstance = GetMesh()->GetAnimInstance();	// ABP 객체 가져오기
+
+	// 게임 진행 중에 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
+	CurrentStamina = MaxStamina;	// 시작할 때 최대치로 리셋
+	bIsSprint = false;
+
 }
 
 // Called every frame
 void AActionCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	SetStamina(DeltaTime);
+	//SetStamina(DeltaTime);
+	LastStaminaUseTime += DeltaTime;
+	if (LastStaminaUseTime > 3.0f)
+	{
+		CurrentStamina += 50 * DeltaTime;
+	}
+
+	if (bIsSprint)
+	{
+		CurrentStamina -= SprintStaminaCost * DeltaTime;
+		LastStaminaUseTime = 0;
+		if (CurrentStamina <= 0)
+		{
+			CurrentStamina = 0.0f;
+			SetWalkMode();
+		}
+	}
 
 }
 
@@ -141,64 +162,68 @@ void AActionCharacter::OnAttackStarted(const FInputActionValue& InValue)
 
 void AActionCharacter::OnRollInput(const FInputActionValue& InValue)
 {
-	if(Stamina > 5.0f)
-	{
+	//if(Stamina > 5.0f)
+	//{
 		if (AnimInstance.IsValid())
 		{
-			if (!AnimInstance->IsAnyMontagePlaying())
+			if (!AnimInstance->IsAnyMontagePlaying() 
+				&& CurrentStamina > RollStaminaCost)
 			{
 				if (!GetLastMovementInputVector().IsNearlyZero())	//	입력을 하는 중에만 즉시 회전
 				{
 					SetActorRotation(GetLastMovementInputVector().Rotation());	//	마지막 입력 방향으로 즉시 회전 시키기
 				}
+				CurrentStamina -= RollStaminaCost;
+				LastStaminaUseTime = 0.0f;
 				PlayAnimMontage(RollMontage);
-				Stamina -= 5.0f;
+				//Stamina -= 5.0f;
 				//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
 			}
 		}
-	}
+	//}
 }
 
 void AActionCharacter::SetSprintMode()
 {
-	OnStamina = true;
-	if(Stamina > 0)
-	{
+	/*OnStamina = true;
+	if(Stamina > 0)*/
+	//{
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	}
-	
+	//}
+		bIsSprint = true;
 }
 
 void AActionCharacter::SetWalkMode()
 {
-	OnStamina = false;
+	/*OnStamina = false;*/
 	//UE_LOG(LogTemp, Warning, TEXT("걷기 모드"));
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	bIsSprint = false;
 }
 
-void AActionCharacter::SetStamina(float DeltaTime)
-{
-	//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
-	if (OnStamina == true)
-	{
-		if(Stamina > 0)
-		{
-			Stamina -= DeltaTime;
-		}
-		else
-		{
-			SetWalkMode();
-		}
-		Delay = 0.0f;
-	}
-	else
-	{
-		Delay += DeltaTime;
-		if(Delay >= 3.0f && Stamina < 10.0f)
-		{
-			Stamina += DeltaTime;
-		}
-	}
-}
+//void AActionCharacter::SetStamina(float DeltaTime)
+//{
+//	//UE_LOG(LogTemp, Warning, TEXT("Stamina : %.1f"), Stamina);
+//	if (OnStamina == true)
+//	{
+//		if(Stamina > 0)
+//		{
+//			Stamina -= DeltaTime;
+//		}
+//		else
+//		{
+//			SetWalkMode();
+//		}
+//		Delay = 0.0f;
+//	}
+//	else
+//	{
+//		Delay += DeltaTime;
+//		if(Delay >= 3.0f && Stamina < 10.0f)
+//		{
+//			Stamina += DeltaTime;
+//		}
+//	}
+//}
 
 
