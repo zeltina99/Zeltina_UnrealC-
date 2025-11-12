@@ -22,7 +22,7 @@ void UResourceComponent::BeginPlay()
 
 	// 게임 진행 중에 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
 	CurrentStamina = MaxStamina;	// 시작할 때 최대치로 리셋
-	
+	CurrentHealth = MaxHealth;
 	
 }
 
@@ -53,6 +53,17 @@ void UResourceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	//}
 
 
+}
+
+void UResourceComponent::AddHealth(float InValue)
+{
+	CurrentHealth += InValue;
+
+	if (CurrentHealth <= 0)
+	{
+		CurrentHealth = 0.0f;
+		OnHealthEmpty.Broadcast();
+	}
 }
 
 void UResourceComponent::AddStamina(float InValue)
