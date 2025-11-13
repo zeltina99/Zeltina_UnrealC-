@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "AnimNotify/AnimNotifyState_SectionJump.h"
 #include "ActionCharacter.generated.h"
 
 class UInputAction;
 //class USpringArmComponent;
 class UResourceComponent;
+//class UAnimNotifyState_SectionJump;
 
 UCLASS()
 class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter
@@ -33,12 +35,22 @@ public:
 
 	UResourceComponent* GetResourceComponent() { return Resource; }
 
+	inline void SetSectionJumpNotify(UAnimNotifyState_SectionJump* InSectionJumpNotify)
+	{
+		SectionJumpNotify = InSectionJumpNotify;
+		bComboReady = InSectionJumpNotify != nullptr;
+	}
+
 protected:
 	// 이동 방향 입력 받기
 	void OnMoveInput(const FInputActionValue& InValue);
 
 	// 구르기 입력 받기
 	void OnRollInput(const FInputActionValue& InValue);
+	
+	// 공격 입력 받기
+	void OnAttackInput(const FInputActionValue& InValue);
+	
 
 	// 달리기 모드 설정
 	void SetSprintMode();
@@ -48,7 +60,7 @@ protected:
 	void SetWalkMode();
 
 private:
-	
+	void SectionJumpForCombo();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
@@ -65,6 +77,8 @@ protected:
 	TObjectPtr<UInputAction> IA_Sprint = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Roll = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Attack = nullptr;
 
 	// 달리기 속도
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
@@ -76,6 +90,10 @@ protected:
 	// 구르기 몽타주
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Montage")
 	TObjectPtr<UAnimMontage> RollMontage = nullptr;
+
+	// 공격 몽타주
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Montage")
+	TObjectPtr<UAnimMontage> AttackMontage = nullptr;
 	
 	// 달리기 상태일 때 초당 스태미너 비용
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Resource")
@@ -85,6 +103,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Resource")
 	float RollStaminaCost = 50.0f;
 	
+	// 공격을 하기 위해 필요한 스태미너 비용
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Resource")
+	float AttackStaminaCost = 15.0f;
+
 	// 플레이어가 뛰고 있는 중인지 표시 해놓은 변수
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|State")
 	bool bIsSprint = false;
@@ -93,4 +115,10 @@ private:
 	UPROPERTY()
 	TWeakObjectPtr<UAnimInstance> AnimInstance = nullptr;
 
+	// 현재 진행중인 섹션점프 노티파이 스테이트
+	UPROPERTY()
+	TWeakObjectPtr<UAnimNotifyState_SectionJump> SectionJumpNotify = nullptr;
+
+	// 콤보가 가능한 상황인지 확인하기 위한 플래그
+	bool bComboReady = false;
 };
