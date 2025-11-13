@@ -18,6 +18,7 @@
 // - Event는 외부에서 바인딩만 가능
 // - Delegate는 외부에서 바인딩과 실행 모두 가능
 // 선언은 클래스 외부에서 선언
+// 옵저버 패턴에 사용된다.
 
 // 선언은 서로 조합이 가능함
 // DECLARE_DELEGATE
@@ -101,7 +102,7 @@ private:
 	};
 
 protected:
-	// 현재 체력
+	// 현재 체력(값을 설정할 때 SetCurrentHealth로 설정할 것)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Health")
 	float CurrentHealth = 100.0f;
 
@@ -109,7 +110,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Health")
 	float MaxHealth = 100.0f;
 	
-	// 현재 스태미너
+	// 현재 스태미너(값을 설정할 때 SetCurrentStamina로 설정할 것)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data|Stamina")
 	float CurrentStamina = 100.0f;
 

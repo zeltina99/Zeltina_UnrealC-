@@ -93,19 +93,23 @@ void UResourceComponent::StaminaAutoRegenCoolTimerSet()
 
 	//GetWorldTimerManager().ClearTimer(StaminaCoolTimer);	// 해서 나쁠 것은 없음(SetTimer할 때 이미 내부적으로 처리하고 있다)
 	timerManager.SetTimer(
-		StaminaAutoRegenCoolTimer,
+		StaminaAutoRegenCoolTimer,	// StaminaAutoRegenCoolTimer핸들에 연결될 타이머 세팅.(StaminaRegenCoolTime초 후에 한번만 람다식을 실행하는 타이머)
 		[this]() {
 			//bRegenStamina = true;
 			UE_LOG(LogTemp, Log, TEXT("리젠 타이머 실행"));
 
+			// StaminaRegenTickTimer핸들에 연결될 타이머 세팅
+			//		StaminaTickInterval초를 처음에 한번 기다리고, 
+			//		StaminaTickInterval시간간격으로
+			//		이 클래스의 StaminaRegenPerTick함수를 실행하는 타이머
 			UWorld* world = GetWorld();
 			FTimerManager& timerManager = world->GetTimerManager();
 			timerManager.SetTimer(
-				StaminaRegenTickTimer,
+				StaminaRegenTickTimer,	
 				this,
 				&UResourceComponent::StaminaRegenPerTick,
 				StaminaTickInterval,	// 실행 간격
-				true,	// 반복 재생 여부
+				true,					// 반복 재생 여부
 				StaminaTickInterval);	// 첫 딜레이
 		},
 		StaminaRegenCoolTime,
