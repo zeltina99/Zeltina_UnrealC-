@@ -169,7 +169,6 @@ void AActionCharacter::SpendRunStamina(float DeltaTime)
 	{
 		Resource->AddStamina(-SprintStaminaCost * DeltaTime);	// 스태미너 감소
 	}
+
+	//GetWorld()->GetFirstPlayerController()->GetHUD();
 }
-
-
-
