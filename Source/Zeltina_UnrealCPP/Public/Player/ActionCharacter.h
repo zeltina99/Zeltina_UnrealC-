@@ -41,6 +41,9 @@ public:
 		bComboReady = InSectionJumpNotify != nullptr;
 	}
 
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	float GetAttackWeaponPower() const;
+
 protected:
 	// 이동 방향 입력 받기
 	void OnMoveInput(const FInputActionValue& InValue);
@@ -73,6 +76,8 @@ protected:
 	TObjectPtr<class UCameraComponent> PlayerCamera = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Resource")
 	TObjectPtr<class UResourceComponent> Resource = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Status")
+	TObjectPtr<class UStatusComponent> Status = nullptr;
 
 	// 인풋 액션들
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
@@ -114,6 +119,8 @@ protected:
 	// 플레이어가 뛰고 있는 중인지 표시 해놓은 변수
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|State")
 	bool bIsSprint = false;
+
+	
 
 
 private:
