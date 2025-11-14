@@ -2,6 +2,7 @@
 
 
 #include "Player/ResourceComponent.h"
+#include "Player/StatusComponent.h"
 #include "GameFramework//Actor.h"
 
 // Sets default values for this component's properties
@@ -10,7 +11,6 @@ UResourceComponent::UResourceComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
 	// ...
 }
 
@@ -20,6 +20,17 @@ void UResourceComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!Status.IsValid())
+	{
+		if (AActor* OwnerActor = GetOwner())
+		{
+			Status = OwnerActor->FindComponentByClass<UStatusComponent>();
+		}
+	}
+
+	MaxHealth = Status->GetHealthValue();
+	MaxStamina = Status->GetStaminaValue();
+	
 	// 게임 진행 중에 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
 	SetCurrentHealth(MaxHealth);
 	SetCurrentStamina(MaxStamina);	// 시작할 때 최대치로 리셋
