@@ -11,6 +11,7 @@
 class UInputAction;
 //class USpringArmComponent;
 class UResourceComponent;
+class UStatusComponent;
 //class UAnimNotifyState_SectionJump;
 
 UCLASS()
@@ -37,6 +38,7 @@ public:
 	void OnAttackEnable(bool bEnable);
 
 	UResourceComponent* GetResourceComponent() { return Resource; }
+	UStatusComponent* GetStatusComponent() { return Status; }
 
 	inline void SetSectionJumpNotify(UAnimNotifyState_SectionJump* InSectionJumpNotify)
 	{
@@ -76,6 +78,8 @@ protected:
 	TObjectPtr<class UCameraComponent> PlayerCamera = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Resource")
 	TObjectPtr<class UResourceComponent> Resource = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Status")
+	TObjectPtr<class UStatusComponent> Status = nullptr;
 
 	// 인풋 액션들
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
