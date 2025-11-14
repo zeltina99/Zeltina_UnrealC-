@@ -11,14 +11,14 @@ void UAnimNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, U
     OwnerCharacter = Cast<AActionCharacter>(MeshComp->GetOwner());
     if (OwnerCharacter.IsValid())
     {
-        if (!Weapon.IsValid())
+        if (!Weapon.IsValid())  // 무기가 없다면
         {
-            TArray<AActor*> AttachedActors;
-            OwnerCharacter->GetAttachedActors(AttachedActors);
+            TArray<AActor*> AttachedActors; // 캐릭터에 붙어 있는 액터들을 담을 배열
+            OwnerCharacter->GetAttachedActors(AttachedActors);  // 현재 Attach된 모든 액터들을 배열에 채워 넣기
 
-            for (AActor* Actor : AttachedActors)
+            for (AActor* Actor : AttachedActors)    // 배열에 있는 액터들을 하나씩 검사
             {
-                if (AWeaponActor* FoundWeapon = Cast<AWeaponActor>(Actor))
+                if (AWeaponActor* FoundWeapon = Cast<AWeaponActor>(Actor))  // 액터가 WeaponActor타입이면 캐스팅 성공
                 {
                     Weapon = FoundWeapon;
                     break;
