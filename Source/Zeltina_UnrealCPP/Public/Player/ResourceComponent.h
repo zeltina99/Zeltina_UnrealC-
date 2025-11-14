@@ -43,6 +43,8 @@ public:
 	// Sets default values for this component's properties
 	UResourceComponent();
 
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -144,5 +146,8 @@ private:
 
 	FTimerHandle StaminaAutoRegenCoolTimer;	// 스태미너 자동 회복용 타이머 핸들
 	FTimerHandle StaminaRegenTickTimer;		// 스태미너 자동 회복시 틱별 타이머 핸들
+
+	UPROPERTY()
+	TWeakObjectPtr<class UStatusComponent> Status = nullptr;
 
 };
