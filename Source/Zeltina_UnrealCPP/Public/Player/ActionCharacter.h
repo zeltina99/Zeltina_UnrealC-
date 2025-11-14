@@ -64,6 +64,10 @@ protected:
 	UFUNCTION()
 	void SetWalkMode();
 
+public:
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void EquipWeaponFromWorld();
+
 private:
 	// 콤보용 섹션 점프 함수
 	void SectionJumpForCombo();
@@ -121,6 +125,10 @@ protected:
 	// 플레이어가 뛰고 있는 중인지 표시 해놓은 변수
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|State")
 	bool bIsSprint = false;
+
+	// BP_WeaponAxe를 에디터에서 지정할 클래스
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Weapon")
+	TSubclassOf<class AWeaponActor> WeaponClass;
 
 	// 플레이어가 현재 가지고 있는 무기
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Weapon")

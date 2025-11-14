@@ -9,6 +9,7 @@
 #include "Player/ResourceComponent.h"
 #include "Player/StatusComponent.h"
 #include "Weapon/WeaponActor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -154,6 +155,25 @@ void AActionCharacter::SetWalkMode()
 	//UE_LOG(LogTemp, Warning, TEXT("걷기 모드"));
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	bIsSprint = false;
+}
+
+void AActionCharacter::EquipWeaponFromWorld()
+{
+	UWorld* World = GetWorld();
+
+	AActor* FoundActor = UGameplayStatics::GetActorOfClass(World, WeaponClass);
+	AWeaponActor* Weapon = Cast<AWeaponActor>(FoundActor);
+
+	FAttachmentTransformRules AttachRule(EAttachmentRule::SnapToTarget, true);
+	Weapon->AttachToComponent(
+		GetMesh(),
+		AttachRule,
+		TEXT("hand_rSocket")      // 블루프린트에서 쓰던 소켓 이름
+	);
+
+	Weapon->SetWeaponOwner(this);
+
+	CurrentWeapon = Weapon;
 }
 
 void AActionCharacter::SectionJumpForCombo()
