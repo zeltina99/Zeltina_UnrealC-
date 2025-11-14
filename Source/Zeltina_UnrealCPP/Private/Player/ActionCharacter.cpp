@@ -48,7 +48,7 @@ void AActionCharacter::BeginPlay()
 	{
 		Resource->OnStaminaEmpty.AddDynamic(this, &AActionCharacter::SetWalkMode);
 	}
-
+	EquipWeaponFromWorld();
 	//게임 진행 중 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
 	bIsSprint = false;
 

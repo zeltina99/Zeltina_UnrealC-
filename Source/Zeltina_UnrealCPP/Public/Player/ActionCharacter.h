@@ -127,7 +127,7 @@ protected:
 	bool bIsSprint = false;
 
 	// BP_WeaponAxe를 에디터에서 지정할 클래스
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Weapon")
 	TSubclassOf<class AWeaponActor> WeaponClass;
 
 	// 플레이어가 현재 가지고 있는 무기
