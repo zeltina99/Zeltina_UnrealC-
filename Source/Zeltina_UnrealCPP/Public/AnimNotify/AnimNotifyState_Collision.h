@@ -4,14 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "AnimNotifyState_SectionJump.generated.h"
-
+#include "AnimNotifyState_Collision.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ZELTINA_UNREALCPP_API UAnimNotifyState_SectionJump : public UAnimNotifyState
+class ZELTINA_UNREALCPP_API UAnimNotifyState_Collision : public UAnimNotifyState
 {
 	GENERATED_BODY()
 public:
@@ -20,20 +19,19 @@ public:
 		UAnimSequenceBase* Animation,
 		float TotalDuration,
 		const FAnimNotifyEventReference& EventReference) override;
-	
+
 	virtual void NotifyEnd(
-		USkeletalMeshComponent* MeshComp, 
-		UAnimSequenceBase* Animation, 
+		USkeletalMeshComponent* MeshComp,
+		UAnimSequenceBase* Animation,
 		const FAnimNotifyEventReference& EventReference) override;
 
-	inline FName GetNextSectionName() const { return NextSectionName; }
-
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SectionJump")
-	FName NextSectionName;
+	UPROPERTY()
+	TWeakObjectPtr<class AWeaponActor> Weapon = nullptr;
+
 
 private:
 	UPROPERTY()
 	TWeakObjectPtr<class AActionCharacter> OwnerCharacter = nullptr;
-
+	
 };

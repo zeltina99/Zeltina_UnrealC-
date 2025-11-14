@@ -115,6 +115,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|State")
 	bool bIsSprint = false;
 
+
 private:
 	UPROPERTY()
 	TWeakObjectPtr<UAnimInstance> AnimInstance = nullptr;
@@ -125,4 +126,5 @@ private:
 
 	// 콤보가 가능한 상황인지 확인하기 위한 플래그
 	bool bComboReady = false;
+
 };
