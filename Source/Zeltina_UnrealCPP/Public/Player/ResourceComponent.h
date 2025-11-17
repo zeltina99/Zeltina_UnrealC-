@@ -73,6 +73,15 @@ public:
 	inline float GetCurrentStamina() const { return CurrentStamina; }
 	inline float GetMaxStamina() const { return MaxStamina; }
 
+	inline void SetMaxHealth(float InValue) {
+		MaxHealth = InValue;
+		OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+	};
+	inline void SetMaxtStamina(float InValue) {
+		MaxStamina = InValue;
+		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+	};
+
 	// 사망을 알리는 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Event")
 	FOnDie OnDie;
@@ -93,13 +102,15 @@ private:
 	void StaminaRegenPerTick();
 
 	inline void SetCurrentHealth(float InValue) {
-		CurrentHealth = InValue;
+		CurrentHealth = FMath::Clamp(InValue, 0 , MaxHealth);
 		OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
 	};
 	inline void SetCurrentStamina(float InValue) {
-		CurrentStamina = InValue;
+		CurrentStamina = FMath::Clamp(InValue, 0, MaxStamina);
 		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
 	};
+
+
 
 protected:
 	// 현재 체력(값을 설정할 때 SetCurrentHealth로 설정할 것)

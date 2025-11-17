@@ -57,9 +57,9 @@ void UResourceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UResourceComponent::AddHealth(float InValue)
 {
-	float health = CurrentHealth + InValue;
-	SetCurrentHealth(FMath::Clamp(health, 0, MaxHealth));
 	
+	SetCurrentHealth(CurrentHealth + InValue);
+
 	if (!IsAlive())
 	{
 		OnDie.Broadcast();
@@ -71,7 +71,7 @@ void UResourceComponent::AddStamina(float InValue)
 	//TimeSinceLastStaminaUse = 0;	// 시간을 직접 제어할 때 쓰던 코드(예시 확인용)
 
 	// 스태미너 변경 처리
-	SetCurrentStamina(FMath::Clamp(CurrentStamina += InValue, 0, MaxStamina));
+	SetCurrentStamina(CurrentStamina + InValue);
 
 	if (InValue < 0)
 	{
