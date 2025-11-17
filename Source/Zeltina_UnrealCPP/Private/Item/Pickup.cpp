@@ -93,7 +93,6 @@ void APickup::OnPickup_Implementation(AActor* Target)
 		InitialScale = GetActorScale3D();
 		BaseRoot->SetSimulatePhysics(false);
 		BaseRoot->SetCollisionProfileName(TEXT("NoCollision"));
-		//PickupOverlap->SetCollisionProfileName(TEXT("NoCollision"));
 
 		if (PickupTimeline)
 		{
