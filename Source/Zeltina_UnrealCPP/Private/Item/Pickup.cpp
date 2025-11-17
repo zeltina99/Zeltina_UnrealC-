@@ -65,8 +65,11 @@ void APickup::BeginPlay()
 			ScaleFinishDelegate.BindUFunction(this, FName("OnScaleFinish"));
 			PickupTimeline->SetTimelineFinishedFunc(ScaleFinishDelegate);
 		}
+
+		PickupTimeline->SetPlayRate(1/Duration);
 	}
 
+	bPickuped = false;
 }
 
 // Called every frame
@@ -80,9 +83,13 @@ void APickup::Tick(float DeltaTime)
 
 void APickup::OnPickup_Implementation(AActor* Target)
 {
-	PickupOwner = Target;
-	//UE_LOG(LogTemp, Log, TEXT("OnPickup_Implementation 실행"));
-	PickupTimeline->PlayFromStart();	// 타임라인 시작
+	if (!bPickuped)
+	{
+		//UE_LOG(LogTemp, Log, TEXT("OnPickup_Implementation 실행"));
+		bPickuped = true;
+		PickupOwner = Target;
+		PickupTimeline->PlayFromStart();	// 타임라인 시작
+	}
 	
 }
 
