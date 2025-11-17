@@ -83,12 +83,20 @@ void APickup::Tick(float DeltaTime)
 
 void APickup::OnPickup_Implementation(AActor* Target)
 {
-	if (!bPickuped)
+	if (!bPickuped && Target)
 	{
 		//UE_LOG(LogTemp, Log, TEXT("OnPickup_Implementation 실행"));
 		bPickuped = true;
 		PickupOwner = Target;
-		PickupTimeline->PlayFromStart();	// 타임라인 시작
+
+		StartLocation = GetActorLocation();
+		InitialScale = GetActorScale3D();
+
+		if (PickupTimeline)
+		{
+			PickupTimeline->PlayFromStart();	// 타임라인 시작
+		}
+
 	}
 	
 }
@@ -100,8 +108,19 @@ void APickup::OnPickupBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 
 void APickup::OnScaleUpdate(float Value)
 {
-	FVector NewScale = FVector::One() * Value;
+	const float Alpha = 1.0f - Value;
+
+	FVector NewScale = FMath::Lerp(InitialScale, FVector::ZeroVector, Alpha);
 	SetActorScale3D(NewScale);
+
+	if (PickupOwner.IsValid())
+	{
+		const FVector TargetLocation = PickupOwner->GetActorLocation() + PickupOffset;
+
+		const FVector NewLocation = FMath::Lerp(StartLocation, TargetLocation, Alpha);
+
+		SetActorLocation(NewLocation);
+	}
 }
 
 void APickup::OnScaleFinish()
