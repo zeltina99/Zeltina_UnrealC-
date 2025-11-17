@@ -64,6 +64,9 @@ protected:
 	UFUNCTION()
 	void SetWalkMode();
 
+	UFUNCTION()
+	void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
 private:
 	// 콤보용 섹션 점프 함수
 	void SectionJumpForCombo();

@@ -27,18 +27,32 @@ public:
 	// IPickupable의 구현
 	virtual void OnPickup_Implementation() override;
 
+private:
+	UFUNCTION()
+	void OnPickupBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherACtor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
 protected:
-	// 아이템 획득 처리용 오버랩 컬리젼
+	// 물리 적용용 루트
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<class USphereComponent> PickupOverlap = nullptr;
+	TObjectPtr<class USphereComponent> BaseRoot = nullptr;
 
 	// 아이템 외형
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> SkeletalMesh = nullptr;
+	TObjectPtr<USkeletalMeshComponent> Mesh = nullptr;
 
+	// 아이템 획득 처리용 오버랩 컬리젼
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class USphereComponent> PickupOverlap = nullptr;
+	
 	// 아이템 이펙트
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<class UNiagaraComponent> PickupEffect;
+	TObjectPtr<class UNiagaraComponent> Effect;
 
 	// 아이템 회전 속도
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")

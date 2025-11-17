@@ -9,6 +9,7 @@
 #include "Player/ResourceComponent.h"
 #include "Player/StatusComponent.h"
 #include "Weapon/WeaponActor.h"
+#include "Item/Pickupable.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -59,7 +60,9 @@ void AActionCharacter::BeginPlay()
 	//게임 진행 중 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
 	bIsSprint = false;
 
-	
+	// 캐릭터에 다른 액터가 오버랩되었을 때 실행하기 위한 바인딩
+	OnActorBeginOverlap.AddDynamic(this, &AActionCharacter::OnBeginOverlap);
+
 }
 
 // Called every frame
@@ -162,6 +165,17 @@ void AActionCharacter::SetWalkMode()
 	//UE_LOG(LogTemp, Warning, TEXT("걷기 모드"));
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	bIsSprint = false;
+}
+
+void AActionCharacter::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	UE_LOG(LogTemp, Log, TEXT("Char overlap : other is %s"), *OtherActor->GetName());
+
+	IPickupable* test = Cast<IPickupable>(OtherActor);
+	if (test)
+	{
+		IPickupable::Execute_OnPickup(OtherActor);
+	}
 }
 
 void AActionCharacter::SectionJumpForCombo()
