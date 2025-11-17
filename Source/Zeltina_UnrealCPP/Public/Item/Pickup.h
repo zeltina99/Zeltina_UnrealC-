@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Pickupable.h"
 #include "Pickup.generated.h"
 
 UCLASS()
-class ZELTINA_UNREALCPP_API APickup : public AActor
+class ZELTINA_UNREALCPP_API APickup : public AActor, public IPickupable
 {
 	GENERATED_BODY()
 	
@@ -22,5 +23,25 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// IPickupable의 구현
+	virtual void OnPickup_Implementation() override;
+
+protected:
+	// 아이템 획득 처리용 오버랩 컬리젼
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class USphereComponent> PickupOverlap = nullptr;
+
+	// 아이템 외형
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> SkeletalMesh = nullptr;
+
+	// 아이템 이펙트
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class UNiagaraComponent> PickupEffect;
+
+	// 아이템 회전 속도
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	float RotateSpeed = 180.0f;
 
 };
