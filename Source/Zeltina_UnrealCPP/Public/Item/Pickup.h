@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// IPickupable의 구현
-	virtual void OnPickup_Implementation() override;
+	virtual void OnPickup_Implementation(AActor* Target) override;
 
 private:
 	UFUNCTION()
