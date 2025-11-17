@@ -91,7 +91,7 @@ protected:
 
 	// 캐릭터 기준으로 어디쯤까지 날아갈지(살짝 위로 올라가게)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
-	FVector PickupOffset = FVector(0.0f, 0.0f, 80.0f);
+	FVector PickupOffset = FVector(0.0f, 0.0f, 40.0f);
 
 private:
 	// 이 픽업 아이템을 먹은 액터
