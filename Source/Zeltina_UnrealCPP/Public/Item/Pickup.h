@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Pickupable.h"
+#include "Common/CommonEnum.h"
 #include "Pickup.generated.h"
 
 UCLASS()
@@ -53,6 +54,10 @@ protected:
 	// 아이템 이펙트
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<class UNiagaraComponent> Effect;
+
+	// 이 픽업을 먹었을 때 얻을 아이템
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup")
+	EItemCode PickupItem = EItemCode::BasicWeapon;
 
 	// 아이템 회전 속도
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")

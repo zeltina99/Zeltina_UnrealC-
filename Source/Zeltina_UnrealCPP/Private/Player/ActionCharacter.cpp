@@ -98,7 +98,8 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AActionCharacter::AddItem_Implementation(EItemCode Code)
 {
-	UE_LOG(LogTemp, Log, TEXT("아이템 추가 : %d"), Code);
+	const UEnum* EnumPtr = StaticEnum<EItemCode>();
+	UE_LOG(LogTemp, Log, TEXT("아이템 추가 : %s"), *EnumPtr->GetDisplayNameTextByValue(static_cast<int8>(Code)).ToString());
 }
 
 void AActionCharacter::OnAttackEnable(bool bEnable)
@@ -174,7 +175,7 @@ void AActionCharacter::SetWalkMode()
 
 void AActionCharacter::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("Char overlap : other is %s"), *OtherActor->GetName());
+	//UE_LOG(LogTemp, Log, TEXT("Char overlap : other is %s"), *OtherActor->GetName());
 
 	// Cast를 이용한 인터페이스 사용
 	//IPickupable* test = Cast<IPickupable>(OtherActor);
