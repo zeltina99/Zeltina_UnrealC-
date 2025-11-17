@@ -81,6 +81,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float Duration = 0.5f;
 
+	// 아이템이 날아가기 시작할 때의 위치
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	FVector StartLocation = FVector::ZeroVector;
+
+	// 아이템의 원래 스케일
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	FVector InitialScale = FVector::OneVector;
+
+	// 캐릭터 기준으로 어디쯤까지 날아갈지(살짝 위로 올라가게)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	FVector PickupOffset = FVector(0.0f, 0.0f, 80.0f);
+
 private:
 	// 이 픽업 아이템을 먹은 액터
 	TWeakObjectPtr<AActor> PickupOwner = nullptr;
