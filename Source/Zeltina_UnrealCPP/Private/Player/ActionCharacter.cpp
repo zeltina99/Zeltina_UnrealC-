@@ -217,7 +217,7 @@ void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterru
 		GetWorld()->SpawnActor<AActor>(
 			*usedClass, 
 			GetActorLocation() + GetActorForwardVector() * 100.0f,
-			FRotator());			// FRotator()를 캐릭터의 forward 방향을 바라보는 회전으로 대체하기
+			GetActorForwardVector().Rotation());			// FRotator()를 캐릭터의 forward 방향을 바라보는 회전으로 대체하기
 	}
 }
 
