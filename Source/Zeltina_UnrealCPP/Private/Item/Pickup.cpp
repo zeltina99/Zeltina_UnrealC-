@@ -106,7 +106,7 @@ void APickup::OnTimelineUpdate(float Value)
 {
 	// 타임라인 정규화 된 진행 시간(0~1)
 	float currentTime = PickupTimeline->GetPlaybackPosition();
-	UE_LOG(LogTemp, Log, TEXT("Timeline : %.2f"), currentTime);
+	//UE_LOG(LogTemp, Log, TEXT("Timeline : %.2f"), currentTime);
 
 	// 커브의 현재 값 받아오기
 	float distanceValue = Value;
