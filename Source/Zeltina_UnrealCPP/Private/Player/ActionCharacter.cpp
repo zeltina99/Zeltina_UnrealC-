@@ -9,7 +9,9 @@
 #include "Player/ResourceComponent.h"
 #include "Player/StatusComponent.h"
 #include "Weapon/WeaponActor.h"
+#include "Weapon/UsedWeapon.h"
 #include "Item/Pickupable.h"
+#include "Item/Pickup.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -26,6 +28,9 @@ AActionCharacter::AActionCharacter()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCamera->SetupAttachment(SpringArm);
 	PlayerCamera->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
+
+	DropLocation = CreateDefaultSubobject<USceneComponent>(TEXT("DropLocation"));
+	DropLocation->SetupAttachment(RootComponent);
 
 	Resource = CreateDefaultSubobject<UResourceComponent>(TEXT("PlayerResource"));
 	Status = CreateDefaultSubobject<UStatusComponent>(TEXT("PlayerStatus"));
@@ -111,6 +116,17 @@ void AActionCharacter::OnAttackEnable(bool bEnable)
 	{
 		CurrentWeapon->AttackEnable(bEnable);
 	}
+}
+
+void AActionCharacter::TestDropUsedWeapon()
+{
+	DropUsedWeapon();
+}
+
+void AActionCharacter::TestDropCurrentWeapon()
+{
+	UE_LOG(LogTemp, Log, TEXT("TestDropCurrentWeapon"));
+	DropCurrentWeapon();
 }
 
 void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
@@ -211,13 +227,7 @@ void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterru
 	//UE_LOG(LogTemp, Log, TEXT("공격 몽타주가 끝남"));
 	if (CurrentWeapon.IsValid() && !CurrentWeapon->CanAttack())	// CurrentWeapon이 공격 할 수 없으면(= 사용횟수가 안 남았다.)
 	{
-		UE_LOG(LogTemp, Log, TEXT("다 쓴 무기 버리기"));
-		TSubclassOf<AActor>* usedClass = UsedWeapon.Find(CurrentWeapon->GetWeaponID());
-
-		GetWorld()->SpawnActor<AActor>(
-			*usedClass, 
-			GetActorLocation() + GetActorForwardVector() * 100.0f,
-			GetActorForwardVector().Rotation());			// FRotator()를 캐릭터의 forward 방향을 바라보는 회전으로 대체하기
+		DropUsedWeapon();
 	}
 }
 
@@ -251,4 +261,37 @@ void AActionCharacter::SpendRunStamina(float DeltaTime)
 	}
 
 	//GetWorld()->GetFirstPlayerController()->GetHUD();
+}
+
+void AActionCharacter::DropUsedWeapon()
+{
+	UE_LOG(LogTemp, Log, TEXT("다 쓴 무기 버리기"));
+	if(CurrentWeapon.IsValid())
+	{
+		if (TSubclassOf<AUsedWeapon>* usedClass = UsedWeapon.Find(CurrentWeapon->GetWeaponID()))
+		{
+			GetWorld()->SpawnActor<AActor>(
+				*usedClass,
+				DropLocation->GetComponentLocation(),
+				GetActorRotation());
+		}
+	}
+}
+
+void AActionCharacter::DropCurrentWeapon()
+{
+	if (CurrentWeapon.IsValid() && CurrentWeapon->GetWeaponID() != EItemCode::BasicWeapon)
+	{
+		if (TSubclassOf<APickup>* pickupClass = PickupWeapons.Find(CurrentWeapon->GetWeaponID()))
+		{
+			APickup* pickup = GetWorld()->SpawnActor<APickup>(
+				*pickupClass,
+				DropLocation->GetComponentLocation(),
+				GetActorRotation()
+			);
+			
+			FVector velocity = (GetActorForwardVector() + GetActorUpVector()) * 300.0f;
+			pickup->AddImpulse(velocity);		
+		}		
+	}
 }
