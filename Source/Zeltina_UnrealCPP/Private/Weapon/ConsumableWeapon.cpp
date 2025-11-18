@@ -3,3 +3,11 @@
 
 #include "Weapon/ConsumableWeapon.h"
 
+void AConsumableWeapon::OnAttack()
+{
+	CurrentUseCount--;
+	if (CurrentUseCount <= 0)
+	{
+		OnWeaponUseEnded.Broadcast();
+	}
+}
