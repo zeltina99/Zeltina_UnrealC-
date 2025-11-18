@@ -32,13 +32,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void OnAttack() {};
 
+	// 무기를 획득했을 때 실행되는 함수
 	UFUNCTION(BlueprintCallable)
 	virtual void OnWeaponPickuped(AActionCharacter* InOwner);
 
 	virtual void PostInitializeComponents() override;
-
-	UFUNCTION(BlueprintCallable)
-	inline void SetWeaponOwner(AActionCharacter* InOwner) { WeaponOwner = InOwner; }
 
 
 protected:
