@@ -18,6 +18,7 @@ class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor
 public:
 	virtual void OnAttack() override;
 	virtual void OnWeaponPickuped(AActionCharacter* InOwner) override;
+	virtual bool CanAttack() override { return RemainingUseCount > 0; }
 
 protected:
 	// 최대 사용회수
@@ -28,7 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int32 RemainingUseCount = 10;
 
-	UPROPERTY(BlueprintAssignable, Category = "Weapon")
+	UPROPERTY(BlueprintAssignable,BlueprintReadWrite, Category = "Weapon")
 	FOnWeaponUseEnded OnWeaponUseEnded;
 	
 };
