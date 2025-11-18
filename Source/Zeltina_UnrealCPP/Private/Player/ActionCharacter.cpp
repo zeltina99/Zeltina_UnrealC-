@@ -214,14 +214,10 @@ void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterru
 		UE_LOG(LogTemp, Log, TEXT("다 쓴 무기 버리기"));
 		TSubclassOf<AActor>* usedClass = UsedWeapon.Find(CurrentWeapon->GetWeaponID());
 
-		AActor* used = GetWorld()->SpawnActor<AActor>(
+		GetWorld()->SpawnActor<AActor>(
 			*usedClass, 
 			GetActorLocation() + GetActorForwardVector() * 100.0f,
-			FRotator());
-
-		UPrimitiveComponent* primitive = used->FindComponentByClass<UPrimitiveComponent>();
-		primitive->AddImpulse((GetActorForwardVector() + GetActorUpVector()) * 300.0f, NAME_None, true);
-		
+			FRotator());			// FRotator()를 캐릭터의 forward 방향을 바라보는 회전으로 대체하기
 	}
 }
 
