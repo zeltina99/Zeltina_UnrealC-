@@ -262,6 +262,7 @@ void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterru
 	{
 		//DropUsedWeapon();		
 		DropWeapon(CurrentWeapon->GetWeaponID());
+		EquipWeapon(EItemCode::BasicWeapon);
 	}
 }
 

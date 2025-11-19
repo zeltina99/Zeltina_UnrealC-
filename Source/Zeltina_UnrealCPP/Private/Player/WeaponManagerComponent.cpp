@@ -50,7 +50,7 @@ void UWeaponManagerComponent::BeginPlay()
 	SpawnWeaponInstances();
 
 	//WeaponInstances[EItemCode::BasicWeapon];
-	OwnerPlayer->EquipWeapon(EItemCode::Sword);
+	OwnerPlayer->EquipWeapon(EItemCode::BasicWeapon);	// 시작무기 설정
 	
 }
 

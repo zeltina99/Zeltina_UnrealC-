@@ -29,7 +29,7 @@ public:
 
 	// 사용 다한 무기 클래스(바닥에 버리는 용도, 장식용)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Actor Classes")
-	TSubclassOf<AUsedWeapon> UsedWaeponClass;
+	TSubclassOf<AUsedWeapon> UsedWeaponClass;
 
 	// 픽업 가능한 액터(바닥에 버리는 용도, 무기 획득용)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Actor Classes")
@@ -38,6 +38,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapon")
 	bool IsValid() const
 	{
-		return EquippedWeaponClass != nullptr && UsedWaeponClass != nullptr && PickupWeaponClass != nullptr;
+		return EquippedWeaponClass != nullptr && UsedWeaponClass != nullptr && PickupWeaponClass != nullptr;
 	}
 };
