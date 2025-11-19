@@ -17,7 +17,7 @@ class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor
 
 public:
 	virtual void OnAttack() override;
-	virtual void OnWeaponPickuped(AActionCharacter* InOwner) override;
+	virtual void OnWeaponPickuped() override;
 	virtual bool CanAttack() override { return RemainingUseCount > 0; }
 
 protected:

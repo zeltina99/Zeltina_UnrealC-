@@ -55,6 +55,10 @@ void AWeaponActor::OnWeaponBeginOverlap(AActor* OverlappedActor, AActor* OtherAc
 	UGameplayStatics::ApplyDamage(OtherActor, finalDamage, instigator, this, DamageType);
 }
 
+void AWeaponActor::WeaponActivate(bool bActivate)
+{
+}
+
 void AWeaponActor::AttackEnable(bool bEnable)
 {
 	if (bEnable)
@@ -67,9 +71,8 @@ void AWeaponActor::AttackEnable(bool bEnable)
 	}
 }
 
-void AWeaponActor::OnWeaponPickuped(AActionCharacter* InOwner)
+void AWeaponActor::OnWeaponPickuped()
 {
-	WeaponOwner = InOwner;
 }
 
 void AWeaponActor::PostInitializeComponents()

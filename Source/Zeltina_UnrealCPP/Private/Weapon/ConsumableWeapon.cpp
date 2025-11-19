@@ -12,9 +12,9 @@ void AConsumableWeapon::OnAttack()
 	}
 }
 
-void AConsumableWeapon::OnWeaponPickuped(AActionCharacter* InOwner)
+void AConsumableWeapon::OnWeaponPickuped()
 {
-	Super::OnWeaponPickuped(InOwner);
+	Super::OnWeaponPickuped();
 
 	RemainingUseCount = MaxUseCount;
 }
