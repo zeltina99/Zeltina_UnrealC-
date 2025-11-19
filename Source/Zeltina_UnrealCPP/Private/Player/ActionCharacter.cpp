@@ -127,6 +127,10 @@ void AActionCharacter::EquipWeapon(EItemCode WeaponCode)
 	CurrentWeapon->WeaponActivate(true);
 }
 
+void AActionCharacter::DropWeapon(EItemCode WeaponCode)
+{
+}
+
 void AActionCharacter::OnAttackEnable(bool bEnable)
 {
 	if (CurrentWeapon.IsValid())

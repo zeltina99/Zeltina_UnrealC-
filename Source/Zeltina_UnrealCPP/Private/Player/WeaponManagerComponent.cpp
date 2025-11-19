@@ -5,6 +5,7 @@
 #include "Weapon/WeaponActor.h"
 #include "Weapon/UsedWeapon.h"
 #include "Item/Pickup.h"
+#include "Item/Consumable.h"
 // Sets default values for this component's properties
 UWeaponManagerComponent::UWeaponManagerComponent()
 {
@@ -93,6 +94,11 @@ void UWeaponManagerComponent::SpawnWeaponInstances()
 				FName("root"));						// 월드아웃라이너에서 확인하기 위해 플레이어 아래에 붙임
 			weapon->SetWeaponOwner(OwnerPlayer.Get());	// 무기의 오너 설정
 			weapon->WeaponActivate(false);			// 무기 비활성화
+
+			if (IConsumable* consumableWeapon = Cast<IConsumable>(weapon))
+			{
+				consumableWeapon->GetOnConsumeDelegate().AddDynamic(OwnerPlayer, &AActionCharacter::DropWeapon);
+			}
 
 			WeaponInstances.Add(pair.Key, weapon);	// 인스턴스 맵에 추가
 		}

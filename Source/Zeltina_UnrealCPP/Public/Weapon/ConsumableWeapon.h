@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Weapon/WeaponActor.h"
+#include "Item/Consumable.h"
 #include "ConsumableWeapon.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponUseEnded);
@@ -11,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponUseEnded);
  * 
  */
 UCLASS()
-class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor
+class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor, public IConsumable
 {
 	GENERATED_BODY()
 
@@ -19,6 +20,8 @@ public:
 	virtual void OnAttack() override;
 	virtual void OnWeaponPickuped() override;
 	virtual bool CanAttack() override { return RemainingUseCount > 0; }
+
+	virtual FOnConsume& GetOnConsumeDelegate() override { return OnWeaponUseEnded; }
 
 protected:
 	// 최대 사용회수

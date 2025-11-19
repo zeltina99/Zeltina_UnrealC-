@@ -8,7 +8,7 @@ void AConsumableWeapon::OnAttack()
 	RemainingUseCount--;
 	if (RemainingUseCount <= 0)
 	{
-		OnWeaponUseEnded.Broadcast();
+		OnWeaponUseEnded.Broadcast(WeaponID);
 	}
 }
 

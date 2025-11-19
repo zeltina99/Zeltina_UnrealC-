@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "IConsumable.generated.h"
+#include "Common/CommonEnum.h"
+#include "Consumable.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConsume, EItemCode, Consumed);
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UIConsumable : public UInterface
+class UConsumable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,10 +19,13 @@ class UIConsumable : public UInterface
 /**
  * 
  */
-class ZELTINA_UNREALCPP_API IIConsumable
+class ZELTINA_UNREALCPP_API IConsumable
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
+	virtual FOnConsume& GetOnConsumeDelegate();
+
 };

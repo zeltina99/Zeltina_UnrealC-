@@ -42,6 +42,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void EquipWeapon(EItemCode WeaponCode);
 
+	// 다 쓴 무기를 버리는 함수
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void DropWeapon(EItemCode WeaponCode);
+
 	// 노티파이가 공격을 가능하게 만들라는 신호가 왔을 때 실행될 함수
 	void OnAttackEnable(bool bEnable);
 
