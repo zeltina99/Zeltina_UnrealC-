@@ -65,10 +65,7 @@ void AActionCharacter::BeginPlay()
 		AnimInstance = GetMesh()->GetAnimInstance();	// ABP 객체 가져오기
 		
 	}
-	
-	
-
-	
+		
 	//게임 진행 중 자주 변경되는 값은 시작 시점에서 리셋을 해주는 것이 좋다.
 	bIsSprint = false;
 
