@@ -26,6 +26,6 @@ class ZELTINA_UNREALCPP_API IConsumable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual FOnConsume& GetOnConsumeDelegate();
+	virtual FOnConsume& GetOnConsumeDelegate() = 0;
 
 };

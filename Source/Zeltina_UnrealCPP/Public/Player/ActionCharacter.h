@@ -98,9 +98,6 @@ private:
 	// 달리기용 스태미너 소비 함수
 	void SpendRunStamina(float DeltaTime);
 
-	// 사용 다한 무기를 버리는 함수
-	void DropUsedWeapon();
-
 	// 사용 중이던 무기를 버리는 함수
 	void DropCurrentWeapon();
 

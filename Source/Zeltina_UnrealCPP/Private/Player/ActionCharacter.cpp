@@ -32,6 +32,7 @@ AActionCharacter::AActionCharacter()
 
 	DropLocation = CreateDefaultSubobject<USceneComponent>(TEXT("DropLocation"));
 	DropLocation->SetupAttachment(RootComponent);
+	DropLocation->SetRelativeLocation(FVector(80.0f, 30.0f, 0.0f));
 
 	Resource = CreateDefaultSubobject<UResourceComponent>(TEXT("PlayerResource"));
 	Status = CreateDefaultSubobject<UStatusComponent>(TEXT("PlayerStatus"));
@@ -129,6 +130,14 @@ void AActionCharacter::EquipWeapon(EItemCode WeaponCode)
 
 void AActionCharacter::DropWeapon(EItemCode WeaponCode)
 {
+	UE_LOG(LogTemp, Log, TEXT("다쓴 무기 버리기"));
+	if (TSubclassOf<AUsedWeapon> usedClass = WeaponManager->GetUsedWeaponClass(WeaponCode))
+	{
+		GetWorld()->SpawnActor<AActor>(
+			usedClass,
+			DropLocation->GetComponentLocation(),
+			GetActorRotation());
+	}
 }
 
 void AActionCharacter::OnAttackEnable(bool bEnable)
@@ -141,7 +150,10 @@ void AActionCharacter::OnAttackEnable(bool bEnable)
 
 void AActionCharacter::TestDropUsedWeapon()
 {
-	DropUsedWeapon();
+	if(CurrentWeapon.IsValid())
+	{
+		DropWeapon(CurrentWeapon->GetWeaponID());
+	}
 }
 
 void AActionCharacter::TestDropCurrentWeapon()
@@ -183,19 +195,19 @@ void AActionCharacter::OnRollInput(const FInputActionValue& InValue)
 
 void AActionCharacter::OnAttackInput(const FInputActionValue& InValue)
 {
-	// 애님 인스턴스가 있고 스태미너도 충분하고, 현재 무기가 공격을 할 수 있어야 한다.
+	// 애님 인스턴스가 있고, 스태미너도 충분하고, 현재 무기가 공격을 할 수 있어야 한다.
 	if (AnimInstance.IsValid() && Resource->HasEnoughStamina(AttackStaminaCost)
-		&& (CurrentWeapon.IsValid() && CurrentWeapon->CanAttack()))	
+		&& (CurrentWeapon.IsValid() && CurrentWeapon->CanAttack()))
 	{
-		if (!AnimInstance->IsAnyMontagePlaying())	//	몽타주가 재생 중이 아닐 때
+		if (!AnimInstance->IsAnyMontagePlaying())	// 몽타주가 재생 중이 아닐 때
 		{
-			// 첫번째 공격
+			// 첫번째 공격			
 			PlayAnimMontage(AttackMontage);	// 몽타주 재생
-			
+
 			FOnMontageEnded onMontageEnded;
 			onMontageEnded.BindUObject(this, &AActionCharacter::OnAttackMontageEnded);
 			AnimInstance->Montage_SetEndDelegate(onMontageEnded);	// 몽타주가 끝났을 때 델리게이트 발송(몽타주 플레이 이후에 등록해야 함)
-			
+
 			Resource->AddStamina(-AttackStaminaCost);	// 스태미너 감소
 			if (CurrentWeapon.IsValid())
 			{
@@ -204,7 +216,7 @@ void AActionCharacter::OnAttackInput(const FInputActionValue& InValue)
 		}
 		else if (AnimInstance->GetCurrentActiveMontage() == AttackMontage)	// 몽타주가 재생 중인데, AttackMontage가 재생중이면
 		{
-			// 콤보 공격 시도
+			// 콤보 공격
 			SectionJumpForCombo();
 		}
 	}
@@ -245,10 +257,11 @@ void AActionCharacter::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActo
 
 void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	//UE_LOG(LogTemp, Log, TEXT("공격 몽타주가 끝남"));
-	if (CurrentWeapon.IsValid() && !CurrentWeapon->CanAttack())	// CurrentWeapon이 공격 할 수 없으면(= 사용횟수가 안 남았다.)
+	// UE_LOG(LogTemp, Log, TEXT("공격 몽타주가 끝남"));
+	if (CurrentWeapon.IsValid() && !CurrentWeapon->CanAttack())	// CurrentWeapon이 공격할 수 없으면(=사용회수가 안남았다)
 	{
-		DropUsedWeapon();
+		//DropUsedWeapon();		
+		DropWeapon(CurrentWeapon->GetWeaponID());
 	}
 }
 
@@ -284,21 +297,6 @@ void AActionCharacter::SpendRunStamina(float DeltaTime)
 	//GetWorld()->GetFirstPlayerController()->GetHUD();
 }
 
-void AActionCharacter::DropUsedWeapon()
-{
-	UE_LOG(LogTemp, Log, TEXT("다 쓴 무기 버리기"));
-	if(CurrentWeapon.IsValid())
-	{
-		if (TSubclassOf<AUsedWeapon>* usedClass = UsedWeapon.Find(CurrentWeapon->GetWeaponID()))
-		{
-			GetWorld()->SpawnActor<AActor>(
-				*usedClass,
-				DropLocation->GetComponentLocation(),
-				GetActorRotation());
-		}
-	}
-}
-
 void AActionCharacter::DropCurrentWeapon()
 {
 	if (CurrentWeapon.IsValid() && CurrentWeapon->GetWeaponID() != EItemCode::BasicWeapon)
@@ -310,9 +308,9 @@ void AActionCharacter::DropCurrentWeapon()
 				DropLocation->GetComponentLocation(),
 				GetActorRotation()
 			);
-			
+
 			FVector velocity = (GetActorForwardVector() + GetActorUpVector()) * 300.0f;
-			pickup->AddImpulse(velocity);		
-		}		
+			pickup->AddImpulse(velocity);
+		}
 	}
 }

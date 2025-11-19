@@ -78,7 +78,7 @@ void AWeaponActor::WeaponActivate(bool bActivate)
 			WeaponOwner->GetMesh(),
 			FAttachmentTransformRules::SnapToTargetNotIncludingScale,
 			TEXT("root"));
-		SetActorRelativeLocation(FVector(0.0f, 0.0f, -10000.0f));	// 안 보이는 곳에 배치
+		SetActorRelativeLocation(FVector(0.0f, 0.0f, -10000.0f));	// 안보이는 곳에 배치
 		//SetActorEnableCollision(false);
 		//SetActorTickEnabled(false);
 	}

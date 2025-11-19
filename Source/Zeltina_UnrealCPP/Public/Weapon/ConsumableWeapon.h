@@ -12,16 +12,16 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponUseEnded);
  * 
  */
 UCLASS()
-class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor, public IConsumable
+class ZELTINA_UNREALCPP_API AConsumableWeapon : public AWeaponActor
 {
 	GENERATED_BODY()
-
 public:
 	virtual void OnAttack() override;
 	virtual void OnWeaponPickuped() override;
+
 	virtual bool CanAttack() override { return RemainingUseCount > 0; }
 
-	virtual FOnConsume& GetOnConsumeDelegate() override { return OnWeaponUseEnded; }
+	//virtual FOnConsume& GetOnConsumeDelegate() { return OnWeaponUseEnded; };
 
 protected:
 	// 최대 사용회수
@@ -32,7 +32,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int32 RemainingUseCount = 10;
 
-	UPROPERTY(BlueprintAssignable,BlueprintReadWrite, Category = "Weapon")
-	FOnWeaponUseEnded OnWeaponUseEnded;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Category = "Weapon")
+	FOnConsume OnWeaponUseEnded;
 	
 };
