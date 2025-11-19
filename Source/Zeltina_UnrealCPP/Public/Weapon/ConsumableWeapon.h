@@ -23,6 +23,9 @@ public:
 
 	//virtual FOnConsume& GetOnConsumeDelegate() { return OnWeaponUseEnded; };
 
+protected:
+	virtual void BeginPlay() override;
+	virtual void OnWeaponActivate() override;
 
 protected:
 	// 최대 사용회수
