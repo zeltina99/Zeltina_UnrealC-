@@ -63,6 +63,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup")
 	EItemCode PickupItem = EItemCode::BasicWeapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup")
+	int32 PickupCount = 1;
+
 	// 스폰 후에 먹을 수 있기 될 때까지의 시간
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float PickupableTime = 3.0f;

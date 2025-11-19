@@ -119,6 +119,14 @@ void AActionCharacter::EquipWeapon(EItemCode WeaponCode)
 {
 	if (CurrentWeapon.IsValid())
 	{
+		// 장비하고 있던 무기가 기본 무기가 아니면
+		if (CurrentWeapon->GetWeaponID() != EItemCode::BasicWeapon	// 장비하고 있던 무기가 Consumable이고
+			&& CurrentWeapon->GetWeaponID() != WeaponCode 			// 새로 장비할 무기와 다른 종류고
+			&& CurrentWeapon->CanAttack())							// 장비하고 있던 무기에 횟수가 남아있는 상황이면
+		{
+			DropCurrentWeapon(CurrentWeapon->GetWeaponID());
+		}
+
 		// 장비하고 있던 무기는 해제
 		CurrentWeapon->WeaponActivate(false);
 	}
@@ -159,7 +167,7 @@ void AActionCharacter::TestDropUsedWeapon()
 void AActionCharacter::TestDropCurrentWeapon()
 {
 	UE_LOG(LogTemp, Log, TEXT("TestDropCurrentWeapon"));
-	DropCurrentWeapon();
+	DropCurrentWeapon(CurrentWeapon->GetWeaponID());
 }
 
 void AActionCharacter::OnMoveInput(const FInputActionValue& InValue)
@@ -298,11 +306,11 @@ void AActionCharacter::SpendRunStamina(float DeltaTime)
 	//GetWorld()->GetFirstPlayerController()->GetHUD();
 }
 
-void AActionCharacter::DropCurrentWeapon()
+void AActionCharacter::DropCurrentWeapon(EItemCode WeaponCode)
 {
 	if (CurrentWeapon.IsValid() && CurrentWeapon->GetWeaponID() != EItemCode::BasicWeapon)
 	{
-		if (TSubclassOf<APickup>* pickupClass = PickupWeapons.Find(CurrentWeapon->GetWeaponID()))
+		if (TSubclassOf<APickup> pickupClass = WeaponManager->GetPickupWeaponClass(WeaponCode))
 		{
 			APickup* pickup = GetWorld()->SpawnActor<APickup>(
 				*pickupClass,

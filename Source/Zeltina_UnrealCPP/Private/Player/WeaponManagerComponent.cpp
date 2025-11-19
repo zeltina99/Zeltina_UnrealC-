@@ -38,6 +38,12 @@ TSubclassOf<AUsedWeapon> UWeaponManagerComponent::GetUsedWeaponClass(EItemCode I
 	return dataAsset->UsedWeaponClass;
 }
 
+TSubclassOf<APickup> UWeaponManagerComponent::GetPickupWeaponClass(EItemCode InType) const
+{
+	const UWeaponDataAsset* dataAsset = *WeaponDatabase.Find(InType);
+	return dataAsset->PickupWeaponClass;
+}
+
 
 // Called when the game starts
 void UWeaponManagerComponent::BeginPlay()
