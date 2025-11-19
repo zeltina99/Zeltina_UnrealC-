@@ -107,6 +107,8 @@ protected:
 	TObjectPtr<class UStatusComponent> Status = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Weapon")
 	TObjectPtr<USceneComponent> DropLocation = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Weapon")
+	TObjectPtr<class UWeaponManagerComponent> WeaponManager = nullptr;
 
 	// 인풋 액션들
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
