@@ -37,12 +37,13 @@ void UWeaponManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OwnerPlayer = Cast<AActionCharacter>(GetOwner());
+
 	ValidateWeponDatabase();
 	SpawnWeaponInstances();
 
 	//WeaponInstances[EItemCode::BasicWeapon];
-	AWeaponActor* basicWeapon = GetEquippedWeapon(EItemCode::BasicWeapon);
-	basicWeapon->OnWeaponPickuped();
+	OwnerPlayer->EquipWeapon(EItemCode::BasicWeapon);
 	
 }
 
@@ -76,24 +77,25 @@ void UWeaponManagerComponent::SpawnWeaponInstances()
 {
 	WeaponInstances.Empty(WeaponDatabase.Num());	// WeaponInstances의 할당 크기를 필요한 만큼만 설정
 
-	AActionCharacter* player = Cast<AActionCharacter>(GetOwner());
-
-	UWorld* world = GetWorld();
-	FVector defaultLocation = FVector(0.0f, 0.0f, -10000.0f);
-	for (const auto& pair : WeaponDatabase)
+	if(OwnerPlayer.IsValid())
 	{
-		AWeaponActor* weapon = world->SpawnActor<AWeaponActor>(
-			pair.Value->EquippedWeaponClass,
-			defaultLocation,
-			FRotator::ZeroRotator);	// 일단 defaultLocation위치에 생성
-		weapon->AttachToComponent(
-			player->GetMesh(),
-			FAttachmentTransformRules::KeepWorldTransform,
-			FName("root"));			// 월드아웃라이너에서 확인하기 위해 플레이어 아래에 붙임
-		weapon->SetWeaponOwner(player);	// 무기의 오너 설정
-		weapon->WeaponActivate(false);	// 무기 비활성화
+		UWorld* world = GetWorld();
+		FVector defaultLocation = FVector(0.0f, 0.0f, -10000.0f);
+		for (const auto& pair : WeaponDatabase)
+		{
+			AWeaponActor* weapon = world->SpawnActor<AWeaponActor>(
+				pair.Value->EquippedWeaponClass,
+				defaultLocation,
+				FRotator::ZeroRotator);	// 일단 defaultLocation위치에 생성
+			weapon->AttachToComponent(
+				OwnerPlayer->GetMesh(),
+				FAttachmentTransformRules::KeepWorldTransform,
+				FName("root"));						// 월드아웃라이너에서 확인하기 위해 플레이어 아래에 붙임
+			weapon->SetWeaponOwner(OwnerPlayer.Get());	// 무기의 오너 설정
+			weapon->WeaponActivate(false);			// 무기 비활성화
 
-		WeaponInstances.Add(pair.Key, weapon);	// 인스턴스 맵에 추가
+			WeaponInstances.Add(pair.Key, weapon);	// 인스턴스 맵에 추가
+		}
 	}
 }
 

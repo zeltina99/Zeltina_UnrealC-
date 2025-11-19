@@ -42,5 +42,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Instance")
 	TMap<EItemCode, TObjectPtr<AWeaponActor>> WeaponInstances;
 
+private:
+	UPROPERTY()
+	TWeakObjectPtr<class AActionCharacter> OwnerPlayer = nullptr;
 
 };

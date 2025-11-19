@@ -96,7 +96,7 @@ void APickup::OnPickup_Implementation(AActor* Target)
 		PickupOwner = Target;
 		PickupStartLocation = Mesh->GetRelativeLocation() + GetActorLocation();	// Mesh의 월드 위치
 		SetActorEnableCollision(false);		// 이 액터와 액터가 포함하는 모든 컴포넌트의 충돌 정지
-		BaseRoot->SetSimulatePhysics(false);
+		BaseRoot->SetSimulatePhysics(false);// 바닥에 가라 앉는 거 방지
 		PickupTimeline->PlayFromStart();	// 타임라인 시작
 	}
 	
