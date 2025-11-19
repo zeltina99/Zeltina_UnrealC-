@@ -31,6 +31,8 @@ public:
 	// 픽업에 힘을 가해서 날리는 함수
 	void AddImpulse(FVector& Velocity);
 
+	inline void SetPickupCount(int32 InCount) { PickupCount = InCount; }
+
 private:
 	UFUNCTION()
 	void OnTimelineUpdate(float Value);

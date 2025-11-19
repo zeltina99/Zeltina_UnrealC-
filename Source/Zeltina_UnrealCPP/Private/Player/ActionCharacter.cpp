@@ -11,6 +11,7 @@
 #include "Player/WeaponManagerComponent.h"
 #include "Weapon/WeaponActor.h"
 #include "Weapon/UsedWeapon.h"
+#include "Weapon/ConsumableWeapon.h"
 #include "Item/Pickupable.h"
 #include "Item/Pickup.h"
 
@@ -107,12 +108,13 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
-void AActionCharacter::AddItem_Implementation(EItemCode Code)
+void AActionCharacter::AddItem_Implementation(EItemCode Code, int32 Count)
 {
 	//const UEnum* EnumPtr = StaticEnum<EItemCode>();
 	//UE_LOG(LogTemp, Log, TEXT("아이템 추가 : %s"), *EnumPtr->GetDisplayNameTextByValue(static_cast<int8>(Code)).ToString());
 
 	EquipWeapon(Code);
+	CurrentWeapon->OnWeaponPickuped(Count);
 }
 
 void AActionCharacter::EquipWeapon(EItemCode WeaponCode)
@@ -317,6 +319,10 @@ void AActionCharacter::DropCurrentWeapon(EItemCode WeaponCode)
 				DropLocation->GetComponentLocation(),
 				GetActorRotation()
 			);
+
+			// 새로 생긴 픽업에 남은 회수 넣기
+			AConsumableWeapon* conWeapon = Cast<AConsumableWeapon>(CurrentWeapon);
+			pickup->SetPickupCount(conWeapon->GetRemainingUseCount());
 
 			FVector velocity = (GetActorForwardVector() + GetActorUpVector()) * 300.0f;
 			pickup->AddImpulse(velocity);
