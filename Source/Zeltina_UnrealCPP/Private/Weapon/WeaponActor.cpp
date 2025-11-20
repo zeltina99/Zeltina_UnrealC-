@@ -27,6 +27,7 @@ AWeaponActor::AWeaponActor()
 	WeaponCollision->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
 
 	WeaponSlashEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Effect"));
+	WeaponSlashEffect->SetAutoActivate(false);
 	WeaponSlashEffect->SetupAttachment(WeaponMesh);
 }
 
@@ -114,10 +115,12 @@ void AWeaponActor::AttackEnable(bool bEnable)
 	if (bEnable)
 	{
 		WeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		WeaponSlashEffect->Activate(true);
 	}
 	else
 	{
 		WeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		WeaponSlashEffect->Deactivate();
 	}
 }
 
