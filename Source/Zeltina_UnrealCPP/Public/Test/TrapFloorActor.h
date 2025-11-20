@@ -7,38 +7,56 @@
 #include "Player/ActionCharacter.h"
 #include "TrapFloorActor.generated.h"
 
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTreadFloor);
+class UStaticMeshComponent;
+class UNiagaraComponent;
+class UPrimitiveComponent;
+class UDamageType;
 
 UCLASS()
 class ZELTINA_UNREALCPP_API ATrapFloorActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
 	ATrapFloorActor();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Tread")
+	// 발판을 밟았을 때 실제로 트랩을 발동시키는 함수
+	UFUNCTION(BlueprintCallable, Category = "Trap")
 	void TreadTrap(AActor* Target);
 
-public:	
-	/*UPROPERTY(BlueprintAssignable, Category = "Event")
-	FOnTreadFloor OnTreadFloor;*/
-
-
+	// Overlap 이벤트 콜백
+	UFUNCTION()
+	void OnTrapBeginOverlap(
+		UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32                OtherBodyIndex,
+		bool                 bFromSweep,
+		const FHitResult& SweepResult
+	);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UStaticMeshComponent> Root = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<class UNiagaraComponent> Effect = nullptr;
+	TObjectPtr<UNiagaraComponent> Effect = nullptr;
+
+	// 한 번 밟히면 다시는 발동 안 되게 하고 싶을 때 사용
+	UPROPERTY(VisibleAnywhere, Category = "Trap")
+	bool bAlreadyTriggered = false;
+
+	// 들어갈 데미지량
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
+	float Damage = 50.f;
+
+	// 데미지 타입
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
+	TSubclassOf<UDamageType> DamageTypeClass;
 
 private:
 	TWeakObjectPtr<AActionCharacter> Player = nullptr;
-
 };
