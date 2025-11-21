@@ -13,5 +13,19 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UAnimNotifyState_RangeAttack : public UAnimNotifyState
 {
 	GENERATED_BODY()
+public:
+	virtual void NotifyBegin(
+		USkeletalMeshComponent* MeshComp,
+		UAnimSequenceBase* Animation,
+		float TotalDuration,
+		const FAnimNotifyEventReference& EventReference) override;
+
+	virtual void NotifyEnd(
+		USkeletalMeshComponent* MeshComp,
+		UAnimSequenceBase* Animation,
+		const FAnimNotifyEventReference& EventReference) override;
+
+private:
+	TWeakObjectPtr<class AActionCharacter> OwnerCharacter = nullptr;
 	
 };

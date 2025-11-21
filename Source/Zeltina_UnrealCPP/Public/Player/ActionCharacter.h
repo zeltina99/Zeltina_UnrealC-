@@ -50,6 +50,9 @@ public:
 	// 노티파이가 무기의 트레일을 표시하라고 신호가 왔을 때 실행될 함수
 	void OnWeaponTrailEnable(bool bEnable);
 
+	// 노티파이가 범위 공격을 표시하라고 신호가 왔을 때 실행될 함수
+	void OnRangeAttackEnable(bool bEnable);
+
 	UResourceComponent* GetResourceComponent() { return Resource; }
 	UStatusComponent* GetStatusComponent() { return Status; }
 
@@ -88,6 +91,9 @@ protected:
 	UFUNCTION()
 	void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void InitRangeAttackActor();
+
 
 private:
 	UFUNCTION()
@@ -116,6 +122,8 @@ protected:
 	TObjectPtr<class UStatusComponent> Status = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Weapon")
 	TObjectPtr<USceneComponent> DropLocation = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Weapon")
+	TObjectPtr<USceneComponent> RangeAttackLocation = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Weapon")
 	TObjectPtr<class UWeaponManagerComponent> WeaponManager = nullptr;
 
@@ -163,6 +171,10 @@ protected:
 	// 플레이어가 현재 가지고 있는 무기
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Weapon")
 	TWeakObjectPtr<class AWeaponActor> CurrentWeapon = nullptr;
+
+	// 플레이어의 범위 공격 액터
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Skill")
+	TWeakObjectPtr<class ARangeAttackActor> RangeAttack = nullptr;
 
 
 private:
