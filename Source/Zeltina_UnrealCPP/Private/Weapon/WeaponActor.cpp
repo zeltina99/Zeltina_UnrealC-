@@ -63,6 +63,10 @@ void AWeaponActor::DamageToTarget(AActor* InTarget)
 		}
 		instigator = WeaponOwner->GetController();
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("[Weapon] DamageToTarget Called -> Target=%s, Damage=%.1f"),
+		InTarget ? *InTarget->GetName() : TEXT("NULL"),
+		finalDamage);
 	//UE_LOG(LogTemp, Log, TEXT("Overlapped : %s"), *OtherActor->GetName());
 	UGameplayStatics::ApplyDamage(InTarget, finalDamage, instigator, this, DamageType);
 }
