@@ -9,6 +9,7 @@
 #include "Player/ResourceComponent.h"
 #include "Player/StatusComponent.h"
 #include "Player/WeaponManagerComponent.h"
+#include "Player/RangeAttackActor.h"
 #include "Weapon/WeaponActor.h"
 #include "Weapon/UsedWeapon.h"
 #include "Weapon/ConsumableWeapon.h"
@@ -34,6 +35,10 @@ AActionCharacter::AActionCharacter()
 	DropLocation = CreateDefaultSubobject<USceneComponent>(TEXT("DropLocation"));
 	DropLocation->SetupAttachment(RootComponent);
 	DropLocation->SetRelativeLocation(FVector(80.0f, 30.0f, 0.0f));
+
+	RangeAttackLocation = CreateDefaultSubobject<USceneComponent>(TEXT("RangeAttackLocation"));
+	RangeAttackLocation->SetupAttachment(RootComponent);
+	RangeAttackLocation->SetRelativeLocation(FVector(200.0f, 0.0f, -60.0f));
 
 	Resource = CreateDefaultSubobject<UResourceComponent>(TEXT("PlayerResource"));
 	Status = CreateDefaultSubobject<UStatusComponent>(TEXT("PlayerStatus"));
@@ -71,6 +76,8 @@ void AActionCharacter::BeginPlay()
 
 	// 캐릭터에 다른 액터가 오버랩되었을 때 실행하기 위한 바인딩
 	OnActorBeginOverlap.AddDynamic(this, &AActionCharacter::OnBeginOverlap);
+
+	InitRangeAttackActor();
 
 }
 
@@ -160,6 +167,15 @@ void AActionCharacter::OnWeaponTrailEnable(bool bEnable)
 	if (CurrentWeapon.IsValid())
 	{
 		CurrentWeapon->TrailEnable(bEnable);
+	}
+}
+
+void AActionCharacter::OnRangeAttackEnable(bool bEnable)
+{
+	// 만약에 루트가 있다면 액터를 스폰해서 범위 스킬을 쓴다
+	if (RangeAttack.IsValid())
+	{
+		RangeAttack->RangeAttackEnable(bEnable);
 	}
 }
 
@@ -269,6 +285,53 @@ void AActionCharacter::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActo
 		IPickupable::Execute_OnPickup(OtherActor, this);	// 구현이 되어 있으면 실행
 	}
 }
+
+void AActionCharacter::InitRangeAttackActor()
+{
+	// 이미 유효하면 다시 만들 필요 없음
+	if (RangeAttack.IsValid())
+	{
+		return;
+	}
+
+	if (!RangeAttackLocation)
+	{
+		return;
+	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.Instigator = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	const FTransform SpawnTransform = RangeAttackLocation->GetComponentTransform();
+
+	ARangeAttackActor* Spawned = World->SpawnActor<ARangeAttackActor>(
+		ARangeAttackActor::StaticClass(),
+		SpawnTransform,
+		Params
+	);
+
+	if (Spawned)
+	{
+		Spawned->AttachToComponent(
+			RangeAttackLocation,
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale
+		);
+
+		RangeAttack = Spawned;
+
+		// 시작은 꺼진 상태
+		Spawned->RangeAttackEnable(false);
+	}
+}
+
 
 void AActionCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
