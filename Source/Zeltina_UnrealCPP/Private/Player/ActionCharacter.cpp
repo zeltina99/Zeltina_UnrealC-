@@ -5,8 +5,11 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/CameraShakeBase.h"  
+#include "Camera/PlayerCameraManager.h"
 #include "Player/ResourceComponent.h"
 #include "Player/StatusComponent.h"
 #include "Player/WeaponManagerComponent.h"
@@ -171,6 +174,37 @@ void AActionCharacter::OnAreaAttack()
 	{
 		CurrentWeapon->DamageToArea();
 	}
+}
+
+void AActionCharacter::OnCameraShakeEnable()
+{
+	if (!AttackCameraShakeClass)
+	{
+		return;
+	}
+
+	APlayerController* pc = Cast<APlayerController>(GetController());
+	if (!pc)
+	{
+		return;
+	}
+
+	APlayerCameraManager* camMgr = pc->PlayerCameraManager;
+	if (!camMgr)
+	{
+		return;
+	}
+
+	// 블루프린트의 Start Camera Shake와 동일
+	UCameraShakeBase* NewShake =
+		camMgr->StartCameraShake(
+			AttackCameraShakeClass,
+			1.0f,                          // Scale
+			ECameraShakePlaySpace::CameraLocal,
+			FRotator::ZeroRotator
+		);
+
+	AttackCameraShakeInstance = NewShake;
 }
 
 void AActionCharacter::TestDropUsedWeapon()

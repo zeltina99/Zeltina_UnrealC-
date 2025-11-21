@@ -52,6 +52,9 @@ public:
 
 	void OnAreaAttack();
 
+	// 노티파이가 카메라를 흔들라고 신호가 왔을 때 실행될 함수
+	void OnCameraShakeEnable();
+
 	UResourceComponent* GetResourceComponent() { return Resource; }
 	UStatusComponent* GetStatusComponent() { return Status; }
 
@@ -166,6 +169,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Weapon")
 	TWeakObjectPtr<class AWeaponActor> CurrentWeapon = nullptr;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Camera")
+	TSubclassOf<class UCameraShakeBase> AttackCameraShakeClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
+	TWeakObjectPtr<class UCameraShakeBase> AttackCameraShakeInstance;
 
 private:
 	UPROPERTY()
