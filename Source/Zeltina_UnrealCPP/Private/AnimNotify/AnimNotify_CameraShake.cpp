@@ -11,14 +11,28 @@ void UAnimNotify_CameraShake::Notify(
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 
-	if (!OwnerCharacter.IsValid())
+	if (!CameraManager.IsValid())	// CameraManager가 없으면 미리 찾아 놓기
 	{
-		OwnerCharacter = Cast<AActionCharacter>(MeshComp->GetOwner());
+		UWorld* world = MeshComp->GetWorld();
+		if (world)
+		{
+			CameraManager = world->GetFirstPlayerController()->PlayerCameraManager;
+		}
 	}
 
-	if (OwnerCharacter.IsValid())
+	if (CameraShake && CameraManager.IsValid())	// class랑 매니저 둘 다 있을 때만 실행
 	{
-		OwnerCharacter->OnCameraShakeEnable();//의 카메라를 흔드는 함수를 호출
+		CameraManager->StartCameraShake(CameraShake);
 	}
+
+	//if (!OwnerCharacter.IsValid())
+	//{
+	//	OwnerCharacter = Cast<AActionCharacter>(MeshComp->GetOwner());
+	//}
+
+	//if (OwnerCharacter.IsValid())
+	//{
+	//	OwnerCharacter->OnCameraShakeEnable();//의 카메라를 흔드는 함수를 호출
+	//}
 
 }

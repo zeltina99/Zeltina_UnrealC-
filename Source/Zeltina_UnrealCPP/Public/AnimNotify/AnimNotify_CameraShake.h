@@ -20,6 +20,12 @@ public:
 		UAnimSequenceBase* Animation,
 		const FAnimNotifyEventReference& EventReference);
 
-private:
+protected:
 	TWeakObjectPtr<class AActionCharacter> OwnerCharacter = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
+	TSubclassOf<UCameraShakeBase> CameraShake = nullptr;
+
+private:
+	TWeakObjectPtr<APlayerCameraManager> CameraManager = nullptr;
 };
