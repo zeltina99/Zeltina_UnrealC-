@@ -14,7 +14,7 @@ void UAnimNotify_CameraShake::Notify(
 	if (!CameraManager.IsValid())	// CameraManager가 없으면 미리 찾아 놓기
 	{
 		UWorld* world = MeshComp->GetWorld();
-		if (world)
+		if (world && world->GetFirstPlayerController())
 		{
 			CameraManager = world->GetFirstPlayerController()->PlayerCameraManager;
 		}
