@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Common/CommonStructures.h"
 #include "EnemyPawn_Test.generated.h"
 
 UCLASS()

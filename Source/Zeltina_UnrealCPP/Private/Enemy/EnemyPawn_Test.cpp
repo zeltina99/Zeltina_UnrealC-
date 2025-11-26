@@ -4,7 +4,7 @@
 #include "Enemy/EnemyPawn_Test.h"
 #include "Enemy/DamagePopupActor.h"
 #include "Framework/DamagePopupSubsystem.h"
-#include "Framework/EnemyTrackingSubsystem.h"
+#include "Framework/EnemyCountSubsystem.h"
 #include "Player/ResourceComponent.h"
 #include "Data/DropItemData_TableRow.h"
 #include "Item/Pickup.h"
@@ -13,7 +13,7 @@
 AEnemyPawn_Test::AEnemyPawn_Test()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
@@ -36,7 +36,7 @@ void AEnemyPawn_Test::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     if (UWorld* world = GetWorld())
     {
-        if (UEnemyTrackingSubsystem* enemyTracker = world->GetSubsystem<UEnemyTrackingSubsystem>())
+        if (UEnemyCountSubsystem* enemyTracker = world->GetSubsystem<UEnemyCountSubsystem>())
         {
             enemyTracker->UnregistEnemy();
         }
@@ -44,6 +44,11 @@ void AEnemyPawn_Test::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 }
 
+
+void AEnemyPawn_Test::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
 
 // Called to bind functionality to input
 void AEnemyPawn_Test::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

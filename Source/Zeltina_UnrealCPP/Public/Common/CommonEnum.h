@@ -15,6 +15,15 @@ enum class EItemCode : uint8
 	Blade			UMETA(DisplayName = "블레이드"),
 };
 
+UENUM(BlueprintType)
+enum class EWeaponCode : uint8
+{
+	BasicWeapon		UMETA(DisplayName = "기본무기"),
+	Sword			UMETA(DisplayName = "대검"),
+	Blade			UMETA(DisplayName = "블레이드"),
+};
+
+
 // 비트플래그용 enum. 에디터에서 편집 가능
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuewsInEditor = "true"))
 enum class EBitFlag : uint8
