@@ -2,4 +2,6 @@
 
 
 #include "Data/WeaponDataAsset.h"
-
+#include "Weapon/WeaponActor.h"
+#include "Weapon/UsedWeapon.h"
+#include "Item/Pickup.h"
