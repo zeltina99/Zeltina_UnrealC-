@@ -60,26 +60,26 @@ void AEnemyPawn_Test::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AEnemyPawn_Test::TestDropItemCounts()
 {
-	APickup* pickup = nullptr;
 	TMap<FName, uint8*> RowMap = DropItemTable->GetRowMap();
 	TArray<int32> counter = { 0,0,0 };
 	//counter.Empty(3);
 
-	for(int i=0; i<1000000; i++)
+	for (int i = 0; i < 1000000; i++)
 	{
-		// 중복으로 당첨 가능
+		// 중복으로 당첨 가능(아무것도 안나올 수도 있음)
 		int index = 0;
 		for (const auto& element : RowMap)
 		{
-			pickup = nullptr;
 			FDropItemData_v2_TableRow* row = (FDropItemData_v2_TableRow*)element.Value;
 			if (FMath::FRand() <= row->DropRate)
 			{
 				counter[index]++;
 			}
+
 			index++;
 		}
 	}
+
 	UE_LOG(LogTemp, Log, TEXT("Test count : 100만"));
 	UE_LOG(LogTemp, Log, TEXT("index 0 : %d"), counter[0]);
 	UE_LOG(LogTemp, Log, TEXT("index 1 : %d"), counter[1]);
@@ -153,29 +153,30 @@ void AEnemyPawn_Test::DropItems(float BonusChange)
 		APickup* pickup = nullptr;
 		TMap<FName, uint8*> RowMap = DropItemTable->GetRowMap();
 
-		// 중복으로 당첨 가능
+		// 중복으로 당첨 가능(아무것도 안나올 수도 있음)
 		for (const auto& element : RowMap)
 		{
 			pickup = nullptr;
 			FDropItemData_v2_TableRow* row = (FDropItemData_v2_TableRow*)element.Value;
 			if (FMath::FRand() - BonusChange <= row->DropRate)
 			{
-				/*pickup = GetWorld()->SpawnActor<APickup>(
-					row->DropItemClass,
-					GetActorLocation() + FVector::UpVector * 200.0f,
-					GetActorRotation());*/
+				//pickup = GetWorld()->SpawnActor<APickup>(
+				//	row->DropItemClass,
+				//	GetActorLocation() + FVector::UpVector * 200.0f,
+				//	GetActorRotation());
 
 				pickup = GetWorld()->GetSubsystem<UPickupFactorySubsystem>()->SpawnPickup(
 					row->PickupCode,
 					PopupLocation->GetComponentLocation(),
 					GetActorRotation()
 				);
+
 				FVector LaunchVelocity = FVector::UpVector * 500.0f;
 				LaunchVelocity = LaunchVelocity.RotateAngleAxis(FMath::FRandRange(-15.0f, 15.0f), FVector::RightVector);
 				LaunchVelocity = LaunchVelocity.RotateAngleAxis(FMath::FRandRange(0.0f, 360.0f), FVector::UpVector);
 				DrawDebugLine(
-					GetWorld(), 
-					PopupLocation->GetComponentLocation(), 
+					GetWorld(),
+					PopupLocation->GetComponentLocation(),
 					PopupLocation->GetComponentLocation() + LaunchVelocity,
 					FColor::Green, false, 3.0f);
 				pickup->AddImpulse(LaunchVelocity);
@@ -190,14 +191,22 @@ void AEnemyPawn_Test::DropItems(float BonusChange)
 			}
 		}
 
-		//// 전체 가중치 사용하는 방식(1개 보장)
+		//// 전체 가중치 사용하는 방식
 		//float totalWeight = 0.0f;
 		//for (const auto& element : RowMap)
 		//{
 		//	FDropItemData_TableRow* row = (FDropItemData_TableRow*)element.Value;
 		//	totalWeight += row->DropRate;
 		//}
-		//float randomSelect = FMath::FRandRange(0, totalWeight);
+
+		//float max = 1.0f;
+		//if (totalWeight > 1.0f)
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("totalWeight가 1을 넘습니다. DropRate는 비율로 사용됩니다."));
+		//	max = totalWeight;
+		//}
+		//
+		//float randomSelect = FMath::FRandRange(0, max);
 		//float currentWeight = 0.0f;
 		//for (const auto& element : RowMap)
 		//{

@@ -31,7 +31,7 @@ APickup* UPickupFactorySubsystem::SpawnPickup(EItemCode InCode, FVector InLocati
 void UPickupFactorySubsystem::LoadPickupClassesMap()
 {
 	const UPickupSettings* settings = GetDefault<UPickupSettings>();
-	if (settings && settings->PickupDataTable.IsNull())
+	if (settings && !settings->PickupDataTable.IsNull())
 	{
 		UDataTable* dataTable = settings->PickupDataTable.LoadSynchronous();
 		if (dataTable)
