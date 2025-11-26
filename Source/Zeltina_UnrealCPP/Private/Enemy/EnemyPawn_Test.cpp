@@ -129,7 +129,7 @@ void AEnemyPawn_Test::DropItems()
 		for (const auto& element : RowMap)
 		{
 			pickup = nullptr;
-			FDropItemData_TableRow* row = (FDropItemData_TableRow*)element.Value;
+			FDropItemData_v2_TableRow* row = (FDropItemData_v2_TableRow*)element.Value;
 			if (FMath::FRand() <= row->DropRate)
 			{
 				/*pickup = GetWorld()->SpawnActor<APickup>(
@@ -137,9 +137,11 @@ void AEnemyPawn_Test::DropItems()
 					GetActorLocation() + FVector::UpVector * 200.0f,
 					GetActorRotation());*/
 
-				/*pickup = GetWorld()->GetSubsystem<UPickupFactorySubsystem>()->SpawnPickup(
-					row->
-				)*/
+				pickup = GetWorld()->GetSubsystem<UPickupFactorySubsystem>()->SpawnPickup(
+					row->PickupCode,
+					GetActorLocation() + FVector::UpVector * 200.0f,
+					GetActorRotation()
+				);
 			}
 			if (pickup)
 			{

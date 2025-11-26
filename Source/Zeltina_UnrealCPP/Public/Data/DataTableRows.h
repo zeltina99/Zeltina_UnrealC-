@@ -11,7 +11,7 @@
  *
  */
 USTRUCT(BlueprintType)
-struct FDropItemData_TableRow : public FTableRowBase
+struct FDropItemData_v1_TableRow : public FTableRowBase
 {
 	GENERATED_BODY()
 

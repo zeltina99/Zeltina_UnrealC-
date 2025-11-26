@@ -364,7 +364,7 @@ void AActionCharacter::DropCurrentWeapon(EItemCode WeaponCode)
 		if (TSubclassOf<APickup> pickupClass = WeaponManager->GetPickupWeaponClass(WeaponCode))
 		{
 			APickup* pickup = GetWorld()->SpawnActor<APickup>(
-				*pickupClass,
+				pickupClass,
 				DropLocation->GetComponentLocation(),
 				GetActorRotation()
 			);
