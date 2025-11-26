@@ -16,5 +16,5 @@ class ZELTINA_UNREALCPP_API UPickupSettings : public UDeveloperSettings
 	
 public:
 	UPROPERTY(Config, EditAnywhere, Category = "Pickup Data")
-	TSoftObjectPtr<UDataTable> PickupDataTable;
+	TSoftObjectPtr<UDataTable> PickupDataTable = nullptr;
 };

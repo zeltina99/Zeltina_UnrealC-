@@ -5,8 +5,9 @@
 #include "Enemy/DamagePopupActor.h"
 #include "Framework/DamagePopupSubsystem.h"
 #include "Framework/EnemyCountSubsystem.h"
+#include "Framework/PickupFactorySubsystem.h"
 #include "Player/ResourceComponent.h"
-#include "Data/DropItemData_TableRow.h"
+#include "Data/DataTableRows.h"
 #include "Item/Pickup.h"
 
 // Sets default values
@@ -131,10 +132,14 @@ void AEnemyPawn_Test::DropItems()
 			FDropItemData_TableRow* row = (FDropItemData_TableRow*)element.Value;
 			if (FMath::FRand() <= row->DropRate)
 			{
-				pickup = GetWorld()->SpawnActor<APickup>(
+				/*pickup = GetWorld()->SpawnActor<APickup>(
 					row->DropItemClass,
 					GetActorLocation() + FVector::UpVector * 200.0f,
-					GetActorRotation());
+					GetActorRotation());*/
+
+				/*pickup = GetWorld()->GetSubsystem<UPickupFactorySubsystem>()->SpawnPickup(
+					row->
+				)*/
 			}
 			if (pickup)
 			{

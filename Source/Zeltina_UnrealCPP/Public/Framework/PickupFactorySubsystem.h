@@ -20,7 +20,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pickup Factory")
 	APickup* SpawnPickup(
-		EItemCode InCode, FVector InLocation = FVector::ZeroVector, FRotator InRotatr = FRotator::ZeroRotator);
+		EItemCode InCode, FVector InLocation = FVector::ZeroVector, FRotator InRotator = FRotator::ZeroRotator);
 
 private:
 	void LoadPickupClassesMap();

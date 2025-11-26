@@ -24,6 +24,19 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FDropItemData_v2_TableRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EItemCode PickupCode = EItemCode::BasicWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = "0", ClampMax = "1"))
+	float DropRate = 1.0f;
+};
+
+USTRUCT(BlueprintType)
 struct FPickupData_TableRow : public FTableRowBase
 {
 	GENERATED_BODY()
