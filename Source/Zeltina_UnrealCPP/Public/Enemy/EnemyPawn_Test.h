@@ -18,15 +18,25 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-public:	
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	void TestDropItem() { DropItems(); };
+
 private:
 	UFUNCTION()
-	void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, 
+	void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 		class AController* InstigatedBy, AActor* DamageCauser);
+
+	void DropItems();
+	void OnDie();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -35,7 +45,22 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USceneComponent> PopupLocation = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class UResourceComponent> Resource = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Popup")
 	TSubclassOf<class ADamagePopupActor> DamagePopupClass = nullptr;
+
+private:
+	bool bInvincible = false;
+	FTimerHandle InvincibleTimer;
+	float LastDamage = 0.0f;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Drop Items")
+	TArray<FItemDropInfo> DropItemInfo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Drop Items")
+	TObjectPtr<class UDataTable> DropItemTable = nullptr;
 
 };
