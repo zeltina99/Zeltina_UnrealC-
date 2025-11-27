@@ -54,10 +54,10 @@ AWeaponActor* UWeaponManagerComponent::GetEquippedWeapon(EWeaponCode InType) con
 TSubclassOf<AUsedWeapon> UWeaponManagerComponent::GetUsedWeaponClass(EWeaponCode InType) const
 {
 	const UWeaponDataAsset* dataAsset = *WeaponDatabase.Find(InType);
-	return dataAsset->UsedWeaponClass;
+	return dataAsset->UsedWaeponClass;
 }
 
-TSubclassOf<APickup> UWeaponManagerComponent::GetPickupWeaponClass(EWeaponCode InType) const
+TSubclassOf<APickupWeapon> UWeaponManagerComponent::GetPickupWeaponClass(EWeaponCode InType) const
 {
 	const UWeaponDataAsset* dataAsset = *WeaponDatabase.Find(InType);
 	return dataAsset->PickupWeaponClass;

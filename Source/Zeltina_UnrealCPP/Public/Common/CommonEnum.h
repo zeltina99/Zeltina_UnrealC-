@@ -13,6 +13,10 @@ enum class EItemCode : uint8
 	BasicWeapon		UMETA(DisplayName = "기본무기"),
 	Sword			UMETA(DisplayName = "대검"),
 	Blade			UMETA(DisplayName = "블레이드"),
+	Figure			UMETA(DisplayName = "황금상"),
+	Crown			UMETA(DisplayName = "왕관"),
+	PotionHealth	UMETA(DisplayName = "힐링 포션"),
+	PotionStamina	UMETA(DisplayName = "스태미너 포션")
 };
 
 UENUM(BlueprintType)
