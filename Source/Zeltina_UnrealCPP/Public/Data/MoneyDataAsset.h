@@ -13,5 +13,10 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UMoneyDataAsset : public UConsumableDataAsset
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory")
+	int32 Money = 100;
+
+	virtual void Excute(AActor* InTarget) const override;
+
 };

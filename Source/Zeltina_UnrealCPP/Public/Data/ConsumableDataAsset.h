@@ -16,6 +16,6 @@ class ZELTINA_UNREALCPP_API UConsumableDataAsset : public UDataAsset
 	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Pickup|Consumable")
-	void Excute(AActor* InTarget) const {};
+	virtual void Excute(AActor* InTarget) const {};
 
 };
