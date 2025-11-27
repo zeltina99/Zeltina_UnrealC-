@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item/Pickup.h"
+#include "Data/ConsumableDataAsset.h"
 #include "PickupConsumable.generated.h"
 
 /**
@@ -19,5 +20,9 @@ public:
 
 protected:
 	virtual void OnConsume();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
+	TObjectPtr<UConsumableDataAsset> DataAsset = nullptr;
 
 };
