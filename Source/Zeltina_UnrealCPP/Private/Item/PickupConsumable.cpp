@@ -3,3 +3,14 @@
 
 #include "Item/PickupConsumable.h"
 
+void APickupConsumable::OnPickupComplete_Implementation()
+{
+	OnConsume();
+
+	Super::OnPickupComplete_Implementation();
+}
+
+void APickupConsumable::OnConsume()
+{
+
+}
