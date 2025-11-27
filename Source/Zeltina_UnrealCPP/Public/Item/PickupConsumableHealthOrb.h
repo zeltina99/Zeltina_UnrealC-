@@ -7,7 +7,7 @@
 #include "PickupConsumableHealthOrb.generated.h"
 
 /**
- * 
+ * 파생클래스 예시
  */
 UCLASS()
 class ZELTINA_UNREALCPP_API APickupConsumableHealthOrb : public APickupConsumable
