@@ -24,7 +24,7 @@ enum class EWeaponCode : uint8
 {
 	BasicWeapon		UMETA(DisplayName = "기본무기"),
 	Sword			UMETA(DisplayName = "대검"),
-	Blade			UMETA(DisplayName = "블레이드"),
+	Blade			UMETA(DisplayName = "블레이드")
 };
 
 
