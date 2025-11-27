@@ -22,7 +22,7 @@ public:
 protected:
 	// 이 픽업을 먹었을 때 얻을 무기 아이템
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup|Weapon")
-	EWeaponCode PickupWeapon = EWeaponCode::BasicWeapon;
+	EWeaponCode PickWeapon = EWeaponCode::BasicWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup|Weapon")
 	int32 UseCount = 1;

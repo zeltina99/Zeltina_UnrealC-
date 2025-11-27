@@ -121,6 +121,8 @@ void AActionCharacter::AddItem_Implementation(EItemCode Code, int32 Count)
 
 void AActionCharacter::AddWeapon_Implementation(EWeaponCode Code, int32 UseCount)
 {
+	//const UEnum* EnumPtr = StaticEnum<EItemCode>();
+	//UE_LOG(LogTemp, Log, TEXT("무기획득 : %s"), *EnumPtr->GetDisplayNameTextByValue(static_cast<int8>(Code)).ToString());
 	EquipWeapon(Code);
 	CurrentWeapon->OnWeaponPickuped(UseCount);
 }
