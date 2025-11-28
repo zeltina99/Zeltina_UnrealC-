@@ -135,7 +135,7 @@ int32 UInventoryComponent::FindSlotWithItem(UItemDataAsset* InItemData, int32 In
 	int32 size = Slots.Num();
 	for (int32 i = InStartIndex; i < size; i++)
 	{
-		if (Slots[i].ItemData == InItemData && !Slots[i].IsFull())
+		if (Slots[i].ItemData == InItemData && !Slots[i].IsFull())	// 같은 데이터에셋을 가지고 있으면서 빈칸이 있으면
 		{
 			return i;
 			break;

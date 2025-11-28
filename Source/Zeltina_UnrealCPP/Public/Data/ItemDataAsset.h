@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class ZELTINA_UNREALCPP_API UItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
