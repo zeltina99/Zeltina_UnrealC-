@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Data/ItemDataAsset.h"
 #include "InventoryComponent.generated.h"
 
 USTRUCT(BlueprintType)
@@ -12,6 +13,34 @@ struct FInvenSlot
 	GENERATED_BODY()
 
 public:
+	// 이 슬롯에 들어있는 아이템의 종류
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
+	TObjectPtr<UItemDataAsset> ItemData = nullptr;
+
+	// 헬퍼
+	bool IsEmpty() const { return ItemData == nullptr || Count < 1; }
+	void Clear()
+	{
+		ItemData = nullptr;
+		Count = 0;
+	}
+
+	// getter/setter
+	int32 GetCount() const { return Count; }
+	void SetCount(int32 NewCount) {
+		if(NewCount > 0)
+		{
+			Count = NewCount;
+		}
+		else
+		{
+			Clear();
+		}
+	}
+protected:
+	// 이 슬롯에 아이템이 몇개 스택되어 있는지 기록
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
+	int32 Count = 0;
 
 };
 
@@ -32,9 +61,38 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	// 아이템을 추가하는 함수(리턴:못 먹은 아이템의 수, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	int32 AddItem(UItemDataAsset* InItemData, int32 InCount);
+
+	// 아이템을 특정칸에 추가하는 함수(초기화, 로딩 등에 사용)
+	// InSlotIndex: 아이템이 추가될 슬롯, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount);
+
+	// 특정 칸에 있는 아이템의 갯수를 조절하는 함수(증가/감소)
+	// InSlotIndex: 변경할 슬롯, InDeltaCount: 변화량
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void UpdateSlotCount(int32 InSlotIndex, int32 InDeltaCount = -1);
+
+	// 특정칸을 비우는 함수(InSlotIndex: 비울 슬롯)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void ClearSlotAtIndex(int32 InSlotIndex);
+
+	// 특정 슬롯을 확인하기 위한 함수. 읽기 전용. (InSlotIndex: 확인할 슬롯)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	const FInvenSlot& GetSlotData(int32 InSlotIndex) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	bool IsValidIndex(int32 InSlotIndex) const {
+		return InSlotIndex < InventorySize && InSlotIndex >= 0;
+	}
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	int32 InventorySize = 4;
 		
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	TArray<FInvenSlot> Slots;
+
 };
