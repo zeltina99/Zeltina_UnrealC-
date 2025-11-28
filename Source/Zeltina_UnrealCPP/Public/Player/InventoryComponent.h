@@ -18,7 +18,11 @@ public:
 	TObjectPtr<UItemDataAsset> ItemData = nullptr;
 
 	// 헬퍼
+	// 이 슬롯이 비어있는지 확인하는 함수
 	bool IsEmpty() const { return ItemData == nullptr || Count < 1; }
+	// 이 슬롯이 가득차있는지 확인하는 함수
+	bool IsFull() const { return ItemData && Count >= ItemData->ItemMaxStackCount; }
+	// 슬롯을 비우는 함수
 	void Clear()
 	{
 		ItemData = nullptr;
@@ -55,6 +59,9 @@ class ZELTINA_UNREALCPP_API UInventoryComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UInventoryComponent();
+
+	// 인벤토리 컴포넌트에서 각종 함수가 실패했을 때 리턴하는 상수
+	static const int32 InventoryFail = -1;
 
 protected:
 	// Called when the game starts
@@ -95,4 +102,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TArray<FInvenSlot> Slots;
 
+private:
+	int32 FindSlotWithItem(UItemDataAsset* InItemData, int32 InStartIndex = 0);
+	int32 FindEmptySlot();
 };
