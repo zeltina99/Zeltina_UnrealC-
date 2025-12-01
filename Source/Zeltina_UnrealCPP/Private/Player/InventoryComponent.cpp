@@ -13,16 +13,6 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-
-// Called when the game starts
-void UInventoryComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	Slots.SetNum(InventorySize);	//	인벤토리 크기만큼 빈 슬롯 만들기
-	
-}
-
 int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 {
 	// 1. 같은 종류의 아이템이 들어있는 슬롯이 있는지 찾기

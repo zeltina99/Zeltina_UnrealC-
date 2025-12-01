@@ -56,22 +56,17 @@ class ZELTINA_UNREALCPP_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
 	// 인벤토리 컴포넌트에서 각종 함수가 실패했을 때 리턴하는 상수
 	static const int32 InventoryFail = -1;
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// 아이템을 추가하는 함수(리턴:못 먹은 아이템의 수, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수)
+public:
+	// 아이템을 추가하는 함수(리턴:못먹은 아이템의 수, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수)
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	int32 AddItem(UItemDataAsset* InItemData, int32 InCount);
-
 
 	// 특정 칸에 있는 아이템의 갯수를 조절하는 함수(증가/감소)
 	// InSlotIndex: 변경할 슬롯, InDeltaCount: 변화량
@@ -86,9 +81,9 @@ public:
 	FInvenSlot* GetSlotData(int32 InSlotIndex);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	bool IsValidIndex(int32 InSlotIndex) const {
+	inline bool IsValidIndex(int32 InSlotIndex) const {
 		return InSlotIndex < InventorySize && InSlotIndex >= 0;
-	}
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	inline int32 GetInventorySize() const { return InventorySize; }
@@ -96,16 +91,15 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	int32 InventorySize = 10;
-		
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TArray<FInvenSlot> Slots;
 
 private:
-
 	// 아이템을 특정칸에 추가하는 함수(초기화, 로딩 등에 사용)
-	// InSlotIndex: 아이템이 추가될 슬롯, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수
+	// InSlotIndex: 아이템이 추가될 슬롯, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수	
 	void SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount);
-	
+
 	// 같은 종류의 아이템이 있는 슬롯을 찾는 함수
 	// InItemData: 비교할 아이템의 종류, InStartIndex: 찾기 시작할 인덱스
 	int32 FindSlotWithItem(UItemDataAsset* InItemData, int32 InStartIndex = 0);
