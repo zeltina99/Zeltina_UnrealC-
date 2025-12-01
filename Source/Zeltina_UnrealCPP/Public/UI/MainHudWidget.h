@@ -6,6 +6,12 @@
 #include "Blueprint/UserWidget.h"
 #include "MainHudWidget.generated.h"
 
+UENUM(BlueprintType)
+enum class EOpenState : uint8
+{
+	Open	UMETA(DisplayName = "Open"),
+	Close	UMETA(DisplayName = "Close")
+};
 /**
  * 
  */
@@ -17,14 +23,29 @@ class ZELTINA_UNREALCPP_API UMainHudWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 
+public:
+	UFUNCTION(BlueprintCallable, Category = "UI|Inventory")
+	void OpenInventory();
+
+	UFUNCTION(BlueprintCallable, Category = "UI|Inventory")
+	void CloseInventory();
+
+	inline EOpenState GetOpenState() const { return OpenState; }
+
 protected:
 	// meta = (BindWidget)	
 	// 위젯 블루프린트 변수와 이 클래스의 변수를 바인드 하겠다라는 의미(=둘이 같은 거라고 설정)
 	// 위젯 블루프린트의 변수명과 이 클래스의 변수명이 반드시 같아야 한다.(대소문자도 같아야 한다)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TWeakObjectPtr<class UResourceWidget> HealthBar;
+	TObjectPtr<class UResourceWidget> HealthBar = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resource", meta = (BindWidget))
-	TWeakObjectPtr<class UResourceWidget> StaminaBar;
+	TObjectPtr<class UResourceWidget> StaminaBar = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (BindWidget))
+	TObjectPtr<class UInventoryWidget> Inventory = nullptr;
+
+private:
+	EOpenState OpenState = EOpenState::Close;
 
 };
