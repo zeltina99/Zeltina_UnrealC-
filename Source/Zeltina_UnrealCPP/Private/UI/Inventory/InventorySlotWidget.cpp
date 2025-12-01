@@ -14,12 +14,13 @@ void UInventorySlotWidget::InitializeSlot(int32 InIndex, FInvenSlot* InSlotData)
 	RefreshSlot();
 }
 
-void UInventorySlotWidget::RefreshSlot()
+void UInventorySlotWidget::RefreshSlot() const
 {
-	if (SlotData)
+	if (SlotData && !SlotData->IsEmpty())
 	{
+		// 슬롯에 아이템이 들어있으면 들어있는 아이템 보여주기
 		ItemIconImage->SetBrushFromTexture(SlotData->ItemData->ItemIcon);
-		ItemIconImage->SetBrushTintColor(FLinearColor::White);
+		ItemIconImage->SetBrushTintColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
 
 		CountText->SetText(FText::AsNumber(SlotData->GetCount()));
 		MaxCountText->SetText(FText::AsNumber(SlotData->ItemData->ItemMaxStackCount));
@@ -30,11 +31,12 @@ void UInventorySlotWidget::RefreshSlot()
 	}
 	else
 	{
+		// 슬롯에 아이템이 없으면 빈 슬롯 보여주기
 		ClearSlotWidget();
 	}
 }
 
-void UInventorySlotWidget::ClearSlotWidget()
+void UInventorySlotWidget::ClearSlotWidget() const
 {
 	ItemIconImage->SetBrushFromTexture(nullptr);
 	ItemIconImage->SetBrushTintColor(FLinearColor::Transparent);

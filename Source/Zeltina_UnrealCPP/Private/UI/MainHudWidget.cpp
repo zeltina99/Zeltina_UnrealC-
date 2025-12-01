@@ -31,6 +31,7 @@ void UMainHudWidget::NativeConstruct()
 
 void UMainHudWidget::OpenInventory()
 {
+	Inventory->RefreshInventoryWidget();	// 열릴때마다 UI 내용 갱신
 	Inventory->SetVisibility(ESlateVisibility::Visible);
 	OpenState = EOpenState::Open;
 }

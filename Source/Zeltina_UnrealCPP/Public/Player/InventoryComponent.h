@@ -82,7 +82,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void ClearSlotAtIndex(int32 InSlotIndex);
 
-	// 특정 슬롯을 확인하기 위한 함수. 읽기 전용. (InSlotIndex: 확인할 슬롯)
+	// 특정 슬롯을 확인하기 위한 함수. 읽기 전용. (InSlotIndex: 확인할 슬롯)	
 	FInvenSlot* GetSlotData(int32 InSlotIndex);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")

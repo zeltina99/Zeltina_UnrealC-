@@ -61,5 +61,5 @@ private:
 	int32 GameInputPriority = 1;
 	TWeakObjectPtr<UMainHudWidget> MainHudWidget = nullptr;
 	TWeakObjectPtr<UInventoryWidget> InventoryWidget = nullptr;
-	TWeakObjectPtr<class UInvetoryComponent> InventoryComponent = nullptr;
+	TWeakObjectPtr<class UInventoryComponent> InventoryComponent = nullptr;
 };

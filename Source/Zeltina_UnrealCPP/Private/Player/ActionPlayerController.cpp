@@ -44,7 +44,7 @@ void AActionPlayerController::OnPossess(APawn* aPawn)
 	if (player)
 	{
 		InventoryComponent = player->GetInventoryComponent();
-		if(InventoryWidget.IsValid())
+		if (InventoryWidget.IsValid())
 		{
 			InventoryWidget->InitializeInventoryWidget(InventoryComponent.Get());
 		}

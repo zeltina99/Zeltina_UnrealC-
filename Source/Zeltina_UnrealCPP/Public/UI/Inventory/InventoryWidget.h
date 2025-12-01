@@ -22,7 +22,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	void InitializeInventoryWidget(class UInventoryComponent* InventoryComponent);
+	void RefreshInventoryWidget();
 	void ClearInventoryWidget();
+
 
 	UPROPERTY(BlueprintAssignable, Category = "UI|Inventory")
 	FOnInventoryCloseRequested OnInventoryCloseRequested;
@@ -41,4 +43,6 @@ protected:
 private:
 	UPROPERTY()
 	TWeakObjectPtr<UInventoryComponent> TargetInventory = nullptr;
+
+	TArray<TObjectPtr<class UInventorySlotWidget>> SlotWidgets;
 };

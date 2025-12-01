@@ -20,10 +20,10 @@ public:
 	void InitializeSlot(int32 InIndex, FInvenSlot* InSlotData);
 
 	// 설정된 데이터를 기반으로 위젯에서 표시하는 내용을 갱신
-	void RefreshSlot();
+	void RefreshSlot() const;
 
 protected:
-	void ClearSlotWidget();
+	void ClearSlotWidget() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
@@ -41,6 +41,6 @@ protected:
 private:
 	int32 index = -1;
 
-	TWeakObjectPtr<FInvenSlot> SlotData = nullptr;
+	FInvenSlot* SlotData = nullptr;
 
 };
