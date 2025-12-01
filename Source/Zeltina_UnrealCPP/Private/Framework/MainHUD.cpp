@@ -11,7 +11,6 @@ void AMainHUD::BeginPlay()
 
 	if (MainWidgetClass)
 	{
-
 		MainWidgetInstance = CreateWidget<UMainHudWidget>(GetWorld(), MainWidgetClass);
 		if (MainWidgetInstance)
 		{
@@ -22,10 +21,8 @@ void AMainHUD::BeginPlay()
 			if (pc)
 			{
 				pc->InitializeMainHudWidget(MainWidgetInstance);
-				
 			}
 		}
-
 	}
 
 }

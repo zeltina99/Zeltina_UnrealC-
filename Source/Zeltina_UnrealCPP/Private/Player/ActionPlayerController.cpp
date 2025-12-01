@@ -139,7 +139,7 @@ void AActionPlayerController::InitializeMainHudWidget(UMainHudWidget* InWidget)
 		MainHudWidget->AddToInventoryCloseDelegate(delegate);
 
 		InventoryWidget = MainHudWidget->GetInventoryWidget();
-		if (InventoryWidget.IsValid())
+		if (InventoryWidget.IsValid())	// Possess보다 타이밍이 늦다.
 		{
 			InventoryWidget->InitializeInventoryWidget(InventoryComponent.Get());
 		}
