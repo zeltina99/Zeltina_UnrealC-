@@ -5,6 +5,8 @@
 #include "EnhancedInputSubSystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
+#include "Player/InventoryComponent.h"
+#include "Player/ActionCharacter.h"
 
 void AActionPlayerController::BeginPlay()
 {
@@ -32,6 +34,31 @@ void AActionPlayerController::SetupInputComponent()
 		enhanced->BindAction(IA_Look, ETriggerEvent::Triggered, this, &AActionPlayerController::OnLookInput);
 		enhanced->BindAction(IA_InventoryOnOff, ETriggerEvent::Started, this, &AActionPlayerController::OnInventoryOnOff);
 	}
+}
+
+void AActionPlayerController::OnPossess(APawn* aPawn)
+{
+	Super::OnPossess(aPawn);
+
+	AActionCharacter* player = Cast<AActionCharacter>(aPawn);
+	if (player)
+	{
+		InventoryComponent = player->GetInventoryComponent();
+		if(InventoryWidget.IsValid())
+		{
+			InventoryWidget->InitializeInventoryWidget(InventoryComponent.Get());
+		}
+	}
+}
+
+void AActionPlayerController::OnUnPossess()
+{
+	if (InventoryWidget.IsValid())
+	{
+		InventoryWidget->ClearInventoryWidget();
+	}
+	InventoryComponent = nullptr;
+	Super::OnUnPossess();
 }
 
 void AActionPlayerController::OnLookInput(const FInputActionValue& InValue)
@@ -102,10 +129,19 @@ void AActionPlayerController::CloseInventoryWidget()
 
 void AActionPlayerController::InitializeMainHudWidget(UMainHudWidget* InWidget)
 {
-	MainHudWidget = InWidget;
+	if (InWidget)
+	{
+		MainHudWidget = InWidget;
 
-	// MainHudWidget의 Inventory의 닫힘 델리게이트에 함수 연결
-	FScriptDelegate delegate;
-	delegate.BindUFunction(this, "CloseInventoryWidget");
-	MainHudWidget->AddToInventoryCloseDelegate(delegate);
+		// MainHudWidget의 Inventory의 닫힘 델리게이트에 함수 연결
+		FScriptDelegate delegate;
+		delegate.BindUFunction(this, "CloseInventoryWidget");
+		MainHudWidget->AddToInventoryCloseDelegate(delegate);
+
+		InventoryWidget = MainHudWidget->GetInventoryWidget();
+		if (InventoryWidget.IsValid())
+		{
+			InventoryWidget->InitializeInventoryWidget(InventoryComponent.Get());
+		}
+	}
 }
