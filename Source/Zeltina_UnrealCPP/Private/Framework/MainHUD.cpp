@@ -22,6 +22,10 @@ void AMainHUD::BeginPlay()
 			if (pc)
 			{
 				pc->SetMainHudWidget(MainWidgetInstance);
+
+				FScriptDelegate delegate;
+				delegate.BindUFunction(pc, "CloseInventoryWidget");
+				MainWidgetInstance->AddToInventoryCloseDelegate(delegate);
 			}
 		}
 

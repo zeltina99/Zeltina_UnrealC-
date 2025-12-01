@@ -62,6 +62,12 @@ void AActionPlayerController::OpenInventoryWidget()
 	if (MainHudWidget.IsValid())
 	{
 		MainHudWidget->OpenInventory();
+
+		//FInputModeGameOnly	: 게임 전용(입력이 플레이어 컨트롤러로 우선 전달됨, 마우스 커서가 안보임)
+		//FInputModeUIOnly		: UI가 떠 있을 때 사용(입력이 UI로 먼저 전달됨, 마우스 커서가 보임)
+		//FInputModeGameAndUI	: 마우스를 클릭했을 때 UI가 아래에 있으면 UI로 처리, 없으면 Game으로 처리
+
+		bShowMouseCursor = true;
 	}
 }
 
@@ -69,6 +75,8 @@ void AActionPlayerController::CloseInventoryWidget()
 {
 	if (MainHudWidget.IsValid())
 	{
+		bShowMouseCursor = false;
+
 		MainHudWidget->CloseInventory();
 	}
 }

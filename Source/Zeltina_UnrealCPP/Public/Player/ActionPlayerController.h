@@ -27,13 +27,17 @@ protected:
 
 public:
 	virtual void SetupInputComponent() override;
+
+	void OpenInventoryWidget();
+	UFUNCTION()
+	void CloseInventoryWidget();
+
 	inline void SetMainHudWidget(UMainHudWidget* Widget) { MainHudWidget = Widget; }
 
 private:
 	void OnLookInput(const FInputActionValue& InValue);
 	void OnInventoryOnOff();
-	void OpenInventoryWidget();
-	void CloseInventoryWidget();
+
 
 protected:
 

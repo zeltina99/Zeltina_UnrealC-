@@ -5,7 +5,6 @@
 #include "Player/ActionCharacter.h"
 #include "Player/ResourceComponent.h"
 #include "UI/ResourceWidget.h"
-#include "UI/Inventory/InventoryWidget.h"
 
 void UMainHudWidget::NativeConstruct()
 {
@@ -23,7 +22,7 @@ void UMainHudWidget::NativeConstruct()
 
 		if (UInventoryComponent* inventoryComponent = player->GetInventoryComponent())
 		{
-			Inventory->OnInventoryCloseRequested.AddDynamic(this, &UMainHudWidget::CloseInventory);
+			//Inventory->OnInventoryCloseRequested.AddDynamic(this, &UMainHudWidget::CloseInventory);
 
 			// inventoryComponent의 내용을 바탕으로 InventoryWidget을 채우기
 		}
