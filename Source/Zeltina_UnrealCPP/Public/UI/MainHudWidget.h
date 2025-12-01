@@ -32,6 +32,7 @@ public:
 
 	inline EOpenState GetOpenState() const { return OpenState; }
 
+
 protected:
 	// meta = (BindWidget)	
 	// 위젯 블루프린트 변수와 이 클래스의 변수를 바인드 하겠다라는 의미(=둘이 같은 거라고 설정)
