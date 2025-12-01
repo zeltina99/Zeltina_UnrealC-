@@ -32,7 +32,7 @@ public:
 	UFUNCTION()
 	void CloseInventoryWidget();
 
-	inline void SetMainHudWidget(UMainHudWidget* Widget) { MainHudWidget = Widget; }
+	void InitializeMainHudWidget(UMainHudWidget* InWidget);
 
 private:
 	void OnLookInput(const FInputActionValue& InValue);
