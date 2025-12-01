@@ -110,13 +110,19 @@ void UInventoryComponent::ClearSlotAtIndex(int32 InSlotIndex)
 
 FInvenSlot* UInventoryComponent::GetSlotData(int32 InSlotIndex) 
 {
-	check(IsValidIndex(InSlotIndex));
+	if (!Slots.IsValidIndex(InSlotIndex))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[InventoryComponent] GetSlotData: Invalid Index %d, Num=%d"),
+			InSlotIndex, Slots.Num());
+		return nullptr;
+	}
+	return &Slots[InSlotIndex];
+
 	/*
 	* check	 : 거짓이면 프로그램 종료. shipping 빌드에 포함안됨
 	* verify : 거짓이면 프로그램 종료. shipping 빌드에 포함됨(검사는 안함)
 	* ensure : 거짓이면 로그 출력하고 계속. shipping 빌드에 포함됨
 	*/
-	return &Slots[InSlotIndex];
 }
 
 int32 UInventoryComponent::FindSlotWithItem(UItemDataAsset* InItemData, int32 InStartIndex)
