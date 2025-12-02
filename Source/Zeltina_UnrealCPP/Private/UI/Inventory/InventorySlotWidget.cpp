@@ -8,7 +8,7 @@
 
 void UInventorySlotWidget::InitializeSlot(int32 InIndex, FInvenSlot* InSlotData)
 {
-	index = InIndex;
+	Index = InIndex;
 	SlotData = InSlotData;
 
 	RefreshSlot();
@@ -49,18 +49,17 @@ FReply UInventorySlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry
 {
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))	// 마우스 우클릭했는지 확인
 	{
-		index;
-		if (SlotData)
+		if (SlotData->ItemData)
 		{
-			UE_LOG(LogTemp, Log, TEXT("%d Slot : Right click(%s)"), index, *SlotData->ItemData->ItemName.ToString());
-			OnSlotRightClick
+			UE_LOG(LogTemp, Log, TEXT("Widget %d Slot : Right click(%s)"), Index, *SlotData->ItemData->ItemName.ToString());
+			OnSlotRightClick.ExecuteIfBound(Index);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Log, TEXT("%d Slot : Right click(empty)"), index);
+			UE_LOG(LogTemp, Log, TEXT("Widget %d Slot : Right click(empty)"), Index);
 		}
 		return FReply::Handled();	// 이 마우스 클릭은 완료되었다라고 전달
 	}
 
-	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);	// 나는 처리 안했다. 부모 or 다른 위젯이 처리할거다.
+	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);	// 나는 처리안했다. 부모 or 다른 위젯이 처리할거다.
 }

@@ -7,7 +7,7 @@
 #include "InventorySlotWidget.generated.h"
 
 struct FInvenSlot;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnslotCliked, int32 InslotIndex);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSlotClicked, int32, InSlotIndex);
 /**
  * 
  */
@@ -29,7 +29,7 @@ protected:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 public:
-	FOnslotCliked OnSlotRightClick;
+	FOnSlotClicked OnSlotRightClick;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
@@ -45,7 +45,7 @@ protected:
 	TObjectPtr<class UTextBlock> MaxCountText = nullptr;
 
 private:
-	int32 index = -1;
+	int32 Index = -1;
 
 	FInvenSlot* SlotData = nullptr;
 

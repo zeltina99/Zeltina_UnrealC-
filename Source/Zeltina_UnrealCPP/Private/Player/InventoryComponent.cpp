@@ -74,7 +74,17 @@ int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 void UInventoryComponent::UseItem(int32 InUseIndex)
 {
 	FInvenSlot* slot = GetSlotData(InUseIndex);
-	slot->ItemData
+	//if (slot->ItemData && slot->ItemData->Implements<UUsableItem>())
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 사용됨"), InUseIndex);
+	//	IUsableItem::Execute_UseItem(slot->ItemData, GetOwner());	// 이 컴포넌트를 가지고 있는 액터에게 아이템을 사용해라
+
+	//	UpdateSlotCount(InUseIndex, -1);
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 비어있거나 사용할 수 없는 아이템"), InUseIndex);
+	//}
 }
 
 void UInventoryComponent::SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount)
