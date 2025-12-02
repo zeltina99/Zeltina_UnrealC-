@@ -3,3 +3,6 @@
 
 #include "Data/Usable/UsableItemDataAsset_Pouch.h"
 
+void UUsableItemDataAsset_Pouch::UseItem_Implementation(AActor* InTarget)
+{
+}

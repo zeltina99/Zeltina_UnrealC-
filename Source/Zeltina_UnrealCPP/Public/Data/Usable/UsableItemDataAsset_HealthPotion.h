@@ -13,5 +13,11 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UUsableItemDataAsset_HealthPotion : public UUsableItemDataAsset
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemData|HealthPotion")
+	float HealAmount = 30.0f;
+
+
+public:
+	virtual void UseItem_Implementation(AActor* InTarget) override;
 };

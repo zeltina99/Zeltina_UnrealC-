@@ -14,4 +14,6 @@ class ZELTINA_UNREALCPP_API UUsableItemDataAsset_Pouch : public UUsableItemDataA
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void UseItem_Implementation(AActor* InTarget) override;
 };
