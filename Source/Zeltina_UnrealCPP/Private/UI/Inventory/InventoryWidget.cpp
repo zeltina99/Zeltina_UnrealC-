@@ -16,8 +16,6 @@ void UInventoryWidget::NativeConstruct()
 	{
 		CloseButton->OnClicked.AddDynamic(this, &UInventoryWidget::OnCloseClicked);
 	}
-
-	
 }
 
 void UInventoryWidget::InitializeInventoryWidget(UInventoryComponent* InventoryComponent)
@@ -27,6 +25,16 @@ void UInventoryWidget::InitializeInventoryWidget(UInventoryComponent* InventoryC
 		TargetInventory = InventoryComponent;	// 인벤토리 컴포넌트 저장
 		if (TargetInventory.IsValid())
 		{
+			UE_LOG(LogTemp, Log, TEXT("인벤토리 위젯 초기화"));
+
+			if (SlotGridPanel->GetChildrenCount() != TargetInventory->GetInventorySize())
+			{
+				UE_LOG(LogTemp, Error, TEXT("인벤토리 컴포넌트와 위젯의 슬롯 크기가 다릅니다!!!"));
+				return;
+			}
+
+			TargetInventory->OnInventorySlotChanged.BindUFunction(this, "RefreshSlotWidget");
+
 			int32 size = FMath::Min(SlotGridPanel->GetChildrenCount(), TargetInventory->GetInventorySize());
 			SlotWidgets.Empty(size);
 			for (int i = 0; i < size; i++)
@@ -50,6 +58,14 @@ void UInventoryWidget::RefreshInventoryWidget()
 	}
 }
 
+void UInventoryWidget::RefreshSlotWidget(int32 InSlotIndex)
+{
+	if (IsValidIndex(InSlotIndex))
+	{
+		SlotWidgets[InSlotIndex]->RefreshSlot();
+	}
+}
+
 void UInventoryWidget::ClearInventoryWidget()
 {
 	TargetInventory = nullptr;
@@ -57,5 +73,5 @@ void UInventoryWidget::ClearInventoryWidget()
 
 void UInventoryWidget::OnCloseClicked()
 {
-	OnInventoryCloseRequested.Broadcast();	// 닫힘 버튼이 눌려졌다는 것을 알림
+	OnInventoryCloseRequested.Broadcast();	// 닫힘 버튼이 눌려졌음을 알리기만 함
 }

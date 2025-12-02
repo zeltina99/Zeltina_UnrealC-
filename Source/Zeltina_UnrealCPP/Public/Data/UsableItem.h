@@ -22,6 +22,6 @@ class ZELTINA_UNREALCPP_API IUsableItem
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
-	virtual void UseItem(AActor* InTarget);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ItemData|Usable")
+	void UseItem(AActor* InTarget);
 };
