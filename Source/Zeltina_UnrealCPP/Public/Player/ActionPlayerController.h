@@ -36,6 +36,10 @@ public:
 
 	void InitializeMainHudWidget(UMainHudWidget* InWidget);
 
+	UFUNCTION(BlueprintCallable, Category = "UI|Inventory")
+	void ChangeInventoryTarget(UInventoryComponent* NewTarget);
+
+
 private:
 	void OnLookInput(const FInputActionValue& InValue);
 	void OnInventoryOnOff();

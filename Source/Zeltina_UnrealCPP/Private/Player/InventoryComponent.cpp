@@ -71,6 +71,12 @@ int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 	return remainingCount;
 }
 
+void UInventoryComponent::UseItem(int32 InUseIndex)
+{
+	FInvenSlot* slot = GetSlotData(InUseIndex);
+	slot->ItemData
+}
+
 void UInventoryComponent::SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount)
 {
 	if (IsValidIndex(InSlotIndex))

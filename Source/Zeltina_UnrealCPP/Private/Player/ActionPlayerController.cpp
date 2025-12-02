@@ -145,3 +145,11 @@ void AActionPlayerController::InitializeMainHudWidget(UMainHudWidget* InWidget)
 		}
 	}
 }
+
+void AActionPlayerController::ChangeInventoryTarget(UInventoryComponent* NewTarget)
+{
+	if (NewTarget)
+	{
+		InventoryWidget->InitializeInventoryWidget(NewTarget);
+	}
+}

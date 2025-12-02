@@ -68,6 +68,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	int32 AddItem(UItemDataAsset* InItemData, int32 InCount);
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void UseItem(int32 InUseIndex);
+
 	// 특정 칸에 있는 아이템의 갯수를 조절하는 함수(증가/감소)
 	// InSlotIndex: 변경할 슬롯, InDeltaCount: 변화량
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
@@ -92,7 +95,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	int32 InventorySize = 10;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TArray<FInvenSlot> Slots;
 
 private:
