@@ -42,7 +42,7 @@ void UInventorySlotWidget::ClearSlotWidget() const
 	ItemIconImage->SetBrushFromTexture(nullptr);
 	ItemIconImage->SetBrushTintColor(FLinearColor::Transparent);
 	CountText->SetVisibility(ESlateVisibility::Hidden);
-	SeparateText->SetVisibility(ESlateVisibility::Hidden);
+	SeparateText->SetVisibility(ESlateVisibility::Hidden);                                                                                                              
 	MaxCountText->SetVisibility(ESlateVisibility::Hidden);
 }
 
