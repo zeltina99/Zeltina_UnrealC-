@@ -5,6 +5,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Player/InventoryComponent.h"
+#include "UI/Inventory/InventoryDragDropOperation.h"
 
 void UInventorySlotWidget::InitializeSlot(int32 InIndex, FInvenSlot* InSlotData)
 {
@@ -45,9 +46,44 @@ void UInventorySlotWidget::ClearSlotWidget() const
 	MaxCountText->SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UInventorySlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+	UE_LOG(LogTemp, Log, TEXT("DragDetected : %d Slot"), this->Index);
+	
+	UInventoryDragDropOperation* DragOp = NewObject<UInventoryDragDropOperation>();
+	DragOp->Index = this->Index;
+	DragOp->ItemData = SlotData->ItemData;
+	
+	OutOperation = DragOp;
+}
+
+bool UInventorySlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	UInventoryDragDropOperation* invenOp = Cast<UInventoryDragDropOperation>(InOperation);
+	if (invenOp)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Drop : %d Slot에 %s를 옮기기"), Index, *(invenOp->ItemData->ItemName.ToString()));
+
+		return true;
+	}
+	return false;
+		
+}
+
+void UInventorySlotWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+	UInventoryDragDropOperation* invenOp = Cast<UInventoryDragDropOperation>(InOperation);
+	if (invenOp)
+	{
+		UE_LOG(LogTemp, Log, TEXT("DragCancelled : 바닥에다가 아이템을 버려야 한다."));
+	}
+}
+
 FReply UInventorySlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))	// 마우스 우클릭했는지 확인
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))	// 마우스 오른쪽 버튼 눌렀는지 확인
 	{
 		if (SlotData->ItemData)
 		{
@@ -59,6 +95,13 @@ FReply UInventorySlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry
 			UE_LOG(LogTemp, Log, TEXT("Widget %d Slot : Right click(empty)"), Index);
 		}
 		return FReply::Handled();	// 이 마우스 클릭은 완료되었다라고 전달
+	}
+	else if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))	// 마우스 왼쪽 버튼 눌렀는지 확인
+	{
+		if (SlotData->ItemData)
+		{
+			return FReply::Handled().DetectDrag(TakeWidget(), EKeys::LeftMouseButton);
+		}
 	}
 
 	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);	// 나는 처리안했다. 부모 or 다른 위젯이 처리할거다.
