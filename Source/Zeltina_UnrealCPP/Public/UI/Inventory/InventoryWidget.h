@@ -25,6 +25,9 @@ public:
 	void RefreshInventoryWidget();
 
 	UFUNCTION()
+	void RefreshMoneyPanel(int32 CurrentMoney);
+
+	UFUNCTION()
 	void RefreshSlotWidget(int32 InSlotIndex);
 
 	void ClearInventoryWidget();
@@ -48,6 +51,9 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UUniformGridPanel> SlotGridPanel = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<class UGoldPanelWidget> GoldPanel = nullptr;
 
 private:
 	UPROPERTY()

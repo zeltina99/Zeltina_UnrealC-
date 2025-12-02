@@ -14,6 +14,12 @@ UInventoryComponent::UInventoryComponent()
 	Slots.SetNum(InventorySize);
 }
 
+void UInventoryComponent::AddMoney(int32 InInCome)
+{
+	Money += InInCome;
+	OnInventoryMoneyChanged.ExecuteIfBound(Money);
+}
+
 int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 {
 	// 1. 같은 종류의 아이템이 들어있는 슬롯이 있는지 찾기

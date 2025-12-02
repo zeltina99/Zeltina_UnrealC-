@@ -15,5 +15,12 @@ class ZELTINA_UNREALCPP_API UUsableItemDataAsset_Pouch : public UUsableItemDataA
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemData|GoldPouch", meta = (ClampMin = "0"))
+	int32 MinGold = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemData|GoldPouch", meta = (ClampMin = "0"))
+	int32 MaxGold = 1000;
+
+public:
 	virtual void UseItem_Implementation(AActor* InTarget) override;
 };
