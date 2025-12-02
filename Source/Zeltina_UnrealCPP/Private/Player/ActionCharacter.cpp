@@ -181,6 +181,14 @@ void AActionCharacter::DamageHealth_Implementation(float InDamage)
 	}
 }
 
+void AActionCharacter::RecoveryStamina_Implementation(float InRecovery)
+{
+	if (Resource)
+	{
+		Resource->AddStamina(InRecovery);
+	}
+}
+
 void AActionCharacter::EquipWeapon(EWeaponCode WeaponCode)
 {
 	if (CurrentWeapon.IsValid())

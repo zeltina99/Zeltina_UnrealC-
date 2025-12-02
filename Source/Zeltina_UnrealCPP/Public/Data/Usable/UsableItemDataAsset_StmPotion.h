@@ -13,6 +13,10 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UUsableItemDataAsset_StmPotion : public UUsableItemDataAsset
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemData|StaminaPotion")
+	float RecoveryAmount = 30.0f;
 	
 public:
 	virtual void UseItem_Implementation(AActor* InTarget) override;

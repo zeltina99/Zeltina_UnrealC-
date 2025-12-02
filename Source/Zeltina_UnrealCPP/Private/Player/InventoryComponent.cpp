@@ -2,6 +2,7 @@
 
 
 #include "Player/InventoryComponent.h"
+#include "Data/UsableItem.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -10,7 +11,7 @@ UInventoryComponent::UInventoryComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
+	Slots.SetNum(InventorySize);
 }
 
 int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
@@ -27,7 +28,7 @@ int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 	// 3. 남아있는 InCount를 리턴하고 종료.
 
 	int32 remainingCount = InCount;
-	if (InItemData && InCount > 0)	// 추가가 가능할 때만 추가
+	if (InItemData && InCount > 0)	// 추가가 가능할 때만 추가s
 	{
 		
 		// 같은 종류의 아이템이 들어있는 슬롯을 찾아 추가하기
@@ -74,17 +75,17 @@ int32 UInventoryComponent::AddItem(UItemDataAsset* InItemData, int32 InCount)
 void UInventoryComponent::UseItem(int32 InUseIndex)
 {
 	FInvenSlot* slot = GetSlotData(InUseIndex);
-	//if (slot->ItemData && slot->ItemData->Implements<UUsableItem>())
-	//{
-	//	UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 사용됨"), InUseIndex);
-	//	IUsableItem::Execute_UseItem(slot->ItemData, GetOwner());	// 이 컴포넌트를 가지고 있는 액터에게 아이템을 사용해라
+	if (slot->ItemData && slot->ItemData->Implements<UUsableItem>())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 사용됨"), InUseIndex);
+		IUsableItem::Execute_UseItem(slot->ItemData, GetOwner());	// 이 컴포넌트를 가지고 있는 액터에게 아이템을 사용해라
 
-	//	UpdateSlotCount(InUseIndex, -1);
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 비어있거나 사용할 수 없는 아이템"), InUseIndex);
-	//}
+		UpdateSlotCount(InUseIndex, -1);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Inven %d Slot : 비어있거나 사용할 수 없는 아이템"), InUseIndex);
+	}
 }
 
 void UInventoryComponent::SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount)
@@ -126,19 +127,13 @@ void UInventoryComponent::ClearSlotAtIndex(int32 InSlotIndex)
 
 FInvenSlot* UInventoryComponent::GetSlotData(int32 InSlotIndex) 
 {
-	if (!Slots.IsValidIndex(InSlotIndex))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("[InventoryComponent] GetSlotData: Invalid Index %d, Num=%d"),
-			InSlotIndex, Slots.Num());
-		return nullptr;
-	}
-	return &Slots[InSlotIndex];
-
+	check(IsValidIndex(InSlotIndex));
 	/*
 	* check	 : 거짓이면 프로그램 종료. shipping 빌드에 포함안됨
 	* verify : 거짓이면 프로그램 종료. shipping 빌드에 포함됨(검사는 안함)
 	* ensure : 거짓이면 로그 출력하고 계속. shipping 빌드에 포함됨
 	*/
+	return &Slots[InSlotIndex];
 }
 
 int32 UInventoryComponent::FindSlotWithItem(UItemDataAsset* InItemData, int32 InStartIndex)
