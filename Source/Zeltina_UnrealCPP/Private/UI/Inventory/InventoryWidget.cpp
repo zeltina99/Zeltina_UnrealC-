@@ -48,6 +48,9 @@ void UInventoryWidget::InitializeInventoryWidget(UInventoryComponent* InventoryC
 				UInventorySlotWidget* slotWidget = Cast<UInventorySlotWidget>(SlotGridPanel->GetChildAt(i));
 				slotWidget->InitializeSlot(TargetInventory.Get(), i);
 
+				slotWidget->OnSlotEnter.AddDynamic(this, &UInventoryWidget::OpenDetailInfo);
+				slotWidget->OnSlotLeave.AddDynamic(this, &UInventoryWidget::CloseDetailInfo);
+
 				SlotWidgets.Add(slotWidget);	// 연결이 끝난 슬롯을 SlotWidgets에 순서대로 저장
 			}
 		}
@@ -95,4 +98,18 @@ bool UInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 void UInventoryWidget::OnCloseClicked()
 {
 	OnInventoryCloseRequested.Broadcast();	// 닫힘 버튼이 눌려졌음을 알리기만 함
+}
+
+void UInventoryWidget::OpenDetailInfo(int InSlotIndex)
+{
+	if(TargetInventory.IsValid())
+	{
+		//DetailInfoPanel->Open
+	}
+
+}
+
+void UInventoryWidget::CloseDetailInfo()
+{
+	//DetailInfoPanel->Close();
 }

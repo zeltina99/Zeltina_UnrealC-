@@ -1,0 +1,55 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "UI/Inventory/DetailInfoWidget.h"
+#include "Data/ItemDataAsset.h"
+#include "Components/TextBlock.h"
+#include "Components/Image.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+
+
+void UDetailInfoWidget::Open(UItemDataAsset* InItemData)
+{
+	SetInfo(InItemData);
+	UpdateLocation();
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+}
+
+void UDetailInfoWidget::Close()
+{
+	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UDetailInfoWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
+}
+
+void UDetailInfoWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	UpdateLocation();
+}
+
+void UDetailInfoWidget::SetInfo(UItemDataAsset* InItemData)
+{
+	if (InItemData)
+	{
+		ItemNameText->SetText(InItemData->ItemName);
+		ItemDescriptionText->SetText(InItemData->ItemDescription);
+		ItemPriceText->SetText(FText::AsNumber(InItemData->ItemPrice));
+		ItemIconImage->SetBrushFromTexture(InItemData->ItemIcon);
+	}
+}
+
+void UDetailInfoWidget::UpdateLocation()
+{
+	if (!PlayerController)
+	{
+		PlayerController = GetWorld()->GetFirstPlayerController();
+	}
+	FVector2D MousePosition = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
+	CanvasSlot->SetPosition(MousePosition - ParentPosition);
+}
