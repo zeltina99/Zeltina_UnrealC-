@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Player/InventoryComponent.h"
 #include "InventorySlotWidget.generated.h"
 
-struct FInvenSlot;
+//struct FInvenSlot;
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSlotClicked, int32, InSlotIndex);
 /**
  * 
@@ -15,10 +16,10 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UInventorySlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	// 이 위젯이 보여줄 데이터를 세팅
-	void InitializeSlot(int32 InIndex, FInvenSlot* InSlotData);
+	void InitializeSlot(UInventoryComponent* InInventoryComponent, int32 InIndex);
 
 	// 설정된 데이터를 기반으로 위젯에서 표시하는 내용을 갱신
 	void RefreshSlot() const;
@@ -42,21 +43,23 @@ public:
 	FOnSlotClicked OnSlotRightClick;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|IventorySlot", meta = (BindWidget))
 	TObjectPtr<class UImage> ItemIconImage = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|IventorySlot", meta = (BindWidget))
 	TObjectPtr<class UTextBlock> CountText = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|IventorySlot", meta = (BindWidget))
 	TObjectPtr<class UTextBlock> SeparateText = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|InventorySlot", meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|IventorySlot", meta = (BindWidget))
 	TObjectPtr<class UTextBlock> MaxCountText = nullptr;
 
 private:
 	int32 Index = -1;
 
-	FInvenSlot* SlotData = nullptr;
+	FInvenSlot* SlotData = nullptr;	// 구조체는 TWeakObjectPtr이 인식을 못하는 것 같다.
 
+	UPROPERTY()
+	TWeakObjectPtr<UInventoryComponent> TargetInventory = nullptr;
 };

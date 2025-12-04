@@ -17,8 +17,11 @@ class ZELTINA_UNREALCPP_API UInventoryDragDropOperation : public UDragDropOperat
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-	int32 Index = -1;
+	int32 StartIndex = -1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-	TWeakObjectPtr<class UItemDataAsset> ItemData = nullptr;
+	TWeakObjectPtr<UItemDataAsset> ItemData = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
+	int32 Count = 0;
 };

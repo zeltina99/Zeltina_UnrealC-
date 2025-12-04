@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Data/ItemDataAsset.h"
+#include "UI/Inventory/TemporarySlotWidget.h"
 #include "InventoryComponent.generated.h"
 
 USTRUCT(BlueprintType)
@@ -17,30 +18,32 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 	TObjectPtr<UItemDataAsset> ItemData = nullptr;
 
-	// 헬퍼
+	// 헬퍼------------------------------------------------------------------------------------
 	// 이 슬롯이 비어있는지 확인하는 함수
-	bool IsEmpty() const { return ItemData == nullptr || Count < 1; }
+	inline bool IsEmpty() const { return ItemData == nullptr || Count < 1; }
 	// 이 슬롯이 가득차있는지 확인하는 함수
-	bool IsFull() const { return ItemData && Count >= ItemData->ItemMaxStackCount; }
+	inline bool IsFull() const { return ItemData && Count >= ItemData->ItemMaxStackCount; }
 	// 슬롯을 비우는 함수
-	void Clear()
+	inline void Clear()
 	{
 		ItemData = nullptr;
 		Count = 0;
 	}
 
 	// getter/setter
-	int32 GetCount() const { return Count; }
-	void SetCount(int32 NewCount) {
-		if(ItemData && NewCount > 0)
+	inline int32 GetRemainingCount() const { return ItemData ? ItemData->ItemMaxStackCount - Count : 0; }
+	inline int32 GetCount() const { return Count; }
+	inline void SetCount(int32 NewCount) {
+		if (ItemData && NewCount > 0)
 		{
-			Count = FMath::Min(NewCount, ItemData->ItemMaxStackCount);
+			Count = FMath::Min(NewCount, ItemData->ItemMaxStackCount);	// NewCount는 0~ItemMaxStackCount 범위의 값
 		}
 		else
 		{
 			Clear();
 		}
 	}
+
 protected:
 	// 이 슬롯에 아이템이 몇개 스택되어 있는지 기록
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
@@ -74,7 +77,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void AddMoney(int32 InInCome);
+	void AddMoney(int32 InIncome);
 
 	// 아이템을 추가하는 함수(리턴:못먹은 아이템의 수, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수)
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
@@ -93,6 +96,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void ClearSlotAtIndex(int32 InSlotIndex);
 
+	// 아이템을 특정칸에 추가하는 함수(초기화, 로딩 등에 사용)
+	// InSlotIndex: 아이템이 추가될 슬롯, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수	
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount);
+
 	// 특정 슬롯을 확인하기 위한 함수. 읽기 전용. (InSlotIndex: 확인할 슬롯)	
 	FInvenSlot* GetSlotData(int32 InSlotIndex);
 
@@ -104,26 +112,29 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	inline int32 GetInventorySize() const { return InventorySize; }
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	inline TSubclassOf<UTemporarySlotWidget> GetTemporarySlotWidgetClass() const { return TemporarySlotWidgetClass; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	int32 InventorySize = 10;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory")
+	TSubclassOf<UTemporarySlotWidget> TemporarySlotWidgetClass = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Money")
 	int32 Money = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Slot")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory|Slot")
 	TArray<FInvenSlot> Slots;
 
 
 private:
-	// 아이템을 특정칸에 추가하는 함수(초기화, 로딩 등에 사용)
-	// InSlotIndex: 아이템이 추가될 슬롯, InItemData: 추가되는 아이템의 종류, InCount: 추가되는 아이템의 갯수	
-	void SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InItemData, int32 InCount);
-
 	// 같은 종류의 아이템이 있는 슬롯을 찾는 함수
 	// InItemData: 비교할 아이템의 종류, InStartIndex: 찾기 시작할 인덱스
 	int32 FindSlotWithItem(UItemDataAsset* InItemData, int32 InStartIndex = 0);
 
 	// 비어있는 슬롯을 찾는 함수
 	int32 FindEmptySlot();
+
 };
