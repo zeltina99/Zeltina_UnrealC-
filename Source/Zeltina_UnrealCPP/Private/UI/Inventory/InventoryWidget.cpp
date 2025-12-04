@@ -50,6 +50,7 @@ void UInventoryWidget::InitializeInventoryWidget(UInventoryComponent* InventoryC
 
 				slotWidget->OnSlotEnter.AddDynamic(this, &UInventoryWidget::OpenDetailInfo);
 				slotWidget->OnSlotLeave.AddDynamic(this, &UInventoryWidget::CloseDetailInfo);
+				slotWidget->OnDragDropCanceled.AddDynamic(this, &UInventoryWidget::CloseDetailInfo);
 
 				SlotWidgets.Add(slotWidget);	// 연결이 끝난 슬롯을 SlotWidgets에 순서대로 저장
 			}

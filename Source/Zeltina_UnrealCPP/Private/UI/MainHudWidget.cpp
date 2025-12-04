@@ -5,9 +5,12 @@
 #include "Player/ActionCharacter.h"
 #include "Player/ResourceComponent.h"
 #include "UI/ResourceWidget.h"
+#include "UI/Shop/ShopWidget.h"
 
 void UMainHudWidget::NativeConstruct()
 {
+	CloseInventory();
+
 	AActionCharacter* player = Cast<AActionCharacter>(GetOwningPlayerPawn());
 	if(player)
 	{
@@ -26,6 +29,13 @@ void UMainHudWidget::NativeConstruct()
 
 			// inventoryComponent의 내용을 바탕으로 InventoryWidget을 채우기
 		}
+	}
+
+	if (Inventory && Shop)
+	{
+		FScriptDelegate sellDelegate;
+		sellDelegate.BindUFunction(Inventory, "CloseDetailInfo");
+		Shop->AddToItemSellDelegate(sellDelegate);
 	}
 }
 
