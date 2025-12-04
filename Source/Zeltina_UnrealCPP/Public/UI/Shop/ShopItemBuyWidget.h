@@ -54,4 +54,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
 	TObjectPtr<UOverlay> SoldOut = nullptr;
 
+private:
+	static const int32 MinimumItemCount = 1;
+
 };

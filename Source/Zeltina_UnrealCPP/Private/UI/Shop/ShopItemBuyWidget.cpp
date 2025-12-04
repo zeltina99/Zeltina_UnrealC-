@@ -17,6 +17,7 @@ void UShopItemBuyWidget::NativeConstruct()
 
 	if (ItemCount)
 	{
+		ItemCount->SetHintText(FText::AsNumber(MinimumItemCount));
 		ItemCount->OnTextChanged.AddDynamic(this, &UShopItemBuyWidget::OnItemCountTextChanged);		// 변경이 있을 때
 		ItemCount->OnTextCommitted.AddDynamic(this, &UShopItemBuyWidget::OnItemCountTextCommitted);		// 변경을 확정했을 때(엔터친 후, 포커스를 잃은 후)
 	}
@@ -25,8 +26,28 @@ void UShopItemBuyWidget::NativeConstruct()
 void UShopItemBuyWidget::OnItemCountTextChanged(const FText& Text)
 {
 	UE_LOG(LogTemp, Log, TEXT("Changed : %s"), *Text.ToString());
+
+	FString number = Text.ToString();
+	if (number.IsNumeric())
+	{
+		int32 count = FCString::Atoi(*number);
+		ItemCount->SetText(FText::AsNumber(count));
+	}
+
 }
 
 void UShopItemBuyWidget::OnItemCountTextCommitted(const FText& Text, ETextCommit::Type CommitMethod)
 {
+	UE_LOG(LogTemp, Log, TEXT("Committed : %s"), *Text.ToString());
+
+	FString number = Text.ToString();
+	if (number.IsNumeric())
+	{
+		int32 count = FCString::Atoi(*number);
+		ItemCount->SetText(FText::AsNumber(count));
+	}
+	else
+	{
+		ItemCount->SetText(FText::AsNumber(MinimumItemCount));
+	}
 }
