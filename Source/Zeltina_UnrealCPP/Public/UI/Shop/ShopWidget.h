@@ -13,11 +13,27 @@ UCLASS()
 class ZELTINA_UNREALCPP_API UShopWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void NativeConstruct() override;
+
 public:
 	void AddToItemSellDelegate(const FScriptDelegate& Delegate);
 
 protected:
+	void ResetShopItemListWidget();
+
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|Sell", meta = (BindWidget))
 	TObjectPtr<class UShopItemSellWidget> ItemSellWidget = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Shop|Buy", meta = (BindWidget))
+	TObjectPtr<class UShopItemListWidget> ItemListWidget = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Shop", meta = (BindWidget))
+	TObjectPtr<class UButton> Exit = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shop|Buy")
+	TWeakObjectPtr<UDataTable> ShopItemList = nullptr;
 
 };

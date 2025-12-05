@@ -22,12 +22,18 @@ class ZELTINA_UNREALCPP_API UShopItemBuyWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 
+public:
+	void SetItemData(const class UItemDataAsset* ItemData, int32 StockCount);
+
 private:
 	UFUNCTION()
 	void OnItemCountTextChanged(const FText& Text);
 
 	UFUNCTION()
 	void OnItemCountTextCommitted(const FText& Text, ETextCommit::Type CommitMethod);
+
+	//UFUNCTION()
+	//void SetItemData(UItemDataAsset* ItemData, int32 StockCount);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
@@ -40,7 +46,7 @@ protected:
 	TObjectPtr<UTextBlock> ItemPrice = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
-	TObjectPtr<UTextBlock> ItemStorckCount = nullptr;
+	TObjectPtr<UTextBlock> ItemStockCount = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
 	TObjectPtr<UTextBlock> ItemDescription = nullptr;
