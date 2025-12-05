@@ -21,7 +21,7 @@ public:
 	void ResetItemList(UDataTable* ItemList);
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<class UVerticalBox> ItemBuyContainer;
 
 	UPROPERTY(BlueprintReadOnly)

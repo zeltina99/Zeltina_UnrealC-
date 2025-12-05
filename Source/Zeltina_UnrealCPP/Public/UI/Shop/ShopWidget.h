@@ -33,7 +33,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop", meta = (BindWidget))
 	TObjectPtr<class UButton> Exit = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shop|Buy")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop|Buy")
 	TWeakObjectPtr<UDataTable> ShopItemList = nullptr;
 
 };
