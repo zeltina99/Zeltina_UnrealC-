@@ -79,7 +79,7 @@ void UShopItemBuyWidget::OnBuyButtonClicked()
 	UE_LOG(LogTemp, Log, TEXT("구매 버튼 클릭"));
 }
 
-void UShopItemBuyWidget::UpdateBuyButton()
+void UShopItemBuyWidget::UpdateBuyButton() const
 {
 	APawn* player = GetOwningPlayerPawn();
 	if (player->Implements<UInventoryOwner>())

@@ -52,7 +52,7 @@ protected:
 };
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventorySlotChanged, int32, InIndex);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryMoneyChanged, int32, CurrentMoney);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryMoneyChanged, int32, CurrentMoney);
 
 // 여러개의 아이템 슬롯을 가진다.
 // 하나의 슬롯에는 한 종류의 아이템만 들어간다.

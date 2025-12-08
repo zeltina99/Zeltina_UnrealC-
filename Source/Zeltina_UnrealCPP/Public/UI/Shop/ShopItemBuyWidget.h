@@ -25,6 +25,8 @@ protected:
 public:
 	void SetItemData(const class UItemDataAsset* ItemData, int32 StockCount);
 
+	// 버튼의 활성화/비활성화를 업데이트하는 함수
+	void UpdateBuyButton() const;
 private:
 	UFUNCTION()
 	void OnItemCountTextChanged(const FText& Text);
@@ -35,8 +37,6 @@ private:
 	UFUNCTION()
 	void OnBuyButtonClicked();
 
-	// 버튼의 활성화/비활성화를 업데이트하는 함수
-	void UpdateBuyButton();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
