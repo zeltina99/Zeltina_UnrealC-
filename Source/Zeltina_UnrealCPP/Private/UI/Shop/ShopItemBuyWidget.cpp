@@ -28,17 +28,16 @@ void UShopItemBuyWidget::NativeConstruct()
 	}
 }
 
-void UShopItemBuyWidget::SetItemData(const UItemDataAsset* InItemData, int32 InStockCount)
+void UShopItemBuyWidget::SetItemData(UItemDataAsset* InItemData, int32 InStockCount)
 {
 	ItemIcon->SetBrushFromTexture(InItemData->ItemIcon);
 	ItemName->SetText(InItemData->ItemName);
 	ItemPrice->SetText(FText::AsNumber(InItemData->ItemPrice));
-	ItemStockCount->SetText(FText::AsNumber(InStockCount));
 	ItemDescription->SetText(InItemData->ItemDescription);;
 
-	StockCount = InStockCount;
-	BuyCount = MinimumBuyCount;
 	ItemData = InItemData;
+	SetStockCount(InStockCount);
+	SetBuyCount(MinimumBuyCount);
 
 	UpdateBuyButton();
 }
@@ -50,9 +49,7 @@ void UShopItemBuyWidget::OnItemCountTextChanged(const FText& Text)
 	FString number = Text.ToString();
 	if (number.IsNumeric())
 	{
-		BuyCount = FMath::Clamp(FCString::Atoi(*number), MinimumBuyCount, StockCount);	// 갯수는 1~StockCount 사이
-		ItemCount->SetText(FText::AsNumber(BuyCount));
-
+		SetBuyCount(FMath::Clamp(FCString::Atoi(*number), MinimumBuyCount, StockCount)); // 갯수는 1~StockCount 사이
 		UpdateBuyButton();
 	}
 
@@ -65,27 +62,68 @@ void UShopItemBuyWidget::OnItemCountTextCommitted(const FText& Text, ETextCommit
 	FString number = Text.ToString();
 	if (number.IsNumeric())
 	{
-		int32 count = FCString::Atoi(*number);
-		ItemCount->SetText(FText::AsNumber(count));
+		SetBuyCount(FCString::Atoi(*number));
 	}
 	else
 	{
-		ItemCount->SetText(FText::AsNumber(MinimumBuyCount));
+		SetBuyCount(MinimumBuyCount);
 	}
 }
 
 void UShopItemBuyWidget::OnBuyButtonClicked()
 {
 	UE_LOG(LogTemp, Log, TEXT("구매 버튼 클릭"));
+
+	APawn* player = GetOwningPlayerPawn();
+	if (player->Implements<UInventoryOwner>())
+	{
+		IInventoryOwner::Execute_AddItem(player, ItemData.Get(), BuyCount);
+		IInventoryOwner::Execute_RemoveMoney(player, ItemData->ItemPrice * BuyCount);
+		//StockCount -= BuyCount;
+		SetStockCount(StockCount - BuyCount);
+		SetBuyCount(MinimumBuyCount);
+		if (StockCount > MinimumBuyCount)
+		{
+			// 매진 표시
+		}
+	}
+
+}
+
+void UShopItemBuyWidget::SetStockCount(int32 InCount)
+{
+	StockCount = InCount;
+	ItemStockCount->SetText(FText::AsNumber(StockCount));
+	UpdateBuyButton();
+}
+
+void UShopItemBuyWidget::SetBuyCount(int32 InCount)
+{
+	BuyCount = InCount;
+	if (BuyCount > MinimumBuyCount)
+	{
+		ItemCount->SetText(FText::AsNumber(BuyCount));
+	}
+	else
+	{
+		ItemCount->SetText(FText::GetEmpty());
+	}
 }
 
 void UShopItemBuyWidget::UpdateBuyButton() const
 {
-	APawn* player = GetOwningPlayerPawn();
-	if (player->Implements<UInventoryOwner>())
+	if (StockCount < MinimumBuyCount)
 	{
-		// 플레이어의 돈 상태 확인해서 버튼 활성화/비활성화
-		bool hasEnoughMoney = IInventoryOwner::Execute_HasEnoughMoney(player, BuyCount * ItemData->ItemPrice);
-		ItemBuy->SetIsEnabled(hasEnoughMoney);
+		ItemBuy->SetIsEnabled(false);
 	}
+	else
+	{
+		APawn* player = GetOwningPlayerPawn();
+		if (player->Implements<UInventoryOwner>())
+		{
+			// 플레이어의 돈 상태 확인해서 버튼 활성화/비활성화
+			bool hasEnoughMoney = IInventoryOwner::Execute_HasEnoughMoney(player, BuyCount * ItemData->ItemPrice);
+			ItemBuy->SetIsEnabled(hasEnoughMoney);
+		}
+	}	
 }
