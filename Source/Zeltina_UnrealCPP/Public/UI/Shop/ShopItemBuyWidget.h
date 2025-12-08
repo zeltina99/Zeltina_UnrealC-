@@ -32,8 +32,11 @@ private:
 	UFUNCTION()
 	void OnItemCountTextCommitted(const FText& Text, ETextCommit::Type CommitMethod);
 
-	//UFUNCTION()
-	//void SetItemData(UItemDataAsset* ItemData, int32 StockCount);
+	UFUNCTION()
+	void OnBuyButtonClicked();
+
+	// 버튼의 활성화/비활성화를 업데이트하는 함수
+	void UpdateBuyButton();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Shop|ItemSell", meta = (BindWidget))
@@ -61,6 +64,15 @@ protected:
 	TObjectPtr<UOverlay> SoldOut = nullptr;
 
 private:
-	static const int32 MinimumItemCount = 1;
+	// 최소 구매 갯수
+	static const int32 MinimumBuyCount = 1;
+	
+	// 현재 구매 가능한 갯수
+	int32 StockCount = 0;
 
+	// 현재 사려고 하는 갯수
+	int32 BuyCount = MinimumBuyCount;
+
+	// 현재 사려고하는 아이템의 데이터에셋
+	TWeakObjectPtr<const UItemDataAsset> ItemData = nullptr;
 };

@@ -115,6 +115,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	inline TSubclassOf<UTemporarySlotWidget> GetTemporarySlotWidgetClass() const { return TemporarySlotWidgetClass; }
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	inline int32 GetMoney() { return Money; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	int32 InventorySize = 10;
