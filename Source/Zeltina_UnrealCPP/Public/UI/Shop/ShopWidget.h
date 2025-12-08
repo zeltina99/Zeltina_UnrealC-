@@ -18,6 +18,8 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
+	void InitializeShop(UDataTable* ItemList);
+
 	void AddToItemSellDelegate(const FScriptDelegate& Delegate);
 
 	UFUNCTION()

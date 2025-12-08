@@ -9,6 +9,7 @@
 #include "Player/InventoryOwner.h"
 #include "Player/HasHealth.h"
 #include "Player/HasStamina.h"
+#include "Player/Interactor.h"
 #include "ActionCharacter.generated.h"
 
 class UInputAction;
@@ -19,7 +20,7 @@ class UInventoryComponent;
 //class UAnimNotifyState_SectionJump;
 
 UCLASS()
-class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter, public IInventoryOwner, public IHasHealth, public IHasStamina
+class ZELTINA_UNREALCPP_API AActionCharacter : public ACharacter, public IInventoryOwner, public IHasHealth, public IHasStamina, public IInteractor
 {
 	GENERATED_BODY()
 
@@ -51,6 +52,11 @@ public:
 
 	// IHasStamina 인터페이스 함수 구현
 	virtual void RecoveryStamina_Implementation(float InRecovery) override;
+
+	// IInteractor 인터페이스 함수 구현
+	virtual void AddInteractionTarget_Implementation(AActor* InTarget) override;
+	virtual void ClearInteractionTarget_Implementation(AActor* InTarget) override;
+	virtual void TryInteraction_Implementation() override;
 
 	// 무기를 장비하는 함수
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
@@ -98,6 +104,9 @@ protected:
 	
 	// 공격 입력 받기
 	void OnAttackInput(const FInputActionValue& InValue);
+
+	// 상호작용 입력 받기
+	void OnInteractionInput(const FInputActionValue& InValue);
 	
 
 	// 달리기 모드 설정
@@ -127,6 +136,12 @@ private:
 	// 사용 중이던 무기를 버리는 함수
 	void DropCurrentWeapon(EWeaponCode WeaponCode);
 
+	// 이 캐릭터와 타겟들간의 거리를 확인해서 true면 InTarget2가 더 가깝고 false면 InTarget1이 더 가깝다.
+	bool IsChangeOrder(AActor* InTarget1, AActor* InTarget2);
+
+	// 매 틱마다 상호작용 대상의 순서를 조정하는 함수
+	void UpdateInteractionTargetOrder();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
 	TObjectPtr<class USpringArmComponent> SpringArm = nullptr;
@@ -152,6 +167,8 @@ protected:
 	TObjectPtr<UInputAction> IA_Roll = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Attack = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Interaction = nullptr;
 
 	// 달리기 속도
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Movement")
@@ -209,4 +226,7 @@ private:
 	// 콤보가 가능한 상황인지 확인하기 위한 플래그
 	bool bComboReady = false;
 
+	// 상호작용 대상
+	UPROPERTY(VisibleAnywhere)
+	TArray<TWeakObjectPtr<AActor>> InteractionTargets;
 };

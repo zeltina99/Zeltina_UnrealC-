@@ -22,6 +22,7 @@
 #include "Item/PickupWeapon.h"
 #include "Item/Pickupitem.h"
 #include "Framework/PickupFactorySubsystem.h"
+#include "NPC/Interactable.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -81,6 +82,7 @@ void AActionCharacter::BeginPlay()
 	// 캐릭터에 다른 액터가 오버랩되었을 때 실행하기 위한 바인딩
 	OnActorBeginOverlap.AddDynamic(this, &AActionCharacter::OnBeginOverlap);
 
+	InteractionTargets.Empty();
 }
 
 // Called every frame
@@ -89,6 +91,7 @@ void AActionCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SpendRunStamina(DeltaTime);
+	UpdateInteractionTargetOrder();
 	
 }
 
@@ -111,6 +114,7 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 			});
 		enhanced->BindAction(IA_Roll, ETriggerEvent::Triggered, this, &AActionCharacter::OnRollInput);
 		enhanced->BindAction(IA_Attack, ETriggerEvent::Triggered, this, &AActionCharacter::OnAttackInput);
+		enhanced->BindAction(IA_Interaction, ETriggerEvent::Triggered, this, &AActionCharacter::OnInteractionInput);
 	}
 }
 
@@ -193,6 +197,31 @@ void AActionCharacter::RecoveryStamina_Implementation(float InRecovery)
 	if (Resource)
 	{
 		Resource->AddStamina(InRecovery);
+	}
+}
+
+void AActionCharacter::AddInteractionTarget_Implementation(AActor* InTarget)
+{
+	if(InTarget->Implements<UInteractable>())
+	{
+		InteractionTargets.Add(InTarget);
+
+		UpdateInteractionTargetOrder();
+
+		
+	}
+}
+
+void AActionCharacter::ClearInteractionTarget_Implementation(AActor* InTarget)
+{
+	InteractionTargets.RemoveSingle(InTarget);
+}
+
+void AActionCharacter::TryInteraction_Implementation()
+{
+	if(InteractionTargets.IsEmpty())
+	{
+		IInteractable::Execute_OnInteraction(InteractionTargets[0].Get());
 	}
 }
 
@@ -369,6 +398,11 @@ void AActionCharacter::OnAttackInput(const FInputActionValue& InValue)
 	}
 }
 
+void AActionCharacter::OnInteractionInput(const FInputActionValue& InValue)
+{
+	IInteractor::Execute_TryInteraction(this);
+}
+
 void AActionCharacter::SetSprintMode()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("달리기 모드"));
@@ -466,6 +500,29 @@ void AActionCharacter::DropCurrentWeapon(EWeaponCode WeaponCode)
 			if (pickupWeapon && conWeapon)
 			{
 				pickupWeapon->SetWeaponUseCount(conWeapon->GetRemainingUseCount());
+			}
+		}
+	}
+}
+
+bool AActionCharacter::IsChangeOrder(AActor* InTarget1, AActor* InTarget2)
+{
+	float distanceOld = FVector::DistSquared(GetActorLocation(), InTarget1->GetActorLocation());
+	float distanceNew = FVector::DistSquared(GetActorLocation(), InTarget2->GetActorLocation());
+	return distanceNew < distanceOld;
+}
+
+void AActionCharacter::UpdateInteractionTargetOrder()
+{
+	if (InteractionTargets.Num() > 1)	// 최소한으로 실행하기 위해 2개 이상일 때만 처리
+	{
+		for (int i = InteractionTargets.Num() - 1; i > 0; i--)
+		{
+			if (IsChangeOrder(InteractionTargets[i - 1].Get(), InteractionTargets[i].Get()))
+			{
+				AActor* temp = InteractionTargets[i - 1].Get();
+				InteractionTargets[i - 1] = InteractionTargets[i].Get();
+				InteractionTargets[i] = temp;
 			}
 		}
 	}

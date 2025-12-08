@@ -11,6 +11,12 @@ void UShopWidget::NativeConstruct()
 	ResetShopItemListWidget();
 }
 
+void UShopWidget::InitializeShop(UDataTable* ItemList)
+{
+	ShopItemList = ItemList;
+	ResetShopItemListWidget();
+}
+
 void UShopWidget::AddToItemSellDelegate(const FScriptDelegate& Delegate)
 {
 	ItemSellWidget->OnItemSell.Add(Delegate);

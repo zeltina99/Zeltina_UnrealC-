@@ -131,7 +131,7 @@ void UShopItemBuyWidget::UpdateBuyButton() const
 	else
 	{
 		APawn* player = GetOwningPlayerPawn();
-		if (player->Implements<UInventoryOwner>())
+		if (player && player->Implements<UInventoryOwner>())
 		{
 			// 플레이어의 돈 상태 확인해서 버튼 활성화/비활성화
 			bool hasEnoughMoney = IInventoryOwner::Execute_HasEnoughMoney(player, BuyCount * ItemData->ItemPrice);
