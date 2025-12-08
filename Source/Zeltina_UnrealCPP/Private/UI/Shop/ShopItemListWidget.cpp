@@ -63,7 +63,7 @@ void UShopItemListWidget::ResetItemList(UDataTable* ItemList)
 
 void UShopItemListWidget::UpdateAllBuyButton()
 {
-	for (const UShopItemBuyWidget* item : ShopItems)
+	for (const UShopItemBuyWidget* item : ShopItems)	// 자신이 가진 판매 아이템 목록들의 구매버튼 업데이트 지시
 	{
 		item->UpdateBuyButton();
 	}
