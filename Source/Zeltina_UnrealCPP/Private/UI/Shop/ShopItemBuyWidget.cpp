@@ -26,10 +26,18 @@ void UShopItemBuyWidget::NativeConstruct()
 	{
 		ItemBuy->OnClicked.AddDynamic(this, &UShopItemBuyWidget::OnBuyButtonClicked);
 	}
+
+	if (SoldOut)
+	{
+		SoldOut->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
-void UShopItemBuyWidget::SetItemData(UItemDataAsset* InItemData, int32 InStockCount)
+void UShopItemBuyWidget::InitializeItemBuy(UItemDataAsset* InItemData, int32 InStockCount)
 {
+	ItemCount->SetIsEnabled(true);
+	SoldOut->SetVisibility(ESlateVisibility::Hidden);
+
 	ItemIcon->SetBrushFromTexture(InItemData->ItemIcon);
 	ItemName->SetText(InItemData->ItemName);
 	ItemPrice->SetText(FText::AsNumber(InItemData->ItemPrice));
@@ -82,9 +90,13 @@ void UShopItemBuyWidget::OnBuyButtonClicked()
 		//StockCount -= BuyCount;
 		SetStockCount(StockCount - BuyCount);
 		SetBuyCount(MinimumBuyCount);
-		if (StockCount > MinimumBuyCount)
+		if (StockCount < MinimumBuyCount)
 		{
+			// 갯수 입력 금지
+			ItemCount->SetIsEnabled(false);
+
 			// 매진 표시
+			SoldOut->SetVisibility(ESlateVisibility::HitTestInvisible);
 		}
 	}
 

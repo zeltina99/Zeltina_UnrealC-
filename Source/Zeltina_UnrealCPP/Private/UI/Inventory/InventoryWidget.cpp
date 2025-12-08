@@ -5,8 +5,10 @@
 #include "UI/Inventory/InventorySlotWidget.h"
 #include "UI/Inventory/GoldPanelWidget.h"
 #include "UI/Inventory/InventoryDragDropOperation.h"
+#include "UI/Inventory/DetailInfoWidget.h"
 #include "Components/Button.h"
 #include "Components/UniformGridPanel.h"
+#include "Components/CanvasPanelSlot.h"
 #include "Player/InventoryComponent.h"
 
 
@@ -22,13 +24,23 @@ void UInventoryWidget::NativeConstruct()
 
 void UInventoryWidget::InitializeInventoryWidget(UInventoryComponent* InventoryComponent)
 {
-	if (InventoryComponent && SlotGridPanel)
-	{
-		TargetInventory = InventoryComponent;	// 인벤토리 컴포넌트 저장
-		if (TargetInventory.IsValid())
-		{
-			UE_LOG(LogTemp, Log, TEXT("인벤토리 위젯 초기화"));
+	TargetInventory = InventoryComponent;	// 인벤토리 컴포넌트 저장
 
+	if (TargetInventory.IsValid())
+	{
+		UE_LOG(LogTemp, Log, TEXT("인벤토리 위젯 초기화"));
+
+		if (DetailInfoPanel)
+		{
+			UCanvasPanelSlot* canvasSlot = Cast<UCanvasPanelSlot>(Slot);
+			//UE_LOG(LogTemp, Log, TEXT("ParentPosition : %s"), *canvasSlot->GetPosition().ToString());
+			DetailInfoPanel->SetParentPosition(canvasSlot->GetPosition());	// DetailInfoPanel에 인벤토리 위젯의 위치 알려주기
+
+			TargetInventory->OnInventorySlotCleared.AddDynamic(DetailInfoPanel, &UDetailInfoWidget::Close);
+		}
+
+		if (SlotGridPanel)
+		{
 			if (SlotGridPanel->GetChildrenCount() != TargetInventory->GetInventorySize())
 			{
 				UE_LOG(LogTemp, Error, TEXT("인벤토리 컴포넌트와 위젯의 슬롯 크기가 다릅니다!!!"));

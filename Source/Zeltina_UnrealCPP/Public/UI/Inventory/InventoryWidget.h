@@ -66,7 +66,7 @@ protected:
 	TObjectPtr<class UGoldPanelWidget> GoldPanel = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<class UDetailInfoWidget> DetailInfo = nullptr;
+	TObjectPtr<class UDetailInfoWidget> DetailInfoPanel = nullptr;
 
 private:
 	UPROPERTY()

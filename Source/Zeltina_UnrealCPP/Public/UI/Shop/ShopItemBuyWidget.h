@@ -23,7 +23,8 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void SetItemData(class UItemDataAsset* ItemData, int32 StockCount);
+	// 판매 아이템 위젯 초기화
+	void InitializeItemBuy(class UItemDataAsset* ItemData, int32 StockCount);
 
 	// 버튼의 활성화/비활성화를 업데이트하는 함수
 	void UpdateBuyButton() const;

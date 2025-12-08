@@ -103,6 +103,12 @@ void UInventoryComponent::SetItemAtIndex(int32 InSlotIndex, UItemDataAsset* InIt
 		TargetSlot.ItemData = InItemData;
 		TargetSlot.SetCount(InCount);	// InCount가 0이하면 자동 Clear
 
+		OnInventorySlotChanged.ExecuteIfBound(InSlotIndex);
+
+		if (TargetSlot.IsEmpty())
+		{
+			OnInventorySlotCleared.Broadcast();
+		}
 	}
 
 }
