@@ -43,10 +43,10 @@ void AMerchant::BeginPlay()
 void AMerchant::OnInteraction_Implementation()
 {
 	// 상점 열기
-	UE_LOG(LogTemp, Log, TEXT("상점을 엽니다. (%s)"), *GetActorLabel());
 	UWorld* world = GetWorld();
 	if (AActionPlayerController* pc = world->GetFirstPlayerController<AActionPlayerController>())
 	{
+		//UE_LOG(LogTemp, Log, TEXT("상점을 엽니다. (%s)"), *GetActorLabel());
 		pc->OpenShopWidget(this);
 	}
 }

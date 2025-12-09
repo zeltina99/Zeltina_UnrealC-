@@ -54,7 +54,11 @@ public:
 		}
 	}
 
-	inline EOpenState GetOpenState() const { return OpenState; }
+	inline bool IsInventoryOpen() const { return InventoryState == EOpenState::Open; }
+	inline bool IsShopOpen() const { return ShopState == EOpenState::Open; }
+
+	inline EOpenState GetInventoryState() const { return InventoryState; }
+	inline EOpenState GetShopState() const { return ShopState; }
 	inline UInventoryWidget* GetInventoryWidget() const { return Inventory; }
 
 protected:
@@ -74,6 +78,7 @@ protected:
 	TObjectPtr<class UShopWidget> Shop = nullptr;
 
 private:
-	EOpenState OpenState = EOpenState::Close;
+	EOpenState InventoryState = EOpenState::Close;
+	EOpenState ShopState = EOpenState::Close;
 
 };
