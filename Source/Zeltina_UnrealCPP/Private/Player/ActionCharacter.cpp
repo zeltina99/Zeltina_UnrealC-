@@ -219,7 +219,7 @@ void AActionCharacter::ClearInteractionTarget_Implementation(AActor* InTarget)
 
 void AActionCharacter::TryInteraction_Implementation()
 {
-	if(InteractionTargets.IsEmpty())
+	if(!InteractionTargets.IsEmpty())
 	{
 		IInteractable::Execute_OnInteraction(InteractionTargets[0].Get());
 	}
@@ -400,6 +400,7 @@ void AActionCharacter::OnAttackInput(const FInputActionValue& InValue)
 
 void AActionCharacter::OnInteractionInput(const FInputActionValue& InValue)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("E키 눌림"));
 	IInteractor::Execute_TryInteraction(this);
 }
 
@@ -523,6 +524,10 @@ void AActionCharacter::UpdateInteractionTargetOrder()
 				AActor* temp = InteractionTargets[i - 1].Get();
 				InteractionTargets[i - 1] = InteractionTargets[i].Get();
 				InteractionTargets[i] = temp;
+			}
+			else
+			{
+				break;	// 변경되지 않았다 = 적절한 위치다 = 그만 확인해도 된다
 			}
 		}
 	}

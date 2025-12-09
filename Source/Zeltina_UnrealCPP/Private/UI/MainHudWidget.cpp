@@ -60,8 +60,11 @@ void UMainHudWidget::CloseInventory()
 
 void UMainHudWidget::OpenShop(UDataTable* ItemList)
 {
-	Shop->InitializeShop(ItemList);
-	Shop->SetVisibility(ESlateVisibility::Visible);
+	if(ItemList)
+	{
+		Shop->InitializeShop(ItemList);
+		Shop->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 void UMainHudWidget::CloseShop()

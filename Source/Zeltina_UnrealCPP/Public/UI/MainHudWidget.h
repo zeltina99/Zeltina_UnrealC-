@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "UI/Inventory/InventoryWidget.h"
+#include "UI/Shop/ShopWidget.h"
 #include "MainHudWidget.generated.h"
 
 UENUM(BlueprintType)
@@ -42,6 +43,14 @@ public:
 		if (Inventory)
 		{
 			Inventory->OnInventoryCloseRequested.Add(Delegate);
+		}
+	}
+
+	void AddToShopCloseDelegate(const FScriptDelegate& Delegate)
+	{
+		if (Shop)
+		{
+			Shop->OnShopCloseRequested.Add(Delegate);
 		}
 	}
 

@@ -34,6 +34,12 @@ public:
 	UFUNCTION()
 	void CloseInventoryWidget();
 
+	UFUNCTION()
+	void OpenShopWidget(class AMerchant* TargetMerchant);
+
+	UFUNCTION()
+	void CloseShopWidget();
+
 	void InitializeMainHudWidget(UMainHudWidget* InWidget);
 
 	UFUNCTION(BlueprintCallable, Category = "UI|Inventory")
@@ -44,6 +50,8 @@ private:
 	void OnLookInput(const FInputActionValue& InValue);
 	void OnInventoryOnOff();
 
+	void FreezePlayer();
+	void UnFreezePlayer();
 
 protected:
 
