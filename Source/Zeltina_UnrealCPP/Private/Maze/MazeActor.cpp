@@ -26,7 +26,7 @@ void AMazeActor::BeginPlay()
 	SpawnCells(maze);
 	ClearMaze(maze);
 
-	OnPosrMapGenerate();
+	OnPostMapGenerate();
 }
 
 void AMazeActor::OnPreMapGenerate()
@@ -38,8 +38,13 @@ void AMazeActor::OnPreMapGenerate()
 	}
 }
 
-void AMazeActor::OnPosrMapGenerate()
+void AMazeActor::OnPostMapGenerate()
 {
+	UNavigationSystemV1* navSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (navSystem)
+	{
+		navSystem->Build();	// 수동으로 네비게이션 메시 생성하게 하기
+	}
 }
 
 FMazeData* AMazeActor::MakeMaze()
