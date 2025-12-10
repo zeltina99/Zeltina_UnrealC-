@@ -34,6 +34,7 @@ void FMazeData::MakeMaze(uint8 InWidth, uint8 InHeight, int32 InSeed)
 	WilSonAlgorithmExecute();		// 미로 알고리즘 수행(멤버 변수들만 사용)
 }
 
+
 void FMazeData::ClearMaze()
 {
 	Cells.Reset();
